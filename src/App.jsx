@@ -1,10 +1,22 @@
-function App() {
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Home from './pages/Home'
 
+const router = createBrowserRouter([
+  {
+    path: '/home',
+    element: <Home />,
+    children: [
+      {
+        path: 'hell',
+        element: <Hell />
+      }
+    ]
+  }
+])
+
+function App() {
   return (
     <>
-      <div className='grid grid-cols-6 min-h-screen overflow-y-scroll'>
-
-      </div>
     </>
   )
 }
