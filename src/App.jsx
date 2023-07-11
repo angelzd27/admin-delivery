@@ -28,7 +28,7 @@ function App() {
 
         {/* Contenedor de la animacion */}
         <div className="hidden relative lg:flex h-full w-1/2 items-center justify-center bg-white" >
-          <img src={yumiLogo} alt="YumiLogo" />
+          <img src={yumiLogo} alt="YumiLogo" className="animate-pulse animate-infinite" />
         </div>
 
       </div>
