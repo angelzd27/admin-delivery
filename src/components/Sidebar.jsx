@@ -1,10 +1,26 @@
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen } from 'react-icons/md'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -21,7 +37,7 @@ function Sidebar() {
     return (
         <>
             {/* Sidebar */}
-            <div className={`bg-black text-white h-full fixed lg:static w-[80%] transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
+            <div className={`bg-black text-white h-full fixed lg:static w-[80%] shadow-md shadow-gray-600 transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
 
                 {/* Profile Info */}
                 <div className='flex flex-col items-center justify-center p-8 gap-3 h-[30vh]'>
@@ -45,18 +61,18 @@ function Sidebar() {
                 {/* Navigation */}
                 <div className='bg-yummy-800 p-8 rounded-tr-[100px] h-[70vh] flex flex-col justify-between gap-8'>
                     <nav className='flex flex-col gap-6'>
-                        <a
-                            href=''
+                        <Link
+                            to='/home/dashboard'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors'>
                             <MdDashboard />
                             Dashboard
-                        </a>
-                        <a
-                            href=''
+                        </Link>
+                        <Link
+                            to='/home/settings'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors'>
                             <MdSettings />
                             Settings
-                        </a>
+                        </Link>
                     </nav>
                     <div className='bg-yummy-600 text-black p-4 rounded-xl flex flex-row gap-4 items-center'>
                         <div>
@@ -64,7 +80,31 @@ function Sidebar() {
                         </div>
                         <div>
                             <p className='text-sm mb-2'>Having troubles?</p>
-                            <a href='' className='font-bold text-md flex flex-row gap-2 items-center underline underline-offset-3'>Contact Us !</a>
+                            <button className='font-bold text-md flex flex-row gap-2 items-center underline underline-offset-3' onClick={handleClickOpen}>
+                                Contact Us !
+                            </button>
+                            <Dialog
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle className=''>
+                                    <h1>Contact Support</h1>
+                                </DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText className='flex flex-col gap-2'>
+                                        <span>We do our best to improve the Admins website, your support helps us improve every day !</span>
+                                        <a href='' className='underline underline-offset-4'>yummy.go@support.mx</a>
+                                        <a href='' className='underline underline-offset-4'>+52 1 415 100 1010</a>
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose} autoFocus>
+                                        Thanks !
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </div>
                     </div>
                 </div>

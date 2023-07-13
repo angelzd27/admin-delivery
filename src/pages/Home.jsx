@@ -2,6 +2,7 @@ import Sidebar from '../components/Sidebar'
 import { Route, Routes } from 'react-router-dom'
 
 import Dashboard from '../components/Dashboard'
+import Settings from '../components/Settings'
 
 function Home() {
     return (
@@ -10,6 +11,7 @@ function Home() {
                 <Sidebar />
                 <Routes>
                     <Route path='/dashboard' element={<Dashboard />} />
+                    <Route path='/settings' element={<Settings />} />
                 </Routes>
             </div>
         </>
