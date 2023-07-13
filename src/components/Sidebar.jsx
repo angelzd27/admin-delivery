@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp } from 'react-icons/md'
+import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen } from 'react-icons/md'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
@@ -26,7 +26,7 @@ function Sidebar() {
                 {/* Profile Info */}
                 <div className='flex flex-col items-center justify-center p-8 gap-3 h-[30vh]'>
                     <img
-                        className='w-32 h-32 object-cover rounded-full'
+                        className={`object-cover rounded-full ${windowWidth < 480 ? 'w-16 h-16' : windowWidth < 940 ? 'w-28 h-28' : 'w-32 h-32'}`}
                         src={image_url} />
                     <h1
                         className='text-2xl font-bold flex items-center gap-2'>
@@ -76,7 +76,9 @@ function Sidebar() {
                     <button
                         className='fixed right-4 bottom-4 text-2xl bg-primary-900 p-3 rounded-full'
                         onClick={() => { setShowMenu(!showMenu) }}>
-                        ShowMenu
+                        {
+                            showMenu ? <MdMenuOpen /> : <MdMenu />
+                        }
                     </button >
                     :
                     <></>
