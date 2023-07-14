@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -6,7 +5,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen } from 'react-icons/md'
+import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone } from 'react-icons/md'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
@@ -89,20 +88,26 @@ function Sidebar() {
                                 aria-labelledby="alert-dialog-title"
                                 aria-describedby="alert-dialog-description"
                             >
-                                <DialogTitle className=''>
+                                <DialogTitle className='bg-yummy-800 text-white'>
                                     <h1>Contact Support</h1>
                                 </DialogTitle>
-                                <DialogContent>
+                                <DialogContent className='bg-yummy-800'>
                                     <DialogContentText className='flex flex-col gap-2'>
-                                        <span>We do our best to improve the Admins website, your support helps us improve every day !</span>
-                                        <a href='' className='underline underline-offset-4'>yummy.go@support.mx</a>
-                                        <a href='' className='underline underline-offset-4'>+52 1 415 100 1010</a>
+                                        <span className='text-white'>We do our best to improve the Admins website, your support helps us improve every day !</span>
+                                        <a href='' className='flex items-center gap-2 underline underline-offset-4 text-white'>
+                                            <MdMail />
+                                            yummy.go@support.mx
+                                        </a>
+                                        <a href='' className='flex items-center gap-2 underline underline-offset-4 text-white'>
+                                            <MdPhone />
+                                            +52 1 415 100 1010
+                                        </a>
                                     </DialogContentText>
                                 </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={handleClose} autoFocus>
+                                <DialogActions className='bg-yummy-800 text-white'>
+                                    <button onClick={handleClose} className='py-2 px-5 underline underline-offset-4'>
                                         Thanks !
-                                    </Button>
+                                    </button>
                                 </DialogActions>
                             </Dialog>
                         </div>
