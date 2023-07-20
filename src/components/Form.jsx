@@ -11,26 +11,26 @@ function Form() {
           <label className=" text-lg font-medium">Email</label>
           <input
             type="text"
-            className='bg-slate-50 w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+            className='bg-slate-50 w-full border-2 border-gray-300 rounded-xl p-4 mt-1 bg-transparent'
             placeholder='Enter your Email' />
         </div>
-        <div className=''>
-          <label className=" text-lg font-medium">Password</label>
+        <div className='mt-3'>
+          <label className="text-lg font-medium">Password</label>
           <input
             type="password"
-            className='bg-slate-50 w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+            className='bg-slate-50 w-full border-2 border-gray-300 rounded-xl p-4 mt-1 bg-transparent'
             placeholder='Enter your Password' />
         </div>
         <div className='mt-8 flex justify-between items-center'>
           <div>
-            <button className='ml-2 font-medium text-base text-yumi hover:text-red-700' for="remember" >Sign up</button>
+            <button className='ml-2 font-medium text-base text-yummy-800 hover:text-red-700'>Sign up</button>
           </div>
-          <button className='font-medium text-base text-yumi hover:text-red-700'>Forgot password</button>
+          <button className='font-medium text-base text-yummy-800 hover:text-red-700'>Forgot password</button>
         </div>
         <div className='mt-8 flex flex-col gap-y-4'>
-          <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yumi text-white text-lg font-bold'>Sign in</button>
+          <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yummy-800 text-white text-lg font-bold'>Sign in</button>
 
-          <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all flex rounded-xl py-3 border-2 border-gray-100 items-center justify-center gap-2'>
+          <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all flex rounded-xl py-3 border-2 border-gray-300 items-center justify-center gap-2'>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M5.26644 9.76453C6.19903 6.93863 8.85469 4.90909 12.0002 4.90909C13.6912 4.90909 15.2184 5.50909 16.4184 6.49091L19.9093 3C17.7821 1.14545 15.0548 0 12.0002 0C7.27031 0 3.19799 2.6983 1.24023 6.65002L5.26644 9.76453Z" fill="#EA4335" />
               <path d="M16.0406 18.0142C14.9508 18.718 13.5659 19.0926 11.9998 19.0926C8.86633 19.0926 6.21896 17.0785 5.27682 14.2695L1.2373 17.3366C3.19263 21.2953 7.26484 24.0017 11.9998 24.0017C14.9327 24.0017 17.7352 22.959 19.834 21.0012L16.0406 18.0142Z" fill="#34A853" />
