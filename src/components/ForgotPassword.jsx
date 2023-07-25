@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import recovery_password from '../assets/images/RecoveryPassword.png'
+import { Link } from 'react-router-dom'
 import { MdEmail } from 'react-icons/md'
-import { Alert } from '@mui/material';
+
+import recovery_password from '../assets/images/RecoveryPassword.png'
 
 function ForgotPassword() {
     return (
@@ -14,7 +15,7 @@ function ForgotPassword() {
                         <h1 className=' text-4xl font-semibold text-center'>Forgot your password?</h1>
                         <p className=" font-medium text-lg text-gray-500 mt-4">Sigue estos pasos y procura no salir de la ventana</p>
 
-                        <div className="mt-8">
+                        <div className='mt-8'>
                             <div className=''>
                                 <label className="flex items-center gap-2 text-lg font-medium">
                                     <MdEmail />
@@ -25,8 +26,13 @@ function ForgotPassword() {
                                     className='bg-slate-50 w-full border-2 border-gray-300 rounded-xl p-4 mt-1 bg-transparent'
                                     placeholder='Enter your Email' />
                             </div>
-                            <div className='mt-8 flex flex-col gap-y-4'>
-                                <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yummy-800 text-white text-lg font-bold'>Continue</button>
+                            <div className='mt-8 flex flex-row justify-between gap-y-4'>
+                                <Link to='/auth' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
+                                    Return
+                                </Link>
+                                <Link to='/auth/email_code' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
+                                    Check & Continue
+                                </Link>
                             </div>
                         </div>
                     </div>
