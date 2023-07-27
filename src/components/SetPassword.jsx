@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
 import { TextField } from '@mui/material'
+
+import SetPasswordAnimation from '../assets/animations/SetPassword.mp4'
 
 function SetPassword() {
     const [showPassword, setShowPassword] = useState(false)
@@ -13,7 +15,7 @@ function SetPassword() {
                 {/* Contenedor del formulario */}
                 <div className=' w-full flex items-center justify-center lg:w-1/2'>
                     <div className='bg-white px-10 py-8 rounded-3xl border-2 border-gray-100'>
-                        <p className=' font-medium text-lg text-gray-500 mt-4'>Set your new password and remember it</p>
+                        <p className='text-xl font-semibold text-gray-500 text-left mb-1'>Set your new password and remember it</p>
                         <span className='text-sm text-gray-500'>Note: The password must have a capital letter, number and special character for greater security</span>
 
                         <div className='mt-8'>
@@ -39,7 +41,10 @@ function SetPassword() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='mt-8 flex flex-row justify-end gap-y-4'>
+                            <div className='mt-8 flex flex-row justify-between gap-y-4'>
+                                <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
+                                    Cancel
+                                </Link>
                                 <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
                                     Set Password
                                 </Link>
@@ -50,7 +55,9 @@ function SetPassword() {
 
                 {/* Contenedor de la animacion */}
                 <div className='hidden relative lg:flex h-full w-1/2 items-center justify-center bg-white' >
-                    {/* <img src={recovery_password} alt='YumiLogo' className='w-fit animate-ping animate-infinite animate-duration-[1500ms] animate-ease-in animate-normal' /> */}
+                    <video autoPlay loop muted>
+                        <source src={SetPasswordAnimation} type='video/mp4' />
+                    </video>
                 </div>
             </div>
         </>
