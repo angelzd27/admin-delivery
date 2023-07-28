@@ -72,6 +72,7 @@ function Sidebar() {
                             <MdSettings />
                             Settings
                         </Link>
+                       
                     </nav>
                     <div className='bg-yummy-600 text-black p-4 rounded-xl flex flex-row gap-4 items-center'>
                         <div>
