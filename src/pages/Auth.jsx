@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-import Login from './Login'
+import Login from '../components/Login'
 import ForgotPassword from '../components/ForgotPassword'
 import CodePassword from '../components/CodePassword'
 import SetPassword from '../components/SetPassword'

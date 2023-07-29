@@ -46,7 +46,7 @@ function SetPassword() {
                                     Cancel
                                 </Link>
                                 <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
-                                    Set Password
+                                    Set New Password
                                 </Link>
                             </div>
                         </div>
