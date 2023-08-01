@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { TextField } from '@mui/material'
 import CodeAnimation from '../assets/animations/Code.mp4'
 
 function CodePassword() {
@@ -15,12 +15,12 @@ function CodePassword() {
 
                         <div className="mt-8">
                             <div className='flex gap-x-4'>
-                                <input type='text' className='border-2 border-gray-500 w-11 h-11 text-center rounded-md focus:outline-none focus:border-yummy-600 transition-colors' maxLength='1' />
-                                <input type='text' className='border-2 border-gray-500 w-11 h-11 text-center rounded-md focus:outline-none focus:border-yummy-600 transition-colors' maxLength='1' />
-                                <input type='text' className='border-2 border-gray-500 w-11 h-11 text-center rounded-md focus:outline-none focus:border-yummy-600 transition-colors' maxLength='1' />
-                                <input type='text' className='border-2 border-gray-500 w-11 h-11 text-center rounded-md focus:outline-none focus:border-yummy-600 transition-colors' maxLength='1' />
-                                <input type='text' className='border-2 border-gray-500 w-11 h-11 text-center rounded-md focus:outline-none focus:border-yummy-600 transition-colors' maxLength='1' />
-                                <input type='text' className='border-2 border-gray-500 w-11 h-11 text-center rounded-md focus:outline-none focus:border-yummy-600 transition-colors' maxLength='1' />
+                                <TextField type='text' variant='standard' className='w-10' inputProps={{ maxLength: 1 }} />
+                                <TextField type='text' variant='standard' className='w-10' />
+                                <TextField type='text' variant='standard' className='w-10' />
+                                <TextField type='text' variant='standard' className='w-10' />
+                                <TextField type='text' variant='standard' className='w-10' />
+                                <TextField type='text' variant='standard' className='w-10' />
                             </div>
                             <div className='mt-8 flex flex-row justify-end gap-y-4'>
                                 <Link to='/auth/set_password' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
