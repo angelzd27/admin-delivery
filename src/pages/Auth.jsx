@@ -15,7 +15,7 @@ export default function Auth() {
                 <Route path='/forgot_password' element={<ForgotPassword />} />
                 <Route path='/email_code' element={<CodePassword />} />
                 <Route path='/set_password' element={<SetPassword />} />
-                <Route path='/register_form' element={<RegisterForm />} />
+                <Route path='/sign_up' element={<RegisterForm />} />
                 <Route path='/*' element={<Navigate to='/not-found' />} />
             </Routes>
         </>
