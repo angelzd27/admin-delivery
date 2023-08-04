@@ -14,7 +14,7 @@ function Home() {
                     <Route path='/' element={<Navigate to='/home/dashboard' />} />
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/settings' element={<Settings />} />
-                    <Route path='/*' element={<NotFound />} />
+                    <Route path='/*' element={<Navigate to='/not-found' />} />
                 </Routes>
             </div>
         </>

@@ -2,6 +2,7 @@ import * as React from 'react'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
+
 import EmailValidator from './EmailValidator'
 import CodePassword from './CodePassword'
 import SetPassword from './SetPassword'
@@ -37,16 +38,15 @@ function ForgotPassword() {
                 <div className='lg:w-2/3 xl:w-1/2 w-full bg-yummy-800 flex items-center justify-center'>
                     <div className='w-[80%] bg-white p-5 rounded-lg shadow-lg shadow-[rgba(0,0,0,0.2)]'>
                         <div className='w-full'>
-                            <Stepper activeStep={activeStep}>
+                            <Stepper activeStep={activeStep} alternativeLabel >
                                 {steps.map((label, index) => {
                                     const stepProps = {}
-                                    const labelProps = {}
                                     if (isStepSkipped(index)) {
                                         stepProps.completed = false
                                     }
                                     return (
-                                        <Step key={label} {...stepProps}>
-                                            <StepLabel {...labelProps}>{label}</StepLabel>
+                                        <Step key={label}>
+                                            <StepLabel className=''>{label}</StepLabel>
                                         </Step>
                                     )
                                 })}
