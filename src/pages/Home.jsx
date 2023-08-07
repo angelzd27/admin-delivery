@@ -4,6 +4,8 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Dashboard from '../components/Dashboard'
 import Settings from '../components/Settings'
 import NotFound from './NotFound'
+import RegisterForm from '../components/RegisterForm'
+import ForgotPassword from '../components/ForgotPassword'
 
 function Home() {
     return (
@@ -17,7 +19,9 @@ function Home() {
                     <Route path='/*' element={<Navigate to='/not-found' />} />
                 </Routes>
             </div>
+
         </>
+      
     )
 }
 
