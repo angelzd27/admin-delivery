@@ -5,7 +5,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone } from 'react-icons/md'
+import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout } from 'react-icons/md'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
@@ -36,12 +36,12 @@ function Sidebar() {
     return (
         <>
             {/* Sidebar */}
-            <div className={`bg-black text-white h-full fixed lg:static w-[80%] shadow-md shadow-gray-600 transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
+            <div className={`bg-black text-white h-full fixed xl:static w-[80%] shadow-md shadow-gray-600 transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
 
                 {/* Profile Info */}
                 <div className='flex flex-col items-center justify-center p-8 gap-3 h-[30vh]'>
                     <img
-                        className={`object-cover rounded-full ${windowWidth < 480 ? 'w-16 h-16' : windowWidth < 940 ? 'w-28 h-28' : 'w-32 h-32'}`}
+                        className={`object-cover rounded-full lg:w-24 md:w-20 sm:w-16 w-16`}
                         src={image_url} />
                     <h1
                         className='text-2xl font-bold flex items-center gap-2'>
@@ -51,9 +51,9 @@ function Sidebar() {
 
                     {/* Nota: Cambiar el color de la etiqueta Spam una vez quse se haya decidido el color */}
                     <span
-                        className='bg-yummy-800 py-1 px-3 rounded-full flex items-center gap-2'>
+                        className='bg-yummy-800 py-2 px-5 rounded-full flex items-center gap-2'>
                         <MdAdminPanelSettings />
-                        Admin Level
+                        Admin
                     </span>
                 </div>
 
@@ -62,17 +62,16 @@ function Sidebar() {
                     <nav className='flex flex-col gap-6'>
                         <Link
                             to='/home/dashboard'
-                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors'>
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <MdDashboard />
                             Dashboard
                         </Link>
                         <Link
                             to='/home/settings'
-                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors'>
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <MdSettings />
                             Settings
                         </Link>
-                       
                     </nav>
                     <div className='bg-yummy-600 text-black p-4 rounded-xl flex flex-row gap-4 items-center'>
                         <div>
@@ -118,7 +117,7 @@ function Sidebar() {
 
             {/* Button Mobile */}
             {
-                windowWidth < 1024 ?
+                windowWidth < 1280 ?
                     <button
                         className='fixed right-4 bottom-4 text-2xl bg-primary-900 p-3 rounded-full'
                         onClick={() => { setShowMenu(!showMenu) }}>

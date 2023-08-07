@@ -1,46 +1,90 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { MdEmail } from 'react-icons/md'
+import * as React from 'react'
+import Stepper from '@mui/material/Stepper'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
 
-import recovery_password from '../assets/images/RecoveryPassword.png'
+import EmailValidator from './EmailValidator'
+import CodePassword from './CodePassword'
+import SetPassword from './SetPassword'
+
+import CodeAnimation from '../assets/animations/Code.mp4'
+import EmailAnimation from '../assets/animations/Email.mp4'
+import SetPasswordAnimation from '../assets/animations/SetPassword.mp4'
+
+const steps = ['Check your e-mail', 'Verify your code', 'Set new password']
 
 function ForgotPassword() {
+    const [activeStep, setActiveStep] = React.useState(0)
+    const [skipped, setSkipped] = React.useState(new Set())
+
+    const isStepSkipped = (step) => {
+        return skipped.has(step)
+    }
+
+    const handleNext = () => {
+        let newSkipped = skipped
+        if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values())
+            newSkipped.delete(activeStep)
+        }
+
+        setActiveStep((prevActiveStep) => prevActiveStep + 1)
+        setSkipped(newSkipped)
+    }
+
     return (
         <>
-            <div className="bg-yummy-800 flex w-full h-screen">
-
-                {/* Contenedor del formulario */}
-                <div className=" w-full flex items-center justify-center lg:w-1/2">
-                    <div className='bg-white px-10 py-8 rounded-3xl border-2 border-gray-100'>
-                        <h1 className=' text-4xl font-semibold text-center'>Forgot your password?</h1>
-                        <p className=" font-medium text-lg text-gray-500 mt-4">Sigue estos pasos y procura no salir de la ventana</p>
-
-                        <div className='mt-8'>
-                            <div className=''>
-                                <label className="flex items-center gap-2 text-lg font-medium">
-                                    <MdEmail />
-                                    Email
-                                </label>
-                                <input
-                                    type="text"
-                                    className='bg-slate-50 w-full border-2 border-gray-300 rounded-xl p-4 mt-1 bg-transparent'
-                                    placeholder='Enter your Email' />
-                            </div>
-                            <div className='mt-8 flex flex-row justify-between gap-y-4'>
-                                <Link to='/auth' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
-                                    Return
-                                </Link>
-                                <Link to='/auth/email_code' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
-                                    Check & Continue
-                                </Link>
-                            </div>
+            <div className='flex flex-row h-screen'>
+                <div className='lg:w-2/3 xl:w-1/2 w-full bg-yummy-800 flex items-center justify-center'>
+                    <div className='w-[80%] bg-white p-5 rounded-lg shadow-lg shadow-[rgba(0,0,0,0.2)]'>
+                        <div className='w-full'>
+                            <Stepper activeStep={activeStep} alternativeLabel >
+                                {steps.map((label, index) => {
+                                    const stepProps = {}
+                                    if (isStepSkipped(index)) {
+                                        stepProps.completed = false
+                                    }
+                                    return (
+                                        <Step key={label}>
+                                            <StepLabel className=''>{label}</StepLabel>
+                                        </Step>
+                                    )
+                                })}
+                            </Stepper>
+                            {activeStep === 0 ? (
+                                <EmailValidator handleNext={handleNext} />
+                            ) : activeStep === 1 ? (
+                                <CodePassword handleNext={handleNext} />
+                            ) : activeStep === 2 ? (
+                                <SetPassword />
+                            ) : (
+                                <div></div>
+                            )}
                         </div>
                     </div>
                 </div>
-
-                {/* Contenedor de la animacion */}
-                <div className="hidden relative lg:flex h-full w-1/2 items-center justify-center bg-white" >
-                    <img src={recovery_password} alt="YumiLogo" className="w-fit animate-ping animate-infinite animate-duration-[1500ms] animate-ease-in animate-normal" />
+                <div className='hidden relative lg:flex h-full w-1/2 items-center justify-center bg-white'>
+                    {
+                        activeStep === 0 ? (
+                            <div>
+                                <div>
+                                    <video loop autoPlay muted>
+                                        <source src={EmailAnimation} type='video/mp4' />
+                                    </video>
+                                </div>
+                            </div>
+                        ) : activeStep === 1 ? (
+                            <div>
+                                <video loop autoPlay muted>
+                                    <source src={CodeAnimation} type='video/mp4' />
+                                </video>
+                            </div>
+                        ) : (
+                            <video loop autoPlay muted>
+                                <source src={SetPasswordAnimation} type='video/mp4' />
+                            </video>
+                        )
+                    }
                 </div>
             </div>
         </>
