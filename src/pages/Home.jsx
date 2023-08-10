@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import Dashboard from '../components/Dashboard'
 import Settings from '../components/Settings'
+import Dishes from '../components/Dishes'
 
 function Home() {
     return (
@@ -12,6 +13,7 @@ function Home() {
                 <div className='mt-10 col-span-6 lg:col-span-5 mr-[4.5%]'>
                     <Routes>
                         <Route path='/' element={<Navigate to='/home/dashboard' />} />
+                        <Route path='/dishes' element={<Dishes />} />
                         <Route path='/dashboard' element={<Dashboard />} />
                         <Route path='/settings' element={<Settings />} />
                         <Route path='/*' element={<Navigate to='/not-found' />} />

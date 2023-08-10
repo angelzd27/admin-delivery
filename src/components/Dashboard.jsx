@@ -65,7 +65,7 @@ function Dashboard() {
                 marker: {
                     symbol: 'diamond'
                 },
-                data: [5, 2.99, 13, 8, 8.55, 4.23, 3, 7, 1, 4, 2, 1, 3]
+                data: [5, 2.99, 13, 8, 8.55, 4.23, 3, 7, 1, 4, 2, 1]
             }
         ]
     }
@@ -86,7 +86,7 @@ function Dashboard() {
             zoomType: ''
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: 'Popularity: <b>{point.percentage:.1f}%</b>'
         },
         accessibility: {
             point: {
@@ -110,7 +110,6 @@ function Dashboard() {
                 {
                     name: "Combo Special's Edwin",
                     y: 100,
-                    sliced: true,
                 }, {
                     name: 'Empanadas',
                     y: 25
@@ -134,6 +133,62 @@ function Dashboard() {
         }]
     }
 
+    const option_bars = {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'All Dishes',
+            style: {
+                color: '#000000',
+                fontSize: '28px'
+            }
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Montserrat, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Total Earing'
+            },
+            labels: {
+                format: '$ {value} USD'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Total Earing: $ {point.y:.1f} USD'
+        },
+        series: [{
+            name: 'All Dishes',
+            colorByPoint: true,
+            groupPadding: 0,
+            data: [
+                ["Combo Special's Edwin", 135,],
+                ['Empanadas Frias', 23],
+                ['Donas', 16],
+                ['Tortas Frias', 85],
+                ['Tacos de Don Toño', 129],
+                ['Pizza', 110],
+                ['Enchiladas', 95],
+                ['Coca Cola', 130],
+                ['Paletas de hielo', 19],
+                ['Dulces Luz', 5],
+                ['Nieve', 122],
+            ]
+        }]
+    }
+
     let total_usd = '5,583.12'
     let total_mex = '96,084.55'
     let total_order = '126'
@@ -144,28 +199,28 @@ function Dashboard() {
 
     return (
         <>
-            <div className='flex flex-col gap-6'>
+            <div className='flex flex-col gap-6 mb-20'>
                 <h1 className='text-2xl'>Dashboard</h1>
                 <div className='flex flex-row gap-8'>
-                    <div className='bg-white shadow-md rounded-lg w-[35%]'>
+                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>$ {total_usd} USD</span>
                             <span>Total Earning (USD)</span>
                         </div>
                     </div>
-                    <div className='bg-white shadow-md rounded-lg w-[35%]'>
+                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>$ {total_mex} MEX</span>
                             <span>Total Earning (MEX)</span>
                         </div>
                     </div>
-                    <div className='bg-white shadow-md rounded-lg w-[15%]'>
+                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>{total_order}</span>
                             <span>Total Orders</span>
                         </div>
                     </div>
-                    <div className='bg-white shadow-md rounded-lg w-[15%]'>
+                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>{total_visitor}</span>
                             <span>Total Visitor</span>
@@ -245,6 +300,12 @@ function Dashboard() {
                             options={options_pie}
                         />
                     </div>
+                </div>
+                <div className='flex flex-row w-full bg-white rounded-md shadow-md justify-center'>
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={option_bars}
+                    />
                 </div>
             </div>
         </>
