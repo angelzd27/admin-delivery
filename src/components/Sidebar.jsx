@@ -5,7 +5,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout } from 'react-icons/md'
+import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdDescription } from 'react-icons/md'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
@@ -67,10 +67,23 @@ function Sidebar() {
                             Dashboard
                         </Link>
                         <Link
+                            to='/home/dishes'
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
+                            <MdDescription />
+                            Dishes
+                        </Link>
+
+                        <Link
                             to='/home/settings'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <MdSettings />
                             Settings
+                        </Link>
+                        <Link
+                            to='/auth'
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
+                            <MdLogout />
+                            Logout
                         </Link>
                     </nav>
                     <div className='bg-yummy-600 text-black p-4 rounded-xl flex flex-row gap-4 items-center'>
