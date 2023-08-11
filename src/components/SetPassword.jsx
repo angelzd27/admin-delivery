@@ -34,7 +34,7 @@ function SetPassword() {
             </div>
             <div className='mt-10 flex flex-row justify-between gap-y-4'>
                 <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
-                    Cancel
+                    Return to Sign In
                 </Link>
                 <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-colors duration-200'>
                     Set New Password
