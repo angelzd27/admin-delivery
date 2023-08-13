@@ -11,6 +11,9 @@ export default {
           600: '#FE8285',
           800: '#FC5458'
         }
+      },
+      fontFamily: {
+        'montserrat': ['Montserrat', 'sans-serif']
       }
     },
   },

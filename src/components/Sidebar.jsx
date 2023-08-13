@@ -5,7 +5,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MdDashboard, MdSettings, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout } from 'react-icons/md'
+import { MdDashboard, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdDescription, MdSettingsAccessibility } from 'react-icons/md'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
@@ -36,7 +36,7 @@ function Sidebar() {
     return (
         <>
             {/* Sidebar */}
-            <div className={`bg-black text-white h-full fixed xl:static w-[80%] shadow-md shadow-gray-600 transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
+            <div className={`bg-black text-white h-screen fixed shadow-md xl:left-0 w-[80%] xl:w-[15%] shadow-gray-600 z-10 transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
 
                 {/* Profile Info */}
                 <div className='flex flex-col items-center justify-center p-8 gap-3 h-[30vh]'>
@@ -67,13 +67,20 @@ function Sidebar() {
                             Dashboard
                         </Link>
                         <Link
-                            to='/home/settings'
+                            to='/home/dishes'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
-                            <MdSettings />
-                            Settings
+                            <MdDescription />
+                            Dishes
+                        </Link>
+
+                        <Link
+                            to='/home/my_profile'
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
+                            <MdSettingsAccessibility />
+                            My Profile
                         </Link>
                         <Link
-                            to='/'
+                            to='/auth'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <MdLogout />
                             Logout
@@ -125,7 +132,7 @@ function Sidebar() {
             {
                 windowWidth < 1280 ?
                     <button
-                        className='fixed right-4 bottom-4 text-2xl bg-primary-900 p-3 rounded-full'
+                        className='fixed right-4 bottom-4 text-2xl bg-primary-900 p-3 rounded-full z-20'
                         onClick={() => { setShowMenu(!showMenu) }}>
                         {
                             showMenu ? <MdMenuOpen /> : <MdMenu />

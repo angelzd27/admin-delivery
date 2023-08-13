@@ -108,7 +108,7 @@ function Form() {
         {/* Options Buttons */}
         <div className='mt-8 flex justify-between items-center'>
           <div>
-            <button className='ml-2 font-medium text-base text-yummy-800 hover:text-red-700'>Sign up</button>
+          <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/sign_up'>Sign Up</Link>
           </div>
           <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/forgot_password'>Forgot password</Link>
         </div>
