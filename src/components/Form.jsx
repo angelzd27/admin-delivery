@@ -1,33 +1,119 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import FormInput from './FormInput'
+import iconEye from '../assets/icons/eye-regular.svg'
+import iconEyeSlash from '../assets/icons/eye-slash-regular.svg'
+
 
 function Form() {
-  return (
-    <div className='bg-white px-10 py-8 rounded-3xl border-2 border-gray-100'>
-      <h1 className=' text-4xl font-semibold text-center'>Welcome Back</h1>
-      <p className=" font-medium text-lg text-gray-500 mt-4">Welcome to Yummi Go! Please enter your details</p>
 
-      <div className="mt-8">
-        <div className=''>
-          <label className=" text-lg font-medium">Email</label>
-          <input
-            type="text"
-            className='bg-slate-50 w-full border-2 border-gray-300 rounded-xl p-4 mt-1 bg-transparent'
-            placeholder='Enter your Email' />
-        </div>
-        <div className='mt-3'>
-          <label className="text-lg font-medium">Password</label>
-          <input
-            type="password"
-            className='bg-slate-50 w-full border-2 border-gray-300 rounded-xl p-4 mt-1 bg-transparent'
-            placeholder='Enter your Password' />
-        </div>
+  const [focused, setFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); //For show or hide password
+
+  //For show errorMessage or succesMessage
+  const handleFocus = (e) => {
+    setFocused(true);
+  }
+  //Initialize inputs values
+  const [values, setValues] = useState({
+    email: "",
+    password: ""
+  }
+
+  );
+
+  const inputs = [
+    {
+      id: 1,
+      name: "email",
+      type: "email",
+      placeholder: "Enter your email",
+      errormesssage: "It's no valid email address!",
+      label: "Email",
+      pattern: /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+      required: true
+    },
+    {
+      id: 2,
+      name: "password",
+      type: "password" || "text",
+      placeholder: "Enter your password",
+      errormesssage: "It's no valid password!",
+      label: "Password",
+      pattern: /^\d{8}$/, //Contraseña de 8 caracteres numericos *while*
+      required: true,
+    }
+  ];
+
+  const handleSubmit = (e) => {
+    // So that the page is not reloaded when pressing the send button
+    e.preventDefault();
+
+  }
+
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  }
+
+  return (
+    <div className='bg-white px-8 py-5 rounded-3xl border-2 border-gray-100'>
+      <h1 className=' text-4xl font-semibold text-center'>Welcome Back</h1>
+      <p className=" font-medium text-lg text-gray-500 mt-1">Welcome to Yummi Go! Please enter your details</p>
+
+      <form className="mt-4" onSubmit={handleSubmit}>
+
+        {inputs.map((input) => (
+          <div key={input.id}>
+            <div className="relative">
+              <FormInput
+                {...input}
+                value={values[input.name]}
+                onChange={onChange}
+                required={input.required}
+                onBlur={handleFocus}
+                focused={focused.toString()}
+                type={input.name === 'password' ? (showPassword ? 'text' : 'password') : input.type}
+              />
+              {input.name === 'password' && (
+                <button
+                  className="absolute top-1/2 right-2 transform -translate-y-1/2 focus:outline-none"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <div className='mt-6'>
+                    <img
+                      src={showPassword ? iconEyeSlash : iconEye}
+                      alt={showPassword ? 'icon-eye-slash' : 'icon-eye'}
+                      className="w-8 h-5"
+                    />
+                  </div>
+
+                </button>
+              )}
+            </div>
+            {/* //Messages */}
+            {input.name === "email" && input.required && values[input.name] === "" && focused && (
+              <span className='text-red-600 text-sm'>{input.errormesssage}</span>
+            )}
+            {input.required && values[input.name] !== "" && input.pattern && !input.pattern.test(values[input.name]) && focused && (
+              <span className='text-red-600 text-sm'>{input.errormesssage}</span>
+            )}
+            {input.pattern && input.pattern.test(values[input.name]) && (
+              <span className='text-green-600 text-sm'>
+                {input.name === "email" ? "Email correct!" : "Password correct!"}
+              </span>
+            )}
+          </div>
+        ))}
+
+        {/* Options Buttons */}
         <div className='mt-8 flex justify-between items-center'>
           <div>
             <button className='ml-2 font-medium text-base text-yummy-800 hover:text-red-700'>Sign up</button>
           </div>
           <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/forgot_password'>Forgot password</Link>
         </div>
+
+        {/* Sign In Buttons */}
         <div className='mt-8 flex flex-col gap-y-4'>
           <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yummy-800 text-white text-lg font-bold'>Sign in</button>
 
@@ -41,7 +127,8 @@ function Form() {
             Sign in with Google
           </button>
         </div>
-      </div>
+
+      </form>
     </div>
   )
 }
