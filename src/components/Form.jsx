@@ -40,7 +40,7 @@ function Form() {
       placeholder: "Enter your password",
       errormesssage: "It's no valid password!",
       label: "Password",
-      pattern: /^\d{8}$/, //Contraseña de 8 caracteres numericos *while*
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, //Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.
       required: true,
     }
   ];
