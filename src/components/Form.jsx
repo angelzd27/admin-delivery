@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, redirect } from 'react-router-dom'
 import FormInput from './FormInput'
 import iconEye from '../assets/icons/eye-regular.svg'
 import iconEyeSlash from '../assets/icons/eye-slash-regular.svg'
-
+import { BD_ACTION_POST } from '../services/master'
 
 function Form() {
 
@@ -18,9 +18,7 @@ function Form() {
   const [values, setValues] = useState({
     email: "",
     password: ""
-  }
-
-  );
+  });
 
   const inputs = [
     {
@@ -53,6 +51,14 @@ function Form() {
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+  }
+
+  const post_sign_in = async () => {
+    const data = await BD_ACTION_POST('auth', 'sign_in', values)
+    if (!data.error) {
+      localStorage.setItem('JWT_YUMMY', data.msg.token)
+      return <Navigate to='/home' />
+    }
   }
 
   return (
@@ -108,14 +114,14 @@ function Form() {
         {/* Options Buttons */}
         <div className='mt-8 flex justify-between items-center'>
           <div>
-          <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/sign_up'>Sign Up</Link>
+            <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/sign_up'>Sign Up</Link>
           </div>
           <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/forgot_password'>Forgot password</Link>
         </div>
 
         {/* Sign In Buttons */}
         <div className='mt-8 flex flex-col gap-y-4'>
-          <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yummy-800 text-white text-lg font-bold'>Sign in</button>
+          <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yummy-800 text-white text-lg font-bold' onClick={() => { post_sign_in() }}>Sign in</button>
 
           <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all flex rounded-xl py-3 border-2 border-gray-300 items-center justify-center gap-2'>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
