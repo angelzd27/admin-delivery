@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Link, Navigate, redirect } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import FormInput from './FormInput'
 import iconEye from '../assets/icons/eye-regular.svg'
 import iconEyeSlash from '../assets/icons/eye-slash-regular.svg'
 import { BD_ACTION_POST } from '../services/master'
 
 function Form() {
-
+  const navigate = useNavigate()
   const [focused, setFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false); //For show or hide password
 
@@ -57,7 +57,7 @@ function Form() {
     const data = await BD_ACTION_POST('auth', 'sign_in', values)
     if (!data.error) {
       localStorage.setItem('JWT_YUMMY', data.msg.token)
-      return <Navigate to='/home' />
+      navigate('/home')
     }
   }
 
