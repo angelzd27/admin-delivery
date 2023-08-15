@@ -9,25 +9,12 @@ function Dishes() {
     const dishesData = [
         {
             name: "Platillo 1",
+            description: "Descripción del platillo 1",
             photoUrl: "https://assets.kraftfoods.com/recipe_images/opendeploy/118961_640x428.jpg",
         },
         {
             name: "Platillo 2",
-            photoUrl: "https://assets.kraftfoods.com/recipe_images/opendeploy/118961_640x428.jpg",
-        },
-        {
-            name: "Platillo 2",
-            photoUrl: "https://assets.kraftfoods.com/recipe_images/opendeploy/118961_640x428.jpg",
-        },
-        {
-            name: "Platillo 2",
-            photoUrl: "https://assets.kraftfoods.com/recipe_images/opendeploy/118961_640x428.jpg",
-        },
-        {
-            name: "Platillo 2",
-            photoUrl: "https://assets.kraftfoods.com/recipe_images/opendeploy/118961_640x428.jpg",
-        },{
-            name: "Platillo 2",
+            description: "Descripción del platillo 2",
             photoUrl: "https://assets.kraftfoods.com/recipe_images/opendeploy/118961_640x428.jpg",
         },
         
@@ -38,24 +25,26 @@ function Dishes() {
             <Typography variant='h4' color='primary' align='center'>
                 Dishes
             </Typography>
-            <div className='w-4/5'>
+            <div className='w-full'>
                 {dishesData.map((dish, index) => (
-                    <Card key={index} className='mb-6'>
+                    <Card key={index} className='mb-6 rounded-lg'>
                         <CardActionArea>
                             <div className='flex'>
+                                <CardContent className='flex flex-col'>
+                                    <Typography gutterBottom variant='h5' component='div'>
+                                        {dish.name}
+                                    </Typography>
+                                    <Typography variant='body2' color='textSecondary'>
+                                        {dish.description}
+                                    </Typography>
+                                </CardContent>
+                                <div className='flex-grow'></div>
                                 <CardMedia
                                     component='img'
-                                    style={{ width: '100px', height: '100px' }} 
+                                    style={{ width: '100px', height: '100px' }} // Ajusta estos valores
                                     image={dish.photoUrl}
                                     alt={dish.name}
                                 />
-                                <CardContent className='flex items-center'>
-                                    <Typography gutterBottom variant='h5' component='div'>
-                                        <a href={`#${dish.name}`} className='text-blue-500 hover:underline'>
-                                            {dish.name}
-                                        </a>
-                                    </Typography>
-                                </CardContent>
                             </div>
                         </CardActionArea>
                     </Card>
