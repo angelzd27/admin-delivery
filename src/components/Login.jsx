@@ -1,18 +1,7 @@
 import Form from './Form'
 import yumiLogo from '../assets/images/Yummy1.jpg'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Expired_JWT } from '../services/jwt'
 
 function Login() {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (Expired_JWT) {
-      navigate('/home/dashboard')
-    }
-  }, [])
-
   return (
     <>
       <div className="bg-yummy-800 flex w-full h-screen">

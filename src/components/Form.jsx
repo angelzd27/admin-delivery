@@ -57,7 +57,7 @@ function Form() {
     const data = await BD_ACTION_POST('auth', 'sign_in', values)
     if (!data.error) {
       localStorage.setItem('JWT_YUMMY', data.msg.token)
-      navigate('/home')
+      navigate('/home/dashboard')
     }
   }
 
