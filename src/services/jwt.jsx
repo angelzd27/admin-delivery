@@ -1,23 +1,36 @@
-import { useJwt } from 'react-jwt'
+import { isExpired, decodeToken } from 'react-jwt'
 
-export const JWT_YUMMY = localStorage.getItem('JWT_YUMMY') ? localStorage.getItem('JWT_YUMMY') : ''
-
-export const Expired_JWT = () => {
-    const { isExpired } = useJwt(JWT_YUMMY)
-
-    return isExpired
+export function setJWT(token) {
+    localStorage.setItem('JWT_YUMMT', token)
 }
 
-export const Decoded_JWT = () => {
-    const { decodedToken } = useJwt(JWT_YUMMY)
+export function getJWT() {
+    if (localStorage.getItem('JWT_YUMMT')) {
+        return localStorage.getItem('JWT_YUMMT')
+    }
 
-    return decodedToken
+    return ''
 }
 
-export const Set_JWT = (token) => {
-    localStorage.setItem('JWT_YUMMY', token)
+export function removeJWT() {
+    localStorage.removeItem('JWT_YUMMT')
 }
 
-export const Delete_JWT = () => {
-    localStorage.removeItem('JWT_YUMMY')
-} 
+export function expiredJWT() {
+    const expired = isExpired(getJWT())
+
+    return expired
+}
+
+export function decodedJWT() {
+    const decoded = decodeToken(getJWT())
+
+    return decoded
+}
+
+export function decodedDataJWT() {
+    const decoded = decodeToken(getJWT())
+    const data = decoded.data
+
+    return data
+}

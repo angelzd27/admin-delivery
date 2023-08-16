@@ -4,6 +4,7 @@ import FormInput from './FormInput'
 import iconEye from '../assets/icons/eye-regular.svg'
 import iconEyeSlash from '../assets/icons/eye-slash-regular.svg'
 import { BD_ACTION_POST } from '../services/master'
+import { setJWT } from '../services/jwt'
 
 function Form() {
   const navigate = useNavigate()
@@ -56,20 +57,20 @@ function Form() {
   const post_sign_in = async () => {
     const data = await BD_ACTION_POST('auth', 'sign_in', values)
     if (!data.error) {
-      localStorage.setItem('JWT_YUMMY', data.msg.token)
+      setJWT(data.msg.token)
       navigate('/home/dashboard')
     }
   }
 
   return (
-    <div className='bg-white px-8 py-5 rounded-3xl border-2 border-gray-100'>
+    <div className='bg-white px-8 py-5 rounded-3xl border-2 border-gray-100 w-[90%] xl:w-[50%]'>
       <h1 className=' text-4xl font-semibold text-center'>Welcome Back</h1>
-      <p className=" font-medium text-lg text-gray-500 mt-1">Welcome to Yummi Go! Please enter your details</p>
+      <p className=" font-medium text-lg text-slate-400 text-center mt-6">Please enter your details</p>
 
       <form className="mt-4" onSubmit={handleSubmit}>
 
         {inputs.map((input) => (
-          <div key={input.id}>
+          <div key={input.id} className='mb-5'>
             <div className="relative">
               <FormInput
                 {...input}
@@ -85,7 +86,7 @@ function Form() {
                   className="absolute top-1/2 right-2 transform -translate-y-1/2 focus:outline-none"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  <div className='mt-6'>
+                  <div>
                     <img
                       src={showPassword ? iconEyeSlash : iconEye}
                       alt={showPassword ? 'icon-eye-slash' : 'icon-eye'}

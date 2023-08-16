@@ -5,6 +5,7 @@ import ForgotPassword from '../components/ForgotPassword'
 import RegisterForm from '../components/RegisterForm'
 
 export default function Auth() {
+
     return (
         <>
             <Routes>

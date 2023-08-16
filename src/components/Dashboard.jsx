@@ -1,12 +1,14 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
-import styled from '@emotion/styled';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { CardActionArea } from '@mui/material';
+import styled from '@emotion/styled'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import { CardActionArea } from '@mui/material'
+import { useEffect } from 'react'
+import { decodedDataJWT, decodedJWT, expiredJWT, getJWT } from '../services/jwt'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -15,7 +17,7 @@ const StyledRating = styled(Rating)({
     '& .MuiRating-iconHover': {
         color: '#ff3d47',
     },
-});
+})
 
 function Dashboard() {
     const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
@@ -196,6 +198,17 @@ function Dashboard() {
     let rank_best_dish = 4.9
     let rank_less_dish = 1.6
     let customer_satisfaction = 4.5
+
+    useEffect(() => {
+        console.log('::::: TOKEN :::::')
+        console.log(getJWT())
+        console.log('::::: EXPIRED :::::')
+        console.log(expiredJWT())
+        console.log('::::: ALL DATA :::::')
+        console.log(decodedJWT())
+        console.log('::::: DATA :::::')
+        console.log(decodedDataJWT())
+    })
 
     return (
         <>

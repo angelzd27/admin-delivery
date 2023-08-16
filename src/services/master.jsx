@@ -1,12 +1,12 @@
 import axios from 'axios'
-import { JWT_YUMMY } from './jwt'
+import { getJWT } from './jwt'
 
 const url_services = 'http://localhost/api-delivery/controllers'
 
 const headers = {
     'Content-Type': 'application/json',
     simpleauthpts: 'f9008bbc21129902e16e229994658240',
-    authorization: JWT_YUMMY
+    authorization: getJWT()
 }
 
 export const BD_ACTION_GET = async (model, action) => {

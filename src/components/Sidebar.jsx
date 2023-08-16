@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MdDashboard, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdDescription, MdSettingsAccessibility } from 'react-icons/md'
-import { Delete_JWT } from '../services/jwt'
+import { removeJWT } from '../services/jwt'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
@@ -81,7 +81,7 @@ function Sidebar() {
                             My Profile
                         </Link>
                         <Link
-                            onClick={() => { Delete_JWT() }}
+                            onClick={() => { removeJWT() }}
                             to='/auth'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <MdLogout />
