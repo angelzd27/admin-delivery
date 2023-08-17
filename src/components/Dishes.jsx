@@ -83,9 +83,7 @@ const MenuComponent = () => {
             </button>
           </div>
         </div>
-        <Typography variant="h5" className="mb-4">
-          Platillos populares
-        </Typography>
+        
         <div className="grid grid-cols-4 gap-4 mb-4">
           {categories.map((category, index) => (
             <div key={index} className="rounded-lg overflow-hidden bg-gray-100 p-3 hover:bg-red-200 transition duration-300 border border-red-400">
