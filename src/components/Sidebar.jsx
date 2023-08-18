@@ -1,25 +1,26 @@
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MdDashboard, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdDescription, MdSettingsAccessibility } from 'react-icons/md'
+import { removeJWT } from '../services/jwt'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
 
     const handleClickOpen = () => {
-        setOpen(true);
-    };
+        setOpen(true)
+    }
 
     const handleClose = () => {
-        setOpen(false);
-    };
+        setOpen(false)
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -80,6 +81,7 @@ function Sidebar() {
                             My Profile
                         </Link>
                         <Link
+                            onClick={() => { removeJWT() }}
                             to='/auth'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <MdLogout />

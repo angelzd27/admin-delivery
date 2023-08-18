@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TextField } from '@mui/material'
-import MenuItem from '@mui/material/MenuItem';
-import { countries } from '../assets/json/country_codes';
+import MenuItem from '@mui/material/MenuItem'
+import { countries } from '../assets/json/country_codes'
+import { gender } from '../assets/json/Gender'
+import { profile } from '../assets/json/profile'
+import SignUp from '../assets/animations/SignUp.mp4'
 
 function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -18,74 +21,74 @@ function RegisterForm() {
     password: '',
     confirmPassword: '',
     email: '',
-  });
+  })
 
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [showError, setShowError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   function isValidEmail(email) {
 
     // Expresión regular para validar el formato de un email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
 
   }
 
   const handleRegister = () => {
     // Realizar validaciones
-    const { email, password, confirmPassword } = formData;
+    const { email, password, confirmPassword } = formData
 
     // Validar que todos los campos estén completos
     if (Object.values(formData).some((value) => value === '')) {
-      setErrorMessage('Please complete all fields.');
-      setShowError(true);
-      return;
+      setErrorMessage('Please complete all fields.')
+      setShowError(true)
+      return
     } else {
-      setErrorMessage('');
+      setErrorMessage('')
     }
 
     // Validar campo email
     if (!isValidEmail(email)) {
-      setErrorMessage('Please enter a valid email address.');
-      setShowError(true);
-      return;
+      setErrorMessage('Please enter a valid email address.')
+      setShowError(true)
+      return
     } else {
-      setShowError(false);
+      setShowError(false)
     }
 
     // Validar que las contraseñas coincidan
     if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
-      setShowError(true);
-      return;
+      setErrorMessage('Passwords do not match.')
+      setShowError(true)
+      return
     } else {
-      setShowError(false);
+      setShowError(false)
     }
 
     // Validar que la contraseña cumpla con los requisitos
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
     if (!passwordRegex.test(password)) {
       setErrorMessage(
         'Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.'
-      );
-      setShowError(true);
-      return;
+      )
+      setShowError(true)
+      return
     }
 
-    setShowError(false);
+    setShowError(false)
 
     // Si las validaciones son exitosas, aquí puedes guardar los datos en el backend
-    console.log('Formulario enviado:', formData);
-  };
+    console.log('Formulario enviado:', formData)
+  }
 
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   return (
 
@@ -132,8 +135,8 @@ function RegisterForm() {
                 />
               </div>
 
-              <div className='flex flex-row gap-6'>
-                <div className='w-1/2'>
+              <div className='flex xl:flex-row flex-col gap-6'>
+                <div className='xl:w-1/2 w-full'>
                   <TextField
                     label="Phone"
                     name="phone"
@@ -146,7 +149,7 @@ function RegisterForm() {
                   />
                 </div>
 
-                <div className='w-1/2 flex flex-row gap-6'>
+                <div className='xl:w-1/2 w-full flex xl:flex-row flex-col gap-6'>
                   <TextField
                     select
                     label="ISO Code"
@@ -198,9 +201,13 @@ function RegisterForm() {
                   fullWidth
                   margin="normal"
                 >
-                  <MenuItem value="gender0">Select a gender</MenuItem>
-                  <MenuItem value="gender1">Male</MenuItem>
-                  <MenuItem value="gender2">Female</MenuItem>
+                  {
+                    gender.map((gender, index) => (
+                      <MenuItem key={index} value={gender.id}>
+                        {gender.emoji} | {gender.name}
+                      </MenuItem>
+                    ))
+                  }
                 </TextField>
 
                 <TextField
@@ -213,9 +220,13 @@ function RegisterForm() {
                   fullWidth
                   margin="normal"
                 >
-                  <MenuItem value="profile0">Select a profile</MenuItem>
-                  <MenuItem value="profile1">Admin</MenuItem>
-                  <MenuItem value="profile2">User</MenuItem>
+                  {
+                    profile.map((profile, index) => (
+                      <MenuItem key={index} value={profile.id}>
+                        {profile.emoji} | {profile.name}
+                      </MenuItem>
+                    ))
+                  }
                 </TextField>
               </div>
             </div>
@@ -297,9 +308,11 @@ function RegisterForm() {
         </div>
 
         {/* Contenedor de la animación */}
-        <div className="hidden relative lg:flex w-1/2 items-center justify-center bg-white h-screen">
+        <div className="hidden relative xl:flex w-1/2 items-center justify-center bg-white h-screen">
+          <video loop autoPlay muted>
+            <source src={SignUp} type='video/mp4' />
+          </video>
         </div>
-
       </div >
     </>
   )
