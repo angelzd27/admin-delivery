@@ -9,8 +9,8 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='' element={expiredJWT() ? <Navigate to='/home' /> : <Navigate to='/auth' />} />
-          <Route path='/home/*' element={expiredJWT() ? <Home /> : <Navigate to='/auth' />} />
+          <Route path='' element={<Navigate to='/auth' />} />
+          <Route path='/home/*' element={<Home />} />
           <Route path='/auth/*' element={<Auth />} />
           <Route path='/not-found' element={<NotFound />} />
           <Route path='/*' element={<Navigate to='/not-found' />} />

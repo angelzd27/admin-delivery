@@ -1,21 +1,10 @@
 import Sidebar from '../components/Sidebar'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
-
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Dashboard from '../components/Dashboard'
 import MyProfile from '../components/MyProfile'
 import Dishes from '../components/Dishes'
-import { useEffect } from 'react'
-import { expiredJWT, getJWT } from '../services/jwt'
-import Loader from '../components/Loader'
 
 function Home() {
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (expiredJWT() && getJWT() == '')
-            navigate('/auth')
-    }, [navigate])
-
     return (
         <>
             <div className='grid grid-cols-6 min-h-screen overflow-y-scroll bg-slate-50'>

@@ -6,11 +6,14 @@ import iconEyeSlash from '../assets/icons/eye-slash-regular.svg'
 import { BD_ACTION_POST } from '../services/master'
 import { setJWT } from '../services/jwt'
 import Loader from './Loader'
+import { Alert } from '@mui/material'
 
 function Form() {
   const navigate = useNavigate()
+  const [load, setLoad] = useState(false)
+  const [alert, setAlert] = useState(false)
   const [focused, setFocused] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); //For show or hide password
+  const [showPassword, setShowPassword] = useState(false);
 
   //For show errorMessage or succesMessage
   const handleFocus = (e) => {
@@ -56,17 +59,25 @@ function Form() {
   }
 
   const post_sign_in = async () => {
+    setLoad(true)
     const data = await BD_ACTION_POST('auth', 'sign_in', values)
     if (!data.error) {
       setJWT(data.msg.token)
       setTimeout(() => {
         navigate('/home')
       }, 2000)
+    } else {
+      setLoad(false)
+      setAlert(true)
+      setTimeout(() => {
+        setAlert(false)
+      }, 6000);
     }
   }
 
   return (
     <>
+      <Loader load={load} />
       <div className='bg-white px-8 py-5 rounded-3xl border-2 border-gray-100 w-[90%] xl:w-[50%]'>
         <h1 className=' text-4xl font-semibold text-center'>Welcome Back</h1>
         <p className=" font-medium text-lg text-slate-400 text-center mt-6">Please enter your details</p>
@@ -141,6 +152,11 @@ function Form() {
 
         </form>
       </div>
+      {
+        alert && (
+          <Alert severity='warning' className='absolute bottom-2 left-2 transition-all duration-300'>Your Password or Email is Incorrect, Please Try Again !</Alert>
+        )
+      }
     </>
   )
 }
