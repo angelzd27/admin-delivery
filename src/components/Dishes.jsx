@@ -99,7 +99,7 @@ const dishes = [
     id: 8,
     title: 'Tacos Don Toño',
     image: TacosDonTono,
-    description: "Savor Mexico's essence with street tacos.Handmade tortillas, flavorful fillings.True taste of the streets.",
+    description: "Savor Mexico's essence with street tacos. Handmade tortillas, flavorful fillings. True taste of the streets.",
     rating: 4.9,
     categories: 'Shushi, Oriental'
   },
@@ -146,18 +146,7 @@ const MenuComponent = () => {
         <div className='grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-8'>
           {dishes.map((dish, index) => (
             <div key={index} className='flex flex-col gap-3'>
-              <div
-                className='relative max-w-xs overflow-hidden bg-cover bg-no-repeat'
-                data-te-ripple-init
-                data-te-ripple-color='light'>
-                <img
-                  src={dish.image}
-                  className='max-w-xs rounded-3xl cursor-pointer'
-                  alt='Louvre' />
-                <div
-                  title='More Information'
-                  className='rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50'></div>
-              </div>
+              <img className='rounded-3xl cursor-pointer hover:scale-105 transition-all duration-300' src={dish.image} onClick={() => viewDish(dish.id)} />
               <h1 className='text-lg font-bold'>{dish.title}</h1>
               <div className='flex flex-row items-center gap-1 text-gray-500'>
                 <span><MdStar /></span>
