@@ -4,9 +4,13 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
 import styled from '@emotion/styled'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import { CardActionArea } from '@mui/material'
+import { MdStar } from 'react-icons/md'
+import { TextField } from '@mui/material'
+import MenuItem from '@mui/material/MenuItem'
+
+// ! Elimar importacion de imagenes cuando pase a producción
+import Tacos from '../assets/food/TacosDonTono.jpg'
+import DulcesLuz from '../assets/food/DulcesLuz.jpg'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -189,18 +193,61 @@ function Dashboard() {
         }]
     }
 
+    const graphics = [
+        {
+            name: 'Chart.JS',
+            value: 'chartjs'
+        },
+        {
+            name: 'AMCharts',
+            value: 'amcharts'
+        },
+        {
+            name: 'HighCharts',
+            value: 'higncharts'
+        },
+    ]
+
     let total_usd = '5,583.12'
     let total_mex = '96,084.55'
     let total_order = '126'
     let total_visitor = '96'
-    let rank_best_dish = 4.9
-    let rank_less_dish = 1.6
     let customer_satisfaction = 4.5
+    let better_dish = {
+        id: 1,
+        name: 'Tacos Don Toño',
+        image: Tacos,
+        ranking: 4.9,
+        categories: 'Fast Food'
+    }
+    let worst_dish = {
+        id: 2,
+        name: 'Dulces Doña Luz',
+        image: DulcesLuz,
+        ranking: 1.2,
+        categories: 'Others'
+    }
 
     return (
         <>
             <div className='flex flex-col gap-6 mb-20'>
-                <h1 className='text-2xl'>Dashboard</h1>
+                <div className='flex flex-row items-center justify-between'>
+                    <h1 className='text-2xl'>Dashboard</h1>
+                    <TextField
+                        select
+                        label="Graphics Avable"
+                        variant='standard'
+                        className='w-[25%]'
+                    >
+                        {
+                            graphics.map((graphics, index) => (
+                                <MenuItem key={index} value={graphics.value}>
+                                    {graphics.name}
+                                </MenuItem>
+                            ))
+                        }
+                    </TextField>
+                </div>
                 <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4'>
                     <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
@@ -229,34 +276,48 @@ function Dashboard() {
                 </div>
                 <div className='grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4'>
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
-                        <span className='text-2xl'>Best Ranking Dish</span>
-                        <div className='flex gap-3 items-center'>
-                            <span className='text-4xl font-montserrat'>{rank_best_dish}</span>
-                            <Rating defaultValue={rank_best_dish} precision={0.5} size='large' readOnly />
+                        <span className='text-2xl'>Better Ranking Dish</span>
+                        <div className='flex flex-col gap-3'>
+                            <div
+                                className="relative w-52 overflow-hidden bg-cover bg-no-repeat"
+                                data-te-ripple-init
+                                data-te-ripple-color="light">
+                                <img
+                                    src={better_dish.image}
+                                    className="w-52 rounded-3xl cursor-pointer"
+                                    alt="Louvre" />
+                                <div
+                                    className="rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50"></div>
+                            </div>
+                            <h1 className='text-lg font-bold'>{better_dish.name}</h1>
+                            <div className='flex flex-row items-center gap-1 text-gray-500'>
+                                <span><MdStar /></span>
+                                <span className='font-montserrat'>{better_dish.ranking}</span>
+                                <span className='ml-10'>{better_dish.categories}</span>
+                            </div>
                         </div>
-                        <Card>
-                            <CardActionArea>
-                                <img src="https://tofuu.getjusto.com/orioneat-prod/FcqpRvwo9SNNgawQG-7_Torta_Cubana.png" className='w-52 h-52' />
-                                <CardContent>
-                                    <h1 className='text-lg'>Combo Edwin</h1>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
                     </div>
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
-                        <span className='text-2xl'>Less Ranking Dish</span>
-                        <div className='flex gap-4'>
-                            <span className='text-4xl font-montserrat'>{rank_less_dish}</span>
-                            <Rating defaultValue={rank_less_dish} precision={0.5} size='large' readOnly />
+                        <span className='text-2xl'>Worst Ramking Dish</span>
+                        <div className='flex flex-col gap-3'>
+                            <div
+                                className="relative w-52 overflow-hidden bg-cover bg-no-repeat"
+                                data-te-ripple-init
+                                data-te-ripple-color="light">
+                                <img
+                                    src={worst_dish.image}
+                                    className="w-52 rounded-3xl cursor-pointer"
+                                    alt="Louvre" />
+                                <div
+                                    className="rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50"></div>
+                            </div>
+                            <h1 className='text-lg font-bold'>{worst_dish.name}</h1>
+                            <div className='flex flex-row items-center gap-1 text-gray-500'>
+                                <span><MdStar /></span>
+                                <span className='font-montserrat'>{worst_dish.ranking}</span>
+                                <span className='ml-10'>{worst_dish.categories}</span>
+                            </div>
                         </div>
-                        <Card>
-                            <CardActionArea>
-                                <img src="https://www.wikihow.com/images/thumb/7/7a/Make-Chocolate-Glazed-Donuts-Step-10.jpg/v4-728px-Make-Chocolate-Glazed-Donuts-Step-10.jpg" className='w-52 h-52' />
-                                <CardContent>
-                                    <h1 className='text-lg'>Dona de Chocolate</h1>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
                     </div>
                     <div className='flex flex-col items-center justify-center bg-white shadow-md rounded-lg xl:col-span-1 md:col-span-2 py-5'>
                         <span className='text-2xl'>Customer Satisfaction</span>

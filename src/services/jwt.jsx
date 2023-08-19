@@ -5,9 +5,8 @@ export function setJWT(token) {
 }
 
 export function getJWT() {
-    if (localStorage.getItem('JWT_YUMMT')) {
+    if (localStorage.getItem('JWT_YUMMT'))
         return localStorage.getItem('JWT_YUMMT')
-    }
 
     return ''
 }

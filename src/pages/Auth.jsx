@@ -1,18 +1,14 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from '../components/Login'
 import ForgotPassword from '../components/ForgotPassword'
 import RegisterForm from '../components/RegisterForm'
-import { useEffect } from 'react'
-import { expiredJWT, getJWT } from '../services/jwt'
+import { expiredJWT } from '../services/jwt'
 
 export default function Auth() {
-    const navigate = useNavigate()
-
     useEffect(() => {
-        if (getJWT() != '' && !expiredJWT()) {
-            navigate('/home/dashboard')
-        }
-    })
+        console.log(!expiredJWT())
+    }, [])
 
     return (
         <>

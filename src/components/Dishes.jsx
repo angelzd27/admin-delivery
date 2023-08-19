@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import { TextField } from '@mui/material'
 import { MdSearch, MdStar } from 'react-icons/md'
-import { BsChevronCompactDown } from 'react-icons/bs'
+import { BsChevronCompactDown, BsChevronCompactUp } from 'react-icons/bs'
+
+// Eliminar imports de imagenes cuando se pase a producción
+import Burger from '../assets/food/Burger.jpg'
+import ChickenNuggets from '../assets/food/ChickenNuggets.jpg'
+import DulcesLuz from '../assets/food/DulcesLuz.jpg'
+import Fries from '../assets/food/Fries.jpg'
+import Pizza from '../assets/food/Pizza.jpg'
+import Shushi from '../assets/food/Shushi.jpg'
+import TacosDonTono from '../assets/food/TacosDonTono.jpg'
+import Wings from '../assets/food/Wings.jpg'
 
 const categories = [
   {
@@ -32,23 +42,23 @@ const dishes = [
   {
     id: 1,
     title: 'Classic Burger',
-    image: 'https://thefoodtech.com/wp-content/uploads/2023/05/sabrosa-hamburguesa-papas-fritas.jpg',
+    image: Burger,
     description: 'Introducing our classic burger: a timeless combo of juicy beef, melted cheese, fresh toppings, all in a soft bun.',
-    rating: 4.6,
+    rating: 4.4,
     categories: 'Burger'
   },
   {
     id: 2,
     title: 'Margarita Pizza',
-    image: 'https://assets.unileversolutions.com/recipes-v2/244028.jpg',
+    image: Pizza,
     description: 'Indulge in the essence of Italy with our Margherita pizza.Thin crust, tomato, melted mozzarella, and fresh basil.Delight in every bite.',
-    rating: 4.8,
+    rating: 4.1,
     categories: 'Pizza'
   },
   {
     id: 3,
     title: 'Wings',
-    image: 'https://assets.unileversolutions.com/recipes-v2/244028.jpg',
+    image: Wings,
     description: 'Dive into flavor with our wings. Crispy, tender, and sauced to perfection, each bite is a savory journey.',
     rating: 4.2,
     categories: 'Chicken'
@@ -56,7 +66,7 @@ const dishes = [
   {
     id: 4,
     title: 'Fries',
-    image: 'https://assets.unileversolutions.com/recipes-v2/244028.jpg',
+    image: Fries,
     description: "Savor simplicity with our fries. Golden, crispy perfection that's irresistibly satisfying.",
     rating: 4.6,
     categories: 'Vegetables'
@@ -64,7 +74,7 @@ const dishes = [
   {
     id: 5,
     title: 'Chicken Nuggts',
-    image: 'https://assets.unileversolutions.com/recipes-v2/244028.jpg',
+    image: ChickenNuggets,
     description: 'Enjoy our chicken nuggets – bite-sized bliss. Crispy outside, tender inside, a taste that delights.',
     rating: 4.0,
     categories: 'Chicken, Fries'
@@ -72,9 +82,25 @@ const dishes = [
   {
     id: 6,
     title: 'Shushi',
-    image: 'https://assets.unileversolutions.com/recipes-v2/244028.jpg',
-    description: 'Una pizza clásica con tomate, mozzarella y albahaca.',
+    image: Shushi,
+    description: 'Delight in our sushi. Fresh, flavorful, and expertly crafted – a true culinary experience.',
     rating: 4.2,
+    categories: 'Shushi, Oriental'
+  },
+  {
+    id: 7,
+    title: 'Dulces Luz',
+    image: DulcesLuz,
+    description: 'Indulge in sweetness with our candies. Bursting with flavors that bring joy to every moment.',
+    rating: 1.2,
+    categories: 'Other'
+  },
+  {
+    id: 8,
+    title: 'Tacos Don Toño',
+    image: TacosDonTono,
+    description: "Savor Mexico's essence with street tacos.Handmade tortillas, flavorful fillings.True taste of the streets.",
+    rating: 4.9,
     categories: 'Shushi, Oriental'
   },
 ]
@@ -101,7 +127,7 @@ const MenuComponent = () => {
 
   return (
     <>
-      <div className='w-full flex flex-col gap-6 mb-20'>
+      <div className='w-full flex flex-col gap-6 mb-20 select-none'>
         <h1 className='text-2xl'>Dishes</h1>
         <div className='flex flex-grow overflow-hidden'>
           <TextField className='flex-grow' variant='standard' placeholder='Search...' />
@@ -117,10 +143,21 @@ const MenuComponent = () => {
             </div>
           ))}
         </div>
-        <div className='grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-6'>
+        <div className='grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-8'>
           {dishes.map((dish, index) => (
             <div key={index} className='flex flex-col gap-3'>
-              <img className='rounded-3xl cursor-pointer hover:opacity-95 transition-all duration-300' src={dish.image} onClick={() => viewDish(dish.id)} />
+              <div
+                className='relative max-w-xs overflow-hidden bg-cover bg-no-repeat'
+                data-te-ripple-init
+                data-te-ripple-color='light'>
+                <img
+                  src={dish.image}
+                  className='max-w-xs rounded-3xl cursor-pointer'
+                  alt='Louvre' />
+                <div
+                  title='More Information'
+                  className='rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50'></div>
+              </div>
               <h1 className='text-lg font-bold'>{dish.title}</h1>
               <div className='flex flex-row items-center gap-1 text-gray-500'>
                 <span><MdStar /></span>
@@ -129,8 +166,13 @@ const MenuComponent = () => {
               </div>
               <span className='text-sm text-sky-500 flex items-center gap-2 cursor-pointer w-fit' onClick={() => toggleDescription(dish.id)}>
                 Watch More
-                <BsChevronCompactDown />
-              </span>
+                {
+                  wathcMore[dish.id] ? (
+                    <BsChevronCompactDown />
+                  ) : (
+                    <BsChevronCompactUp />
+                  )
+                }              </span>
               {
                 wathcMore[dish.id] && (
                   <div className='text-gray-500'>{dish.description}</div>
