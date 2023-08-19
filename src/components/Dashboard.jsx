@@ -1,12 +1,16 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
-import styled from '@emotion/styled';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { CardActionArea } from '@mui/material';
+import styled from '@emotion/styled'
+import { MdStar } from 'react-icons/md'
+import { TextField } from '@mui/material'
+import MenuItem from '@mui/material/MenuItem'
+
+// ! Elimar importacion de imagenes cuando pase a producción
+import Tacos from '../assets/food/TacosDonTono.jpg'
+import DulcesLuz from '../assets/food/DulcesLuz.jpg'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -15,7 +19,7 @@ const StyledRating = styled(Rating)({
     '& .MuiRating-iconHover': {
         color: '#ff3d47',
     },
-});
+})
 
 function Dashboard() {
     const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
@@ -189,76 +193,133 @@ function Dashboard() {
         }]
     }
 
+    const graphics = [
+        {
+            name: 'Chart.JS',
+            value: 'chartjs'
+        },
+        {
+            name: 'AMCharts',
+            value: 'amcharts'
+        },
+        {
+            name: 'HighCharts',
+            value: 'higncharts'
+        },
+    ]
+
     let total_usd = '5,583.12'
     let total_mex = '96,084.55'
     let total_order = '126'
     let total_visitor = '96'
-    let rank_best_dish = 4.9
-    let rank_less_dish = 1.6
     let customer_satisfaction = 4.5
+    let better_dish = {
+        id: 1,
+        name: 'Tacos Don Toño',
+        image: Tacos,
+        ranking: 4.9,
+        categories: 'Fast Food'
+    }
+    let worst_dish = {
+        id: 2,
+        name: 'Dulces Doña Luz',
+        image: DulcesLuz,
+        ranking: 1.2,
+        categories: 'Others'
+    }
 
     return (
         <>
             <div className='flex flex-col gap-6 mb-20'>
-                <h1 className='text-2xl'>Dashboard</h1>
-                <div className='flex flex-row gap-8'>
-                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
+                <div className='flex flex-row items-center justify-between'>
+                    <h1 className='text-2xl'>Dashboard</h1>
+                    <TextField
+                        select
+                        label="Graphics Avable"
+                        variant='standard'
+                        className='w-[25%]'
+                    >
+                        {
+                            graphics.map((graphics, index) => (
+                                <MenuItem key={index} value={graphics.value}>
+                                    {graphics.name}
+                                </MenuItem>
+                            ))
+                        }
+                    </TextField>
+                </div>
+                <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4'>
+                    <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>$ {total_usd} USD</span>
                             <span>Total Earning (USD)</span>
                         </div>
                     </div>
-                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
+                    <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>$ {total_mex} MEX</span>
                             <span>Total Earning (MEX)</span>
                         </div>
                     </div>
-                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
+                    <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>{total_order}</span>
                             <span>Total Orders</span>
                         </div>
                     </div>
-                    <div className='bg-white shadow-md rounded-lg w-[25%]'>
+                    <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>{total_visitor}</span>
                             <span>Total Visitor</span>
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-row gap-10'>
-                    <div className='flex flex-col items-center bg-white shadow-md rounded-lg w-1/2 py-5 gap-3'>
-                        <span className='text-2xl'>Best Ranking Dish</span>
-                        <div className='flex gap-3 items-center'>
-                            <span className='text-4xl font-montserrat'>{rank_best_dish}</span>
-                            <Rating defaultValue={rank_best_dish} precision={0.5} size='large' readOnly />
+                <div className='grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4'>
+                    <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
+                        <span className='text-2xl'>Better Ranking Dish</span>
+                        <div className='flex flex-col gap-3'>
+                            <div
+                                className="relative w-52 overflow-hidden bg-cover bg-no-repeat"
+                                data-te-ripple-init
+                                data-te-ripple-color="light">
+                                <img
+                                    src={better_dish.image}
+                                    className="w-52 rounded-3xl cursor-pointer"
+                                    alt="Louvre" />
+                                <div
+                                    className="rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50"></div>
+                            </div>
+                            <h1 className='text-lg font-bold'>{better_dish.name}</h1>
+                            <div className='flex flex-row items-center gap-1 text-gray-500'>
+                                <span><MdStar /></span>
+                                <span className='font-montserrat'>{better_dish.ranking}</span>
+                                <span className='ml-10'>{better_dish.categories}</span>
+                            </div>
                         </div>
-                        <Card sx={{ maxWidth: 300 }}>
-                            <CardActionArea>
-                                <img src="https://tofuu.getjusto.com/orioneat-prod/FcqpRvwo9SNNgawQG-7_Torta_Cubana.png" className='w-52 h-52' />
-                                <CardContent>
-                                    <h1 className='text-lg'>Combo Edwin</h1>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
                     </div>
-                    <div className='flex flex-col items-center bg-white shadow-md rounded-lg w-1/2 py-5 gap-3'>
-                        <span className='text-2xl'>Less Ranking Dish</span>
-                        <div className='flex gap-4'>
-                            <span className='text-4xl font-montserrat'>{rank_less_dish}</span>
-                            <Rating defaultValue={rank_less_dish} precision={0.5} size='large' readOnly />
+                    <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
+                        <span className='text-2xl'>Worst Ramking Dish</span>
+                        <div className='flex flex-col gap-3'>
+                            <div
+                                className="relative w-52 overflow-hidden bg-cover bg-no-repeat"
+                                data-te-ripple-init
+                                data-te-ripple-color="light">
+                                <img
+                                    src={worst_dish.image}
+                                    className="w-52 rounded-3xl cursor-pointer"
+                                    alt="Louvre" />
+                                <div
+                                    className="rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50"></div>
+                            </div>
+                            <h1 className='text-lg font-bold'>{worst_dish.name}</h1>
+                            <div className='flex flex-row items-center gap-1 text-gray-500'>
+                                <span><MdStar /></span>
+                                <span className='font-montserrat'>{worst_dish.ranking}</span>
+                                <span className='ml-10'>{worst_dish.categories}</span>
+                            </div>
                         </div>
-                        <Card sx={{ maxWidth: 300 }}>
-                            <CardActionArea>
-                                <img src="https://www.wikihow.com/images/thumb/7/7a/Make-Chocolate-Glazed-Donuts-Step-10.jpg/v4-728px-Make-Chocolate-Glazed-Donuts-Step-10.jpg" className='w-52 h-52' />
-                                <CardContent>
-                                    <h1 className='text-lg'>Dona de Chocolate</h1>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
                     </div>
-                    <div className='flex flex-col items-center justify-center bg-white shadow-md rounded-lg w-1/2 py-5 gap-3'>
+                    <div className='flex flex-col items-center justify-center bg-white shadow-md rounded-lg xl:col-span-1 md:col-span-2 py-5'>
                         <span className='text-2xl'>Customer Satisfaction</span>
                         <div className='flex gap-3 items-center mb-6 rounded-lg'>
                             <span className='text-4xl font-montserrat'>{customer_satisfaction}</span>
@@ -287,21 +348,21 @@ function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-row gap-10'>
-                    <div className='w-[50%] bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
+                <div className='grid xl:grid-cols-2 grid-cols-1 gap-4'>
+                    <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={options_line}
                         />
                     </div>
-                    <div className='w-[50%] bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
+                    <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={options_pie}
                         />
                     </div>
                 </div>
-                <div className='flex flex-row w-full bg-white rounded-md shadow-md justify-center'>
+                <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={option_bars}

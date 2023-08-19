@@ -1,7 +1,6 @@
 import Form from './LoginForm'
 import yumiLogo from '../assets/images/Yummy1.jpg'
 
-
 function Login() {
   return (
     <>

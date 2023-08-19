@@ -2,11 +2,9 @@ import * as React from 'react'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
-
 import EmailValidator from './EmailValidator'
 import CodePassword from './CodePassword'
 import SetPassword from './SetPassword'
-
 import CodeAnimation from '../assets/animations/Code.mp4'
 import EmailAnimation from '../assets/animations/Email.mp4'
 import SetPasswordAnimation from '../assets/animations/SetPassword.mp4'

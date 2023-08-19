@@ -1,10 +1,15 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-
 import Login from '../components/Login'
 import ForgotPassword from '../components/ForgotPassword'
 import RegisterForm from '../components/RegisterForm'
+import { expiredJWT } from '../services/jwt'
 
 export default function Auth() {
+    useEffect(() => {
+        console.log(!expiredJWT())
+    }, [])
+
     return (
         <>
             <Routes>
