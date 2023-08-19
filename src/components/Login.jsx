@@ -1,4 +1,4 @@
-import Form from './Form'
+import Form from './LoginForm'
 import yumiLogo from '../assets/images/Yummy1.jpg'
 
 
