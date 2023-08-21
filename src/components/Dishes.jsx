@@ -45,7 +45,8 @@ const dishes = [
     image: Burger,
     description: 'Introducing our classic burger: a timeless combo of juicy beef, melted cheese, fresh toppings, all in a soft bun.',
     rating: 4.4,
-    categories: 'Burger'
+    categories: 'Burger',
+    stock: 10
   },
   {
     id: 2,
@@ -53,7 +54,8 @@ const dishes = [
     image: Pizza,
     description: 'Indulge in the essence of Italy with our Margherita pizza.Thin crust, tomato, melted mozzarella, and fresh basil.Delight in every bite.',
     rating: 4.1,
-    categories: 'Pizza'
+    categories: 'Pizza',
+    stock: 4
   },
   {
     id: 3,
@@ -61,7 +63,8 @@ const dishes = [
     image: Wings,
     description: 'Dive into flavor with our wings. Crispy, tender, and sauced to perfection, each bite is a savory journey.',
     rating: 4.2,
-    categories: 'Chicken'
+    categories: 'Chicken',
+    stock: 12
   },
   {
     id: 4,
@@ -69,7 +72,8 @@ const dishes = [
     image: Fries,
     description: "Savor simplicity with our fries. Golden, crispy perfection that's irresistibly satisfying.",
     rating: 4.6,
-    categories: 'Vegetables'
+    categories: 'Vegetables',
+    stock: 3
   },
   {
     id: 5,
@@ -77,7 +81,8 @@ const dishes = [
     image: ChickenNuggets,
     description: 'Enjoy our chicken nuggets – bite-sized bliss. Crispy outside, tender inside, a taste that delights.',
     rating: 4.0,
-    categories: 'Chicken, Fries'
+    categories: 'Chicken, Fries',
+    stock: 0
   },
   {
     id: 6,
@@ -85,7 +90,8 @@ const dishes = [
     image: Shushi,
     description: 'Delight in our sushi. Fresh, flavorful, and expertly crafted – a true culinary experience.',
     rating: 4.2,
-    categories: 'Shushi, Oriental'
+    categories: 'Shushi, Oriental',
+    stock: 14
   },
   {
     id: 7,
@@ -93,7 +99,8 @@ const dishes = [
     image: DulcesLuz,
     description: 'Indulge in sweetness with our candies. Bursting with flavors that bring joy to every moment.',
     rating: 1.2,
-    categories: 'Other'
+    categories: 'Other',
+    stock: 43
   },
   {
     id: 8,
@@ -101,7 +108,8 @@ const dishes = [
     image: TacosDonTono,
     description: "Savor Mexico's essence with street tacos. Handmade tortillas, flavorful fillings. True taste of the streets.",
     rating: 4.9,
-    categories: 'Shushi, Oriental'
+    categories: 'Shushi, Oriental',
+    stock: 2
   },
 ]
 
@@ -153,6 +161,7 @@ const MenuComponent = () => {
                 <span className='font-montserrat'>{dish.rating}</span>
                 <span className='ml-10'>{dish.categories}</span>
               </div>
+              <span className={`font-montserrat text-sm ${dish.stock == 0 ? 'text-red-500' : dish.stock > 0 && dish.stock <= 5 ? 'text-amber-500' : 'text-green-500'}`} >Total Stock: {dish.stock}</span>
               <span className='text-sm text-sky-500 flex items-center gap-2 cursor-pointer w-fit' onClick={() => toggleDescription(dish.id)}>
                 Watch More
                 {
@@ -161,7 +170,8 @@ const MenuComponent = () => {
                   ) : (
                     <BsChevronCompactUp />
                   )
-                }              </span>
+                }
+              </span>
               {
                 wathcMore[dish.id] && (
                   <div className='text-gray-500'>{dish.description}</div>

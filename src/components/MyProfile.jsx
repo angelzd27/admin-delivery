@@ -1,113 +1,86 @@
-import { TextField } from "@mui/material"
-import { useState } from "react";
-import ProfileImg from "./ProfileImg"
+import { TextField } from '@mui/material'
+import { MdSave, MdEmail, MdPassword } from 'react-icons/md'
+import { useState } from 'react'
+import ProfileImg from './ProfileImg'
+import { decodedDataJWT } from '../services/jwt'
+import { countries } from '../services/country_codes'
 
 function MyProfile() {
-    const img_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0';
-
     const [formData, setFormData] = useState({
-        firstName: 'Edwin',
-        lastName: 'Reyes',
-        secondLastName: 'Morales',
-        phone: '4121005515',
-        isoCode: '#####',
-        dialCode: '#####',
-        gender: 'Male',
-        profile: 'Admin',
-        username: 'EdwinKings11',
-        password: '12345Ed$',
-        email: 'reyesmorales56@gmail.com',
-      });
+        firstName: decodedDataJWT().first_name,
+        lastName: decodedDataJWT().last_name,
+        secondLastName: decodedDataJWT().second_last_name,
+        phone: decodedDataJWT().phone,
+        isoCode: decodedDataJWT().iso_code,
+        dialCode: decodedDataJWT().dial_code,
+        gender: decodedDataJWT().id_gender == 1 ? 'Male' : 'Female',
+        profile: decodedDataJWT().type_user_id == 1 ? 'Admin' : decodedDataJWT().type_user_id == 2 ? 'Client' : 'Employee',
+        username: decodedDataJWT().username,
+        email: decodedDataJWT().email,
+    })
 
     return (
         <>
             <div className='flex flex-col gap-6'>
-                <h2 className='text-gray-500 text-xl font-bold text-center'>My Profile</h2>
-            </div>
-
-            <div className='flex flex-col gap-6 pt-6'>
-                <h2 className='text-gray-500 text-xl font-bold text-center'>Edit your information</h2>
-            </div>
-
-                <div className="ml-6">
-
-                    <div className='flex flex-col items-center gap-6 pt-6'>
-                        <h1 className='text-l text-gray-500 font-bold'>Change your profile image</h1>
-                        <ProfileImg image_url={img_url} />
-                    </div>
-
-                    <div className='grid grid-cols-2 gap-6 pt-6 pb-6'>
-                        <TextField 
-                        id="filled-basic" 
-                        className=""
-                        label="First Name"
-                        placeholder={formData.firstName}
-                        variant="filled" />
-                        <TextField 
-                        id="filled-basic"
-                        className="" 
-                        label="Last Name"
-                        placeholder={formData.lastName}
-                        variant="filled" />
-                        <TextField 
-                        id="filled-basic"
-                        className="" 
-                        label="Second Last Name"
-                        placeholder={formData.secondLastName}
-                        variant="filled" />
-                        <TextField 
-                        id="filled-basic"
-                        className="" 
-                        label="Phone"
-                        placeholder={formData.phone}
-                        variant="filled" />
-                        <TextField 
-                        id="filled-basic"
-                        className="" 
-                        label="ISO Code"
-                        placeholder={formData.isoCode}
-                        variant="filled" />
-                        <TextField 
-                        id="filled-basic"
-                        className="" 
-                        label="Dial Code"
-                        placeholder={formData.dialCode}
-                        variant="filled" />
-                        <TextField 
-                        disabled 
-                        id="filled-basic"
-                        className="" 
-                        label={formData.gender}
-                        variant="filled" />
-                        <TextField 
-                        disabled 
-                        id="filled-basic"
-                        className="" 
-                        label={formData.profile} 
-                        variant="filled" />
-                        <TextField
-                        id="filled-basic"
-                        className=""
-                        label="username"
-                        placeholder={formData.username}
-                        variant="filled" />
-                        <TextField
-                        disabled
-                        id="filled-basic"
-                        className=""
-                        label={formData.email}
-                        variant="filled" />
-                        <TextField 
-                        id="filled-basic"
-                        className="" 
-                        label="password" 
-                        placeholder={formData.password}
-                        variant="filled" />
-                    </div>
-
+                <div className='flex justify-between items-center'>
+                    <h1 className='text-2xl'>My Profile</h1>
+                    <button className='bg-yummy-800 w-14 h-14 flex flex-col items-center justify-center rounded-xl text-xl text-white shadow-md hover:bg-yummy-600 transition-all'>
+                        <MdSave />
+                        <span className='text-xs'>Save</span>
+                    </button>
                 </div>
+                <ProfileImg image_url={decodedDataJWT().picture} />
 
-
+                <div className='grid grid-cols-2 gap-6 pt-6 pb-6'>
+                    <TextField
+                        label='First Name'
+                        value={formData.firstName}
+                        variant='standard' />
+                    <TextField
+                        label='Last Name'
+                        value={formData.lastName}
+                        variant='standard' />
+                    <TextField
+                        label='Second Last Name (Optional)'
+                        value={formData.secondLastName}
+                        variant='standard' />
+                    <TextField
+                        label='Phone'
+                        value={formData.phone}
+                        variant='standard' />
+                    <TextField
+                        label='ISO Code'
+                        value={formData.isoCode}
+                        variant='standard' />
+                    <TextField
+                        label='Dial Code'
+                        value={formData.dialCode}
+                        variant='standard' />
+                    <TextField
+                        disabled
+                        label='Gender'
+                        value={formData.gender}
+                        variant='standard' />
+                    <TextField
+                        disabled
+                        label='Profile'
+                        value={formData.profile}
+                        variant='standard' />
+                    <TextField
+                        label='@Username'
+                        value={formData.username}
+                        variant='standard' />
+                    <TextField
+                        disabled
+                        label='E-Mail'
+                        value={formData.email}
+                        variant='standard' />
+                </div>
+                <div className='flex flex-col gap-6 text-yummy-800 items-end'>
+                    <span className='flex gap-2 items-center cursor-pointer hover:text-yummy-600 transition-colors'>Change My Password <MdPassword /></span>
+                    <span className='flex gap-2 items-center cursor-pointer hover:text-yummy-600 transition-colors'>Change My E-Mail <MdEmail /></span>
+                </div>
+            </div>
         </>
     )
 }

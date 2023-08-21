@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { setJWT } from '../services/jwt'
+import { BD_ACTION_POST } from '../services/master'
+import Loader from './Loader'
+import { Alert } from '@mui/material';
 
 function LoginForm() {
   //State for show or hide the password
   const [showPassword, setShowPassword] = useState(false);
+  const [load, setLoad] = useState(false)
+  const [alert, setAlert] = useState(false)
+  const navigate = useNavigate()
 
   //Type for show or Hide password
   const handlePasswordToggle = () => {
@@ -65,12 +72,33 @@ function LoginForm() {
     }
   }
 
+  const post_sign_in = async () => {
+    setLoad(true)
+    const body = {
+      email: email,
+      password: password
+    }
+    const data = await BD_ACTION_POST('auth', 'sign_in', body)
+    if (!data.error) {
+      setJWT(data.msg.token)
+      setTimeout(() => {
+        navigate('/home')
+      }, 2000)
+    } else {
+      setLoad(false)
+      setAlert(true)
+      setTimeout(() => {
+        setAlert(false)
+      }, 6000);
+    }
+  }
+
   return (
     <>
-
-      <div className='bg-white px-8 py-5 rounded-3xl border-2 border-gray-100'>
+      <Loader load={load} />
+      <div className='bg-white px-8 py-5 rounded-3xl border-2 border-gray-100 w-[50%] text-center'>
         <h1 className=' text-4xl font-semibold text-center'>Welcome Back</h1>
-        <p className=" font-medium text-lg text-gray-500 mt-1">Welcome to Yummi Go! Please enter your details</p>
+        <p className=" font-medium text-lg text-gray-500 mt-1">Please, enter your details</p>
 
         <form className="mt-4" onSubmit={handleSubmit}>
           <div>
@@ -121,7 +149,7 @@ function LoginForm() {
 
           {/* Sign In Buttons */}
           <div className='mt-8 flex flex-col gap-y-4'>
-            <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yummy-800 text-white text-lg font-bold'>Sign in</button>
+            <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-yummy-800 text-white text-lg font-bold' onClick={() => { post_sign_in() }}>Sign in</button>
 
             <button className='active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all flex rounded-xl py-3 border-2 border-gray-300 items-center justify-center gap-2'>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http:www.w3.org/2000/svg">
@@ -136,6 +164,11 @@ function LoginForm() {
 
         </form>
       </div>
+      {
+        alert && (
+          <Alert severity='warning' className='absolute bottom-2 left-2 transition-all duration-300'>Your Password or Email is Incorrect, Please Try Again !</Alert>
+        )
+      }
     </>
   )
 }

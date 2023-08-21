@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import FormInput from './FormInput'
 import iconEye from '../assets/icons/eye-regular.svg'

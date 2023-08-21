@@ -7,10 +7,12 @@ import styled from '@emotion/styled'
 import { MdStar } from 'react-icons/md'
 import { TextField } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
+import { graphics_avable } from '../services/graphics_avable'
 
 // ! Elimar importacion de imagenes cuando pase a producción
 import Tacos from '../assets/food/TacosDonTono.jpg'
 import DulcesLuz from '../assets/food/DulcesLuz.jpg'
+import { useState } from 'react'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -22,6 +24,7 @@ const StyledRating = styled(Rating)({
 })
 
 function Dashboard() {
+    const [selectedGraphic, setSelectedGraphic] = useState(graphics_avable[0].value)
     const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
 
     const options_line = {
@@ -193,21 +196,6 @@ function Dashboard() {
         }]
     }
 
-    const graphics = [
-        {
-            name: 'Chart.JS',
-            value: 'chartjs'
-        },
-        {
-            name: 'AMCharts',
-            value: 'amcharts'
-        },
-        {
-            name: 'HighCharts',
-            value: 'higncharts'
-        },
-    ]
-
     let total_usd = '5,583.12'
     let total_mex = '96,084.55'
     let total_order = '126'
@@ -228,22 +216,26 @@ function Dashboard() {
         categories: 'Others'
     }
 
+    const handleGraphicChange = (event) => {
+        setSelectedGraphic(event.target.value)
+    }
+
     return (
         <>
-            <div className='flex flex-col gap-6 mb-20'>
+            <div className='flex flex-col gap-6'>
                 <div className='flex flex-row items-center justify-between'>
                     <h1 className='text-2xl'>Dashboard</h1>
                     <TextField
                         select
                         label="Graphics Avable"
                         variant='standard'
+                        value={selectedGraphic}
+                        onChange={handleGraphicChange}
                         className='w-[25%]'
                     >
                         {
-                            graphics.map((graphics, index) => (
-                                <MenuItem key={index} value={graphics.value}>
-                                    {graphics.name}
-                                </MenuItem>
+                            graphics_avable.map((graphic, index) => (
+                                <MenuItem key={index} value={graphic.value}>{graphic.emoji} {graphic.name}</MenuItem>
                             ))
                         }
                     </TextField>
@@ -278,17 +270,7 @@ function Dashboard() {
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
                         <span className='text-2xl'>Better Ranking Dish</span>
                         <div className='flex flex-col gap-3'>
-                            <div
-                                className="relative w-52 overflow-hidden bg-cover bg-no-repeat"
-                                data-te-ripple-init
-                                data-te-ripple-color="light">
-                                <img
-                                    src={better_dish.image}
-                                    className="w-52 rounded-3xl cursor-pointer"
-                                    alt="Louvre" />
-                                <div
-                                    className="rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50"></div>
-                            </div>
+                            <img src={better_dish.image} className='w-52 rounded-3xl hover:scale-105 transition-all' />
                             <h1 className='text-lg font-bold'>{better_dish.name}</h1>
                             <div className='flex flex-row items-center gap-1 text-gray-500'>
                                 <span><MdStar /></span>
@@ -300,17 +282,7 @@ function Dashboard() {
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
                         <span className='text-2xl'>Worst Ramking Dish</span>
                         <div className='flex flex-col gap-3'>
-                            <div
-                                className="relative w-52 overflow-hidden bg-cover bg-no-repeat"
-                                data-te-ripple-init
-                                data-te-ripple-color="light">
-                                <img
-                                    src={worst_dish.image}
-                                    className="w-52 rounded-3xl cursor-pointer"
-                                    alt="Louvre" />
-                                <div
-                                    className="rounded-3xl cursor-pointer absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50"></div>
-                            </div>
+                            <img src={worst_dish.image} className='w-52 rounded-3xl hover:scale-105 transition-all' />
                             <h1 className='text-lg font-bold'>{worst_dish.name}</h1>
                             <div className='flex flex-row items-center gap-1 text-gray-500'>
                                 <span><MdStar /></span>

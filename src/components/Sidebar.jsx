@@ -1,17 +1,14 @@
 import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MdDashboard, MdAdminPanelSettings, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdDescription, MdSettingsAccessibility } from 'react-icons/md'
-import { removeJWT } from '../services/jwt'
+import { MdDashboard, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdCategory } from 'react-icons/md'
+import { BiSolidDish } from 'react-icons/bi'
+import { RiSettings3Fill } from 'react-icons/ri'
+import { removeJWT, decodedDataJWT } from '../services/jwt'
 
 function Sidebar() {
     const [showMenu, setShowMenu] = useState(false)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
     const [open, setOpen] = useState(false)
 
     const handleClickOpen = () => {
@@ -23,6 +20,8 @@ function Sidebar() {
     }
 
     useEffect(() => {
+        console.log(decodedDataJWT())
+
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
         }
@@ -40,22 +39,16 @@ function Sidebar() {
             <div className={`bg-black text-white h-screen fixed shadow-md xl:left-0 w-[80%] xl:w-[15%] shadow-gray-600 z-10 transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
 
                 {/* Profile Info */}
-                <div className='flex flex-col items-center justify-center p-8 gap-3 h-[30vh]'>
+                <div className='flex flex-col items-center justify-center p-8 gap-4 h-[30vh]'>
                     <img
                         className={`object-cover rounded-full lg:w-24 md:w-20 sm:w-16 w-16`}
-                        src={image_url} />
+                        src={decodedDataJWT().picture} />
                     <h1
                         className='text-2xl font-bold flex items-center gap-2'>
                         <MdPerson />
-                        DeicideSuici
+                        {decodedDataJWT().first_name}
                     </h1>
-
-                    {/* Nota: Cambiar el color de la etiqueta Spam una vez quse se haya decidido el color */}
-                    <span
-                        className='bg-yummy-800 py-2 px-5 rounded-full flex items-center gap-2'>
-                        <MdAdminPanelSettings />
-                        Admin
-                    </span>
+                    <span>Level: {decodedDataJWT().type_user_id == 1 ? 'Admin' : decodedDataJWT().type_user_id == 2 ? 'Client' : 'Employee'}</span>
                 </div>
 
                 {/* Navigation */}
@@ -70,14 +63,19 @@ function Sidebar() {
                         <Link
                             to='/home/dishes'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
-                            <MdDescription />
+                            <BiSolidDish />
                             Dishes
                         </Link>
-
+                        <Link
+                            to='/home/categories'
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
+                            <MdCategory />
+                            Categories
+                        </Link>
                         <Link
                             to='/home/my_profile'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
-                            <MdSettingsAccessibility />
+                            <RiSettings3Fill />
                             My Profile
                         </Link>
                         <Link
@@ -100,30 +98,22 @@ function Sidebar() {
                             <Dialog
                                 open={open}
                                 onClose={handleClose}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
                             >
-                                <DialogTitle className='bg-yummy-800 text-white'>
-                                    <h1>Contact Support</h1>
-                                </DialogTitle>
-                                <DialogContent className='bg-yummy-800'>
-                                    <DialogContentText className='flex flex-col gap-2'>
-                                        <span className='text-white'>We do our best to improve the Admins website, your support helps us improve every day !</span>
-                                        <a href='' className='flex items-center gap-2 underline underline-offset-4 text-white'>
-                                            <MdMail />
-                                            yummy.go@support.mx
-                                        </a>
-                                        <a href='' className='flex items-center gap-2 underline underline-offset-4 text-white'>
-                                            <MdPhone />
-                                            +52 1 415 100 1010
-                                        </a>
-                                    </DialogContentText>
-                                </DialogContent>
-                                <DialogActions className='bg-yummy-800 text-white'>
-                                    <button onClick={handleClose} className='py-2 px-5 underline underline-offset-4'>
+                                <div className='bg-yummy-800 flex flex-col gap-4 p-6 text-white text-base/6'>
+                                    <h1 className='text-3xl'>Contact Us</h1>
+                                    <span>We do our best to improve the Admins website, your support helps us improve every day !</span>
+                                    <a href='' className='flex items-center gap-2 underline underline-offset-4 '>
+                                        <MdMail />
+                                        yummy.go@support.mx
+                                    </a>
+                                    <a href='' className='flex items-center gap-2 underline underline-offset-4 '>
+                                        <MdPhone />
+                                        +52 1 415 100 1010
+                                    </a>
+                                    <button onClick={handleClose} className='text-right underline underline-offset-4'>
                                         Thanks !
                                     </button>
-                                </DialogActions>
+                                </div>
                             </Dialog>
                         </div>
                     </div>

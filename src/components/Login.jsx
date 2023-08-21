@@ -1,5 +1,6 @@
 import Form from './LoginForm'
 import yumiLogo from '../assets/images/Yummy1.jpg'
+import LoginForm from './LoginForm'
 
 function Login() {
   return (
@@ -8,7 +9,7 @@ function Login() {
 
         {/* Contenedor del formulario */}
         <div className=" w-full flex items-center justify-center lg:w-1/2">
-          <Form></Form>
+          <LoginForm></LoginForm>
         </div>
 
         {/* Contenedor de la animacion */}
