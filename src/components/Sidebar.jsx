@@ -39,12 +39,13 @@ function Sidebar() {
             <div className={`bg-black text-white h-screen fixed shadow-md xl:left-0 w-[80%] xl:w-[15%] shadow-gray-600 z-10 transition-all duration-400 ${showMenu ? 'left-0' : '-left-full'}`}>
 
                 {/* Profile Info */}
-                <div className='flex flex-col items-center justify-center p-8 gap-4 h-[30vh]'>
+                <div className='flex flex-col items-center justify-center gap-4 h-[30vh]'>
                     <img
                         className={`object-cover rounded-full lg:w-24 md:w-20 sm:w-16 w-16`}
                         src={decodedDataJWT().picture} />
                     <h1
                         className='text-2xl font-bold flex items-center gap-2'>
+                        <span className='w-2 h-2 bg-green-500 rounded-full'></span>
                         <MdPerson />
                         {decodedDataJWT().first_name}
                     </h1>

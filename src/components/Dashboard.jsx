@@ -223,7 +223,7 @@ function Dashboard() {
     return (
         <>
             <div className='flex flex-col gap-6'>
-                <div className='flex flex-row items-center justify-between'>
+                <div className='flex flex-row items-start justify-between'>
                     <h1 className='text-2xl'>Dashboard</h1>
                     <TextField
                         select

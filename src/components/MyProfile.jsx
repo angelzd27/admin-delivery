@@ -22,9 +22,9 @@ function MyProfile() {
     return (
         <>
             <div className='flex flex-col gap-6'>
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-start'>
                     <h1 className='text-2xl'>My Profile</h1>
-                    <button className='bg-yummy-800 w-14 h-14 flex flex-col items-center justify-center rounded-xl text-xl text-white shadow-md hover:bg-yummy-600 transition-all'>
+                    <button className='bg-yummy-800 w-14 h-14 flex flex-col items-center justify-center rounded-xl text-xl text-white shadow-md hover:shadow-lg hover:bg-yummy-600 transition-all duration-300'>
                         <MdSave />
                         <span className='text-xs'>Save</span>
                     </button>
