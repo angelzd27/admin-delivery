@@ -12,7 +12,7 @@ const headers = {
 export const BD_ACTION_GET = async (model, action) => {
     const params = '?opcion=' + action
     const url = url_services + '/' + model + '/' + '_api.php' + params
-    const data = await axios.post(url, { headers })
+    const data = await axios.get(url, { headers })
 
     return data.data
 }

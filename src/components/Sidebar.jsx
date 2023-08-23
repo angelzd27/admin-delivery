@@ -20,8 +20,6 @@ function Sidebar() {
     }
 
     useEffect(() => {
-        console.log(decodedDataJWT())
-
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
         }
