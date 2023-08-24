@@ -7,44 +7,65 @@ import { Input } from '@mui/material'
 import { InputAdornment } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import { BiDollar, BiBox, BiTimer, BiText, BiTrash } from 'react-icons/bi'
-import { HiSave } from 'react-icons/hi'
+import { ImBoxAdd } from 'react-icons/im'
+import { HiArrowCircleUp } from 'react-icons/hi'
 import { categories } from '../services/categories'
 import Rating from '@mui/material/Rating';
-// import { BD_ACTION_GET } from '../services/master'
+import { BD_ACTION_GET } from '../services/master'
 
 function ProductDetail() {
     const params = useParams()
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState({
+        id: '',
+        name: '',
+        id_category: 1,
+        category: '',
+        amount: 0,
+        price: 0,
+        description: '',
+        rating: 0,
+        picture: '',
+        approx_time: 0
+    })
 
     useEffect(() => {
-        if (params['id']) {
-            setProduct({
-                "id": "20230819235920Wc0LrodTByWbmkbyhM",
-                "name": "Doritos",
-                "id_category": 3,
-                "category": "Snacks",
-                "amount": 35,
-                "price": 17,
-                "description": "Iconic triangular corn chips known for their bold and intense flavors. A popular snack choice, these crispy chips offer a variety of taste experiences, from tangy to spicy, providing a satisfying and memorable crunch.",
-                "rating": 5,
-                "picture": "https://res.cloudinary.com/ddumvco46/image/upload/v1692672725/yummy_go/products/Doritos_omv4q6.jpg",
-                "approx_time": 1
-            })
+        const get_product_id = async () => {
+            const id = params.id
+            const body = {
+                id: id
+            }
+
+            if (id != '') {
+                const data = await BD_ACTION_GET('product', 'get_product_by_id', body)
+                if (!data.error) {
+                    setProduct(data.msg)
+                }
+            }
         }
+
+        get_product_id()
     }, [params])
 
     return (
         <>
             <div className='flex flex-col gap-6'>
-                <div className='flex justify-between'>
-                    <h1 className='text-2xl'>Product Detail</h1>
-                    <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg'>Update <HiSave /></button>
-                </div>
+                {
+                    params.id ? (
+                        <div className='flex justify-between'>
+                            <h1 className='text-2xl'>ID Product Detaild: <span className='text-lg font-bold font-montserrat'>{product.id}</span></h1>
+                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg'>Update <ImBoxAdd /></button>
+                        </div>
+                    ) : (
+                        <div className='flex justify-between'>
+                            <h1 className='text-2xl'>Publish New Product</h1>
+                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg'>Publish <HiArrowCircleUp /></button>
+                        </div>)
+                }
                 <div className='grid grid-cols-4 gap-6'>
                     <div className='col-span-1 flex flex-col gap-4'>
                         <img src={product.picture} className='rounded-3xl shadow-lg' />
                         {
-                            params['id'] ? (
+                            params.id ? (
                                 <div className='flex flex-col'>
                                     <span className='text-[12px] text-gray-500'>Rating:</span>
                                     <div className='flex gap-1 items-center'>
@@ -79,7 +100,7 @@ function ProductDetail() {
                         <div className='grid grid-cols-4 gap-6'>
                             <FormControl variant="standard">
                                 <InputLabel htmlFor="input-with-icon-adornment">
-                                    Price
+                                    Price (Dollars)
                                 </InputLabel>
                                 <Input
                                     id="input-with-icon-adornment"
@@ -88,6 +109,7 @@ function ProductDetail() {
                                             <BiDollar />
                                         </InputAdornment>
                                     }
+                                    type='number'
                                     value={product.price}
                                     onChange={event => setProduct({ ...product, price: event.target.value })}
                                     placeholder='USD'
@@ -104,6 +126,7 @@ function ProductDetail() {
                                             <BiBox />
                                         </InputAdornment>
                                     }
+                                    type='number'
                                     value={product.amount}
                                     onChange={event => setProduct({ ...product, amount: event.target.value })}
                                     placeholder='Total'
@@ -111,7 +134,7 @@ function ProductDetail() {
                             </FormControl>
                             <FormControl variant="standard">
                                 <InputLabel htmlFor="input-with-icon-adornment">
-                                    Aprox. Time
+                                    Aprox. Time (Minutes)
                                 </InputLabel>
                                 <Input
                                     id="input-with-icon-adornment"
@@ -120,6 +143,7 @@ function ProductDetail() {
                                             <BiTimer />
                                         </InputAdornment>
                                     }
+                                    type='number'
                                     value={product.approx_time}
                                     onChange={event => setProduct({ ...product, approx_time: event.target.value })}
                                     placeholder='Time'
@@ -127,8 +151,7 @@ function ProductDetail() {
                             </FormControl>
                             <TextField
                                 select
-                                label='Profile'
-                                name='profile'
+                                label='Category'
                                 value={product.id_category}
                                 variant='standard'
                                 onChange={event => setProduct({ ...product, id_category: event.target.value })}
@@ -144,10 +167,14 @@ function ProductDetail() {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col gap-6 text-yummy-800 items-end'>
-                    <span className='flex gap-2 items-center cursor-pointer hover:text-yummy-600 transition-colors'>Remove Product <BiTrash /></span>
-                </div>
-            </div>
+                {
+                    params.id && (
+                        <div className='flex flex-col gap-6 text-yummy-800 items-end'>
+                            <span className='flex gap-2 items-center cursor-pointer hover:text-yummy-600 transition-colors'>Remove Product <BiTrash /></span>
+                        </div>
+                    )
+                }
+            </div >
         </>
     )
 }

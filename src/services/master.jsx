@@ -9,9 +9,10 @@ const headers = {
     authorization: getJWT()
 }
 
-export const BD_ACTION_GET = async (model, action) => {
-    const params = '?opcion=' + action
-    const url = url_services + '/' + model + '/' + '_api.php' + params
+export const BD_ACTION_GET = async (model, action, body) => {
+    const opcion = '?opcion=' + action
+    const params = '&params=' + encodeURIComponent(JSON.stringify(body))
+    const url = url_services + '/' + model + '/' + '_api.php' + opcion + params
     const data = await axios.get(url, { headers })
 
     return data.data

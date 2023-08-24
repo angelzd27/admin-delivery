@@ -20,9 +20,9 @@ const MenuComponent = () => {
   useEffect(() => {
     const get_data_products_categories = async () => {
       setLoad(true)
-      const data_prducts = await BD_ACTION_GET('product', 'get_products')
-      if (!data_prducts.error) {
-        setProducts(data_prducts.msg)
+      const data = await BD_ACTION_GET('product', 'get_products')
+      if (!data.error) {
+        setProducts(data.msg)
       }
       setLoad(false)
     }
@@ -52,7 +52,7 @@ const MenuComponent = () => {
   }
 
   const viewproduct = (id) => {
-    navigate(`/home/product-detail/${id}}`)
+    navigate(`/home/product-detail/${id}`)
   }
 
   const toggleDescription = (product_id) => {
