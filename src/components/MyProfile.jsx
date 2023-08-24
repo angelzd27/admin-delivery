@@ -22,12 +22,9 @@ function MyProfile() {
     return (
         <>
             <div className='flex flex-col gap-6'>
-                <div className='flex justify-between items-start'>
-                    <h1 className='text-2xl'>My Profile</h1>
-                    <button className='bg-yummy-800 w-14 h-14 flex flex-col items-center justify-center rounded-xl text-xl text-white shadow-md hover:shadow-lg hover:bg-yummy-600 transition-all duration-300'>
-                        <MdSave />
-                        <span className='text-xs'>Save</span>
-                    </button>
+                <div className='flex justify-between'>
+                    <h1 className='text-2xl'>Product Detail</h1>
+                    <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg'>Update <MdSave /></button>
                 </div>
                 <ProfileImg image_url={decodedDataJWT().picture} />
 
