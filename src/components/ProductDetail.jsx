@@ -1,20 +1,26 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import { FormControl } from '@mui/material'
 import { InputLabel } from '@mui/material'
 import { Input } from '@mui/material'
 import { InputAdornment } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
-import { BiDollar, BiBox, BiTimer, BiText, BiTrash } from 'react-icons/bi'
+import { BiDollar, BiBox, BiTimer, BiText, BiTrash, BiArrowFromBottom } from 'react-icons/bi'
 import { ImBoxAdd } from 'react-icons/im'
 import { HiArrowCircleUp } from 'react-icons/hi'
-import { categories } from '../services/categories'
-import Rating from '@mui/material/Rating';
-import { BD_ACTION_GET } from '../services/master'
+import { categories_db } from '../services/categories'
+import Rating from '@mui/material/Rating'
+import { Alert } from '@mui/material'
+import { BD_ACTION_GET, BD_ACTION_POST, BD_ACTION_PUT } from '../services/master'
+import Loader from './Loader'
+import WidgetCloud from './WidgetCloud'
 
 function ProductDetail() {
     const params = useParams()
+    const navigate = useNavigate()
+    const [load, setLoad] = useState(false)
+    const [successAlert, setSuccessAlert] = useState(false)
     const [product, setProduct] = useState({
         id: '',
         name: '',
@@ -24,7 +30,7 @@ function ProductDetail() {
         price: 0,
         description: '',
         rating: 0,
-        picture: '',
+        picture: 'https://images.designtrends.com/wp-content/uploads/2016/03/29085131/White-Grunge-Texture.jpg',
         approx_time: 0
     })
 
@@ -46,24 +52,59 @@ function ProductDetail() {
         get_product_id()
     }, [params])
 
+    const put_update_product = async () => {
+        const data = await BD_ACTION_PUT('product', 'update_product', product)
+
+        if (!data.error) {
+            setProduct(data.msg)
+            setSuccessAlert(true)
+            setTimeout(() => {
+                setSuccessAlert(false)
+            }, 5000)
+        }
+    }
+
+    const post_create_product = async () => {
+        const data = await BD_ACTION_POST('product', 'create_product', product)
+
+        if (!data.error) {
+            setLoad(true)
+            setTimeout(() => {
+                navigate(`/home/dishes`)
+            }, 2000)
+        } else {
+            setLoad(false)
+        }
+    }
+
+    const valid_form = () => {
+        if (product.name == '' || product.description == '' || product.price == 0 || product.approx_time == 0)
+            return true
+
+        return false
+    }
+
     return (
         <>
+            <Loader load={load} />
             <div className='flex flex-col gap-6'>
                 {
                     params.id ? (
                         <div className='flex justify-between'>
                             <h1 className='text-2xl'>ID Product Detaild: <span className='text-lg font-bold font-montserrat'>{product.id}</span></h1>
-                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg'>Update <ImBoxAdd /></button>
+                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg disabled:bg-yummy-600' onClick={() => put_update_product()} disabled={valid_form()}>Update <ImBoxAdd /></button>
                         </div>
                     ) : (
                         <div className='flex justify-between'>
                             <h1 className='text-2xl'>Publish New Product</h1>
-                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg'>Publish <HiArrowCircleUp /></button>
+                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg disabled:bg-yummy-600' onClick={()=> post_create_product()} disabled={valid_form()}>Publish <HiArrowCircleUp /></button>
                         </div>)
                 }
                 <div className='grid grid-cols-4 gap-6'>
                     <div className='col-span-1 flex flex-col gap-4'>
-                        <img src={product.picture} className='rounded-3xl shadow-lg' />
+                        <img src={product.picture} className='rounded-3xl shadow-lg w-full h-full' />
+                        {/* <button className='flex text-sky-500 items-center justify-center gap-1 hover:text-sky-300'>Upload <BiArrowFromBottom /></button> */}
+                        <WidgetCloud />
                         {
                             params.id ? (
                                 <div className='flex flex-col'>
@@ -157,7 +198,7 @@ function ProductDetail() {
                                 onChange={event => setProduct({ ...product, id_category: event.target.value })}
                             >
                                 {
-                                    categories.map((category, index) => (
+                                    categories_db.map((category, index) => (
                                         <MenuItem key={index} value={category.id}>
                                             {category.emoji} | {category.name}
                                         </MenuItem>
@@ -175,6 +216,11 @@ function ProductDetail() {
                     )
                 }
             </div >
+            {
+                successAlert && (
+                    <Alert severity='success' className='absolute bottom-2 left-2 transition-all duration-300 z-50'>Product Updated! ID: {product.id}</Alert>
+                )
+            }
         </>
     )
 }

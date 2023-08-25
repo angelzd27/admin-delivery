@@ -12,7 +12,7 @@ function ProfileImg({ image_url }) {
   return (
     <div className='flex flex-col items-center justify-center'>
       <img
-        className={`object-cover rounded-full lg:w-36 md:w-28 sm:w-24 w-20`}
+        className={`object-cover rounded-full lg:w-36 md:w-28 sm:w-24 w-20 lg:h-36 md:h-28 sm:h-24 h-20`}
         src={image || image_url}
         alt="Perfil"
       />

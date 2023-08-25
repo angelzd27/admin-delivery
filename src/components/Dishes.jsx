@@ -3,14 +3,17 @@ import { TextField } from '@mui/material'
 import { MdStar } from 'react-icons/md'
 import { BsChevronCompactDown, BsChevronCompactUp } from 'react-icons/bs'
 import { MdAdd } from 'react-icons/md'
+import { Alert } from '@mui/material'
 import { BD_ACTION_GET } from '../services/master'
 import Loader from './Loader'
 import { categories } from '../services/categories'
 import { useNavigate } from 'react-router-dom'
+import ServerError from '../assets/animations/500Error.mp4'
 
 const MenuComponent = () => {
   const navigate = useNavigate()
   const [load, setLoad] = useState(false)
+  const [alert, setAlert] = useState(false)
   const [products, setProducts] = useState([])
   const [selectedButton, setSelectedButton] = useState(0)
   const [categorySelected, setCategorySelected] = useState(0)
@@ -19,15 +22,25 @@ const MenuComponent = () => {
 
   useEffect(() => {
     const get_data_products_categories = async () => {
-      setLoad(true)
-      const data = await BD_ACTION_GET('product', 'get_products')
-      if (!data.error) {
-        setProducts(data.msg)
+      try {
+        setLoad(true)
+        const data = await BD_ACTION_GET('product', 'get_products')
+        if (!data.error) {
+          setProducts(data.msg)
+          setLoad(false)
+        } else {
+          setAlert(true)
+          setTimeout(() => {
+            setAlert(false)
+          }, 5000);
+        }
+      } catch (error) {
+        setAlert(true)
       }
-      setLoad(false)
     }
 
     get_data_products_categories()
+    setLoad(false)
 
     return () => { }
 
@@ -119,7 +132,22 @@ const MenuComponent = () => {
             ))
           }
         </div>
+        {
+          alert && (
+            <div className='w-full flex items-center justify-center flex-col gap-2'>
+              <video loop autoPlay muted className='w-80'>
+                <source src={ServerError} type='video/mp4' />
+              </video>
+              <h1 className='text-gray-500 text-xl'>Server Error</h1>
+            </div>
+          )
+        }
       </div >
+      {
+        alert && (
+          <Alert severity='error' className='absolute bottom-2 left-2 transition-all duration-300 z-50'>500 Server Error, Please comunicate with Developer</Alert>
+        )
+      }
     </>
   )
 }

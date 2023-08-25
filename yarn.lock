@@ -3228,6 +3228,11 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+react-cloudinary-upload-widget@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-cloudinary-upload-widget/-/react-cloudinary-upload-widget-2.0.0.tgz#9f57784c844123a984e87f245e4930d535750145"
+  integrity sha512-q+0qJLUUUnAkbGjrwh2SYHCN466dYYSd9C1pR/qB/epAKD9iqs3qUZoYXVwFGPdfmlnUO9LDk9htN+lfK6xFvA==
+
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"

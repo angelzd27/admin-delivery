@@ -30,3 +30,31 @@ export const categories = [
         emoji: '🥗'
     }
 ]
+
+export const categories_db = [
+    {
+        id: 1,
+        name: 'Fast Food',
+        emoji: '🍕'
+    },
+    {
+        id: 2,
+        name: 'Drinks',
+        emoji: '🥤'
+    },
+    {
+        id: 3,
+        name: 'Snacks',
+        emoji: '🍿'
+    },
+    {
+        id: 4,
+        name: 'Dessert',
+        emoji: '🧁'
+    },
+    {
+        id: 5,
+        name: 'Fresh Food',
+        emoji: '🥗'
+    }
+]
