@@ -20,8 +20,6 @@ function Sidebar() {
     }
 
     useEffect(() => {
-        console.log(decodedDataJWT())
-
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
         }
@@ -41,7 +39,7 @@ function Sidebar() {
                 {/* Profile Info */}
                 <div className='flex flex-col items-center justify-center gap-4 h-[30vh]'>
                     <img
-                        className={`object-cover rounded-full lg:w-24 md:w-20 sm:w-16 w-16`}
+                        className={`object-cover rounded-full lg:w-20 md:w-20 sm:w-16 w-16 lg:h-20 md:h-20 sm:h-16 h-16`}
                         src={decodedDataJWT().picture} />
                     <h1
                         className='text-2xl font-bold flex items-center gap-2'>
@@ -125,7 +123,7 @@ function Sidebar() {
             {
                 windowWidth < 1280 ?
                     <button
-                        className='fixed right-4 bottom-4 text-2xl bg-primary-900 p-3 rounded-full z-20'
+                        className='fixed right-4 bottom-4 text-2xl bg-primary-900 p-3 rounded-full z-20 text-yummy-800'
                         onClick={() => { setShowMenu(!showMenu) }}>
                         {
                             showMenu ? <MdMenuOpen /> : <MdMenu />

@@ -1,186 +1,153 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TextField } from '@mui/material'
-import { MdSearch, MdStar } from 'react-icons/md'
+import { MdStar } from 'react-icons/md'
 import { BsChevronCompactDown, BsChevronCompactUp } from 'react-icons/bs'
-
-// Eliminar imports de imagenes cuando se pase a producción
-import Burger from '../assets/food/Burger.jpg'
-import ChickenNuggets from '../assets/food/ChickenNuggets.jpg'
-import DulcesLuz from '../assets/food/DulcesLuz.jpg'
-import Fries from '../assets/food/Fries.jpg'
-import Pizza from '../assets/food/Pizza.jpg'
-import Shushi from '../assets/food/Shushi.jpg'
-import TacosDonTono from '../assets/food/TacosDonTono.jpg'
-import Wings from '../assets/food/Wings.jpg'
-
-const categories = [
-  {
-    name: 'All',
-    emoji: '🍽️'
-  },
-  {
-    name: 'Burger',
-    emoji: '🍔'
-  },
-  {
-    name: 'Pizza',
-    emoji: '🍕'
-  },
-  {
-    name: 'Salad',
-    emoji: '🥗'
-  },
-  {
-    name: 'Drinks',
-    emoji: '🥤'
-  },
-]
-
-
-
-const dishes = [
-  {
-    id: 1,
-    title: 'Classic Burger',
-    image: Burger,
-    description: 'Introducing our classic burger: a timeless combo of juicy beef, melted cheese, fresh toppings, all in a soft bun.',
-    rating: 4.4,
-    categories: 'Burger',
-    stock: 10
-  },
-  {
-    id: 2,
-    title: 'Margarita Pizza',
-    image: Pizza,
-    description: 'Indulge in the essence of Italy with our Margherita pizza.Thin crust, tomato, melted mozzarella, and fresh basil.Delight in every bite.',
-    rating: 4.1,
-    categories: 'Pizza',
-    stock: 4
-  },
-  {
-    id: 3,
-    title: 'Wings',
-    image: Wings,
-    description: 'Dive into flavor with our wings. Crispy, tender, and sauced to perfection, each bite is a savory journey.',
-    rating: 4.2,
-    categories: 'Chicken',
-    stock: 12
-  },
-  {
-    id: 4,
-    title: 'Fries',
-    image: Fries,
-    description: "Savor simplicity with our fries. Golden, crispy perfection that's irresistibly satisfying.",
-    rating: 4.6,
-    categories: 'Vegetables',
-    stock: 3
-  },
-  {
-    id: 5,
-    title: 'Chicken Nuggts',
-    image: ChickenNuggets,
-    description: 'Enjoy our chicken nuggets – bite-sized bliss. Crispy outside, tender inside, a taste that delights.',
-    rating: 4.0,
-    categories: 'Chicken, Fries',
-    stock: 0
-  },
-  {
-    id: 6,
-    title: 'Shushi',
-    image: Shushi,
-    description: 'Delight in our sushi. Fresh, flavorful, and expertly crafted – a true culinary experience.',
-    rating: 4.2,
-    categories: 'Shushi, Oriental',
-    stock: 14
-  },
-  {
-    id: 7,
-    title: 'Dulces Luz',
-    image: DulcesLuz,
-    description: 'Indulge in sweetness with our candies. Bursting with flavors that bring joy to every moment.',
-    rating: 1.2,
-    categories: 'Other',
-    stock: 43
-  },
-  {
-    id: 8,
-    title: 'Tacos Don Toño',
-    image: TacosDonTono,
-    description: "Savor Mexico's essence with street tacos. Handmade tortillas, flavorful fillings. True taste of the streets.",
-    rating: 4.9,
-    categories: 'Shushi, Oriental',
-    stock: 2
-  },
-]
+import { MdAdd } from 'react-icons/md'
+import { Alert } from '@mui/material'
+import { BD_ACTION_GET } from '../services/master'
+import Loader from './Loader'
+import { categories } from '../services/categories'
+import { useNavigate } from 'react-router-dom'
+import ServerError from '../assets/animations/500Error.mp4'
 
 const MenuComponent = () => {
-  const [selectButton, setSelectButton] = useState([0])
+  const navigate = useNavigate()
+  const [load, setLoad] = useState(false)
+  const [alert, setAlert] = useState(false)
+  const [products, setProducts] = useState([])
+  const [selectedButton, setSelectedButton] = useState(0)
+  const [categorySelected, setCategorySelected] = useState(0)
+  const [wathcMore, setWatchMore] = useState({})
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    const get_data_products_categories = async () => {
+      try {
+        setLoad(true)
+        const data = await BD_ACTION_GET('product', 'get_products')
+        if (!data.error) {
+          setProducts(data.msg)
+          setLoad(false)
+        } else {
+          setAlert(true)
+          setTimeout(() => {
+            setAlert(false)
+          }, 5000);
+        }
+      } catch (error) {
+        setAlert(true)
+      }
+    }
+
+    get_data_products_categories()
+    setLoad(false)
+
+    return () => { }
+
+  }, [])
+
+  const dataToDisplay = () => {
+    if (categorySelected == 0)
+      return products
+
+    let data_to_display = []
+
+    products.forEach((product) => {
+      if (categorySelected == product.id_category)
+        data_to_display.push(product)
+    })
+
+    return data_to_display
+  }
 
   const handleClick = (index) => {
-    setSelectButton([index === selectButton ? null : index])
+    setSelectedButton(index === selectedButton ? null : index)
   }
 
-  const [wathcMore, setWatchMore] = useState({})
-
-  const viewDish = (id) => {
-    console.log(id)
+  const viewproduct = (id) => {
+    navigate(`/home/product-detail/${id}`)
   }
 
-  const toggleDescription = (dishId) => {
+  const toggleDescription = (product_id) => {
     setWatchMore((prevState) => ({
       ...prevState,
-      [dishId]: !prevState[dishId]
+      [product_id]: !prevState[product_id]
     }))
   }
 
   return (
     <>
+      <Loader load={load} />
       <div className='w-full flex flex-col gap-6 mb-20 select-none'>
-        <h1 className='text-2xl'>Dishes</h1>
-        <div className='flex flex-grow overflow-hidden'>
-          <TextField className='flex-grow' variant='standard' placeholder='Search...' />
-          <button>
-            <MdSearch />
-          </button>
+        <div className='flex justify-between'>
+          <h1 className='text-2xl'>Products</h1>
+          <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg' onClick={() => navigate('/home/product-add')}>Add Product <MdAdd /></button>
         </div>
-        <div className='flex gap-5'>
-          {categories.map((category, index) => (
-            <div key={index} className='flex flex-col items-center gap-1'>
-              <span className={`${selectButton.includes(index) ? 'bg-black pointer-events-none' : 'bg-gray-200 pointer-events-auto'} hover:bg-black transition-colors select-none duration-200 w-12 h-12 flex items-center justify-center rounded-full`} onClick={() => handleClick(index)}>{category.emoji}</span>
-              <span className='select-none'>{category.name}</span>
-            </div>
-          ))}
+        <div className='flex flex-grow overflow-hidden'>
+          <TextField className='flex-grow' variant='standard' placeholder='Search...' type='text' value={search} onChange={event => setSearch(event.target.value)} />
+        </div>
+        <div className='flex items-start'>
+          {
+            categories.map((category, index) => (
+              <div key={index} className='flex flex-col items-center w-20 gap-1'>
+                <span
+                  className={`w-12 h-12 flex items-center justify-center rounded-full transition-all duration-200 ${selectedButton === index ? 'bg-black scale-110 text-lg' : 'bg-yummy-600 hover:bg-black hover:scale-110 hover:text-lg hover:cursor-pointer'}`} onClick={() => { setCategorySelected(category.id); handleClick(index) }}>{category.emoji}</span>
+                <span className='text-sm'>{category.name}</span>
+              </div>
+            ))
+          }
         </div>
         <div className='grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-8'>
-          {dishes.map((dish, index) => (
-            <div key={index} className='flex flex-col gap-3'>
-              <img className='rounded-3xl cursor-pointer hover:scale-105 transition-all duration-300' src={dish.image} onClick={() => viewDish(dish.id)} />
-              <h1 className='text-lg font-bold'>{dish.title}</h1>
-              <div className='flex flex-row items-center gap-1 text-gray-500'>
-                <span><MdStar /></span>
-                <span className='font-montserrat'>{dish.rating}</span>
-                <span className='ml-10'>{dish.categories}</span>
-              </div>
-              <span className={`font-montserrat text-sm ${dish.stock == 0 ? 'text-red-500' : dish.stock > 0 && dish.stock <= 5 ? 'text-amber-500' : 'text-green-500'}`} >Total Stock: {dish.stock}</span>
-              <span className='text-sm text-sky-500 flex items-center gap-2 cursor-pointer w-fit' onClick={() => toggleDescription(dish.id)}>
-                Watch More
+          {
+            dataToDisplay().filter(item => {
+              if (item.name.toLowerCase().includes(search.toLowerCase())) {
+                return true
+              }
+            }).map((product, index) => (
+              <div key={index} className='flex flex-col gap-3'>
+                <img className='rounded-3xl cursor-pointer hover:scale-105 transition-all duration-300' src={product.picture} onClick={() => viewproduct(product.id)} />
+                <h1 className='text-lg font-bold'>{product.name}</h1>
+                <div className='flex flex-row items-center gap-1 text-gray-500'>
+                  <span><MdStar /></span>
+                  <span className='font-montserrat'>{product.rating}</span>
+                  <span className='ml-10'>{product.cateogory}</span>
+                </div>
+                <span className={`font-montserrat text-sm ${product.amount == 0 ? 'text-red-500' : product.amount > 0 && product.amount <= 5 ? 'text-amber-500' : 'text-green-500'}`} >Total Stock: {product.amount}</span>
+                <span className='text-sm text-sky-500 flex items-center gap-2 cursor-pointer w-fit' onClick={() => toggleDescription(product.id)}>
+                  Watch More
+                  {
+                    wathcMore[product.id] ? (
+                      <BsChevronCompactDown />
+                    ) : (
+                      <BsChevronCompactUp />
+                    )
+                  }
+                </span>
                 {
-                  wathcMore[dish.id] ? (
-                    <BsChevronCompactDown />
-                  ) : (
-                    <BsChevronCompactUp />
+                  wathcMore[product.id] && (
+                    <div className='text-gray-500'>{product.description}</div>
                   )
                 }
-              </span>
-              {
-                wathcMore[dish.id] && (
-                  <div className='text-gray-500'>{dish.description}</div>
-                )
-              }
-            </div>
-          ))}
+              </div>
+            ))
+          }
         </div>
+        {
+          alert && (
+            <div className='w-full flex items-center justify-center flex-col gap-2'>
+              <video loop autoPlay muted className='w-80'>
+                <source src={ServerError} type='video/mp4' />
+              </video>
+              <h1 className='text-gray-500 text-xl'>Server Error</h1>
+            </div>
+          )
+        }
       </div >
+      {
+        alert && (
+          <Alert severity='error' className='absolute bottom-2 left-2 transition-all duration-300 z-50'>500 Server Error, Please comunicate with Developer</Alert>
+        )
+      }
     </>
   )
 }
