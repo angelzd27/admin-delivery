@@ -14,7 +14,7 @@ import Rating from '@mui/material/Rating'
 import { Alert } from '@mui/material'
 import { BD_ACTION_GET, BD_ACTION_POST, BD_ACTION_PUT } from '../services/master'
 import Loader from './Loader'
-import WidgetCloud from './WidgetCloud'
+import axios from 'axios'
 
 function ProductDetail() {
     const params = useParams()
@@ -35,13 +35,12 @@ function ProductDetail() {
     })
 
     useEffect(() => {
-        const get_product_id = async () => {
+        async function get_product() {
             const id = params.id
-            const body = {
-                id: id
-            }
-
-            if (id != '') {
+            if (id) {
+                const body = {
+                    id: id
+                }
                 const data = await BD_ACTION_GET('product', 'get_product_by_id', body)
                 if (!data.error) {
                     setProduct(data.msg)
@@ -49,7 +48,8 @@ function ProductDetail() {
             }
         }
 
-        get_product_id()
+        get_product()
+        return () => { }
     }, [params])
 
     const put_update_product = async () => {
@@ -77,6 +77,19 @@ function ProductDetail() {
         }
     }
 
+    const upload_images = async (event) => {
+        const preset_key = 'lplxq1y3'
+        const cloud_name = 'du7kxnb4h'
+
+        const file = event.target.files[0]
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('upload_preset', preset_key)
+        const data = await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData)
+        console.log(data)
+        setProduct({ ...product, picture: data.data.secure_url })
+    }
+
     const valid_form = () => {
         if (product.name == '' || product.description == '' || product.price == 0 || product.approx_time == 0)
             return true
@@ -97,14 +110,17 @@ function ProductDetail() {
                     ) : (
                         <div className='flex justify-between'>
                             <h1 className='text-2xl'>Publish New Product</h1>
-                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg disabled:bg-yummy-600' onClick={()=> post_create_product()} disabled={valid_form()}>Publish <HiArrowCircleUp /></button>
-                        </div>)
+                            <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-full hover:bg-yummy-600 transition-all shadow-lg disabled:bg-yummy-600' onClick={() => post_create_product()} disabled={valid_form()}>Publish <HiArrowCircleUp /></button>
+                        </div>
+                    )
                 }
                 <div className='grid grid-cols-4 gap-6'>
                     <div className='col-span-1 flex flex-col gap-4'>
                         <img src={product.picture} className='rounded-3xl shadow-lg w-full h-full' />
-                        {/* <button className='flex text-sky-500 items-center justify-center gap-1 hover:text-sky-300'>Upload <BiArrowFromBottom /></button> */}
-                        <WidgetCloud />
+                        <div className='flex items-center justify-center'>
+                            <input type='file' id='actual-btn' hidden onChange={upload_images} />
+                            <label htmlFor='actual-btn' className='text-sky-500 flex items-center cursor-pointer justify-center gap-1 hover:bg-gray-100 px-4 py-2 rounded-xl hover:text-sky-400'>Choose File <BiArrowFromBottom /></label>
+                        </div>
                         {
                             params.id ? (
                                 <div className='flex flex-col'>
