@@ -12,7 +12,7 @@ import { HiArrowCircleUp } from 'react-icons/hi'
 import { categories_db } from '../services/categories'
 import Rating from '@mui/material/Rating'
 import { Alert } from '@mui/material'
-import { BD_ACTION_GET, BD_ACTION_POST, BD_ACTION_PUT } from '../services/master'
+import { BD_ACTION_DELETE, BD_ACTION_GET, BD_ACTION_POST, BD_ACTION_PUT } from '../services/master'
 import Loader from './Loader'
 import axios from 'axios'
 
@@ -66,6 +66,23 @@ function ProductDetail() {
 
     const post_create_product = async () => {
         const data = await BD_ACTION_POST('product', 'create_product', product)
+        console.log(data)
+
+        if (!data.error) {
+            setLoad(true)
+            setTimeout(() => {
+                navigate(`/home/dishes`)
+            }, 2000)
+        } else {
+            setLoad(false)
+        }
+    }
+
+    const delete_product = async () => {
+        const body = {
+            id: product.id
+        }
+        const data = await BD_ACTION_DELETE('product', 'delete_product', body)
 
         if (!data.error) {
             setLoad(true)
@@ -227,7 +244,7 @@ function ProductDetail() {
                 {
                     params.id && (
                         <div className='flex flex-col gap-6 text-yummy-800 items-end'>
-                            <span className='flex gap-2 items-center cursor-pointer hover:text-yummy-600 transition-colors'>Remove Product <BiTrash /></span>
+                            <span className='flex gap-2 items-center cursor-pointer hover:text-yummy-600 transition-colors' onClick={() => delete_product()}>Remove Product <BiTrash /></span>
                         </div>
                     )
                 }
