@@ -1,5 +1,7 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
+import { Line } from 'react-chartjs-2'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
@@ -13,6 +15,7 @@ import { graphics_avable } from '../services/graphics_avable'
 import Tacos from '../assets/food/TacosDonTono.jpg'
 import DulcesLuz from '../assets/food/DulcesLuz.jpg'
 import { useState } from 'react'
+import { data } from 'autoprefixer'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -23,7 +26,30 @@ const StyledRating = styled(Rating)({
     },
 })
 
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip, Legend
+)
+
+const chartjs_line_data = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    datasets: [
+        {
+            id: 1,
+            label: 'Earing',
+            data: [65, 59, 80, 81, 56, 55, 40, 27, 37, 28, 19, 29],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        }
+    ]
+}
+
 function Dashboard() {
+    const [graphic, setGraphic] = useState(graphics_avable[0])
     const [selectedGraphic, setSelectedGraphic] = useState(graphics_avable[0].value)
     const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
 
@@ -216,10 +242,6 @@ function Dashboard() {
         categories: 'Others'
     }
 
-    const handleGraphicChange = (event) => {
-        setSelectedGraphic(event.target.value)
-    }
-
     return (
         <>
             <div className='flex flex-col gap-6'>
@@ -229,13 +251,13 @@ function Dashboard() {
                         select
                         label="Graphics Avable"
                         variant='standard'
-                        value={selectedGraphic}
-                        onChange={handleGraphicChange}
+                        value={graphic}
+                        onChange={event => setGraphic(event.target.value)}
                         className='w-[25%]'
                     >
                         {
-                            graphics_avable.map((graphic, index) => (
-                                <MenuItem key={index} value={graphic.value}>{graphic.emoji} {graphic.name}</MenuItem>
+                            graphics_avable.map((graphic_avable, index) => (
+                                <MenuItem key={index} value={graphic_avable}>{graphic_avable.emoji} {graphic_avable.name}</MenuItem>
                             ))
                         }
                     </TextField>
@@ -322,23 +344,72 @@ function Dashboard() {
                 </div>
                 <div className='grid xl:grid-cols-2 grid-cols-1 gap-4'>
                     <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
-                        <HighchartsReact
-                            highcharts={Highcharts}
-                            options={options_line}
-                        />
+                        {
+                            graphic.value === 'chartjs' ? (
+                                <>
+                                    <Line data={chartjs_line_data} />
+                                </>
+                            ) : graphic.value === 'highcharts' ? (
+                                <>
+                                    <HighchartsReact
+                                        highcharts={Highcharts}
+                                        options={options_line}
+                                    />                                </>
+                            ) : graphic.value === 'amcharts' ? (
+                                <>
+                                    <h1>AMCharts</h1>
+                                </>
+                            ) : (
+                                <></>
+                            )
+                        }
                     </div>
                     <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
-                        <HighchartsReact
+                        {/* <HighchartsReact
                             highcharts={Highcharts}
                             options={options_pie}
-                        />
+                        /> */}
+                        {
+                            graphic.value === 'chartjs' ? (
+                                <>
+                                    <h1>Chart.Js</h1>
+                                </>
+                            ) : graphic.value === 'highcharts' ? (
+                                <>
+                                    <h1>HighCharts</h1>
+                                </>
+                            ) : graphic.value === 'amcharts' ? (
+                                <>
+                                    <h1>AMCharts</h1>
+                                </>
+                            ) : (
+                                <></>
+                            )
+                        }
                     </div>
                 </div>
                 <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
-                    <HighchartsReact
+                    {/* <HighchartsReact
                         highcharts={Highcharts}
                         options={option_bars}
-                    />
+                    /> */}
+                    {
+                        graphic.value === 'chartjs' ? (
+                            <>
+                                <h1>Chart.Js</h1>
+                            </>
+                        ) : graphic.value === 'highcharts' ? (
+                            <>
+                                <h1>HighCharts</h1>
+                            </>
+                        ) : graphic.value === 'amcharts' ? (
+                            <>
+                                <h1>AMCharts</h1>
+                            </>
+                        ) : (
+                            <></>
+                        )
+                    }
                 </div>
             </div>
         </>
