@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         yummy: {
+          400: '#FEAAAC',
           600: '#FE8285',
           800: '#FC5458'
         }
