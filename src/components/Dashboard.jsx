@@ -1,7 +1,3 @@
-import Highcharts from 'highcharts/highstock'
-import HighchartsReact from 'highcharts-react-official'
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
-import { Line } from 'react-chartjs-2'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
@@ -15,7 +11,11 @@ import { graphics_avable } from '../services/graphics_avable'
 import Tacos from '../assets/food/TacosDonTono.jpg'
 import DulcesLuz from '../assets/food/DulcesLuz.jpg'
 import { useState } from 'react'
-import { data } from 'autoprefixer'
+import LineChartJS from './graphics/line/LineChartJS'
+import LineHighcharts from './graphics/line/LineHighcharts'
+import BarHighcharts from './graphics/bars/BarsHighcharts'
+import PieHighcharts from './graphics/pie/PieHighcharts'
+import PieChartJS from './graphics/pie/PieChartJS'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -26,202 +26,8 @@ const StyledRating = styled(Rating)({
     },
 })
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip, Legend
-)
-
-const chartjs_line_data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-        {
-            id: 1,
-            label: 'Earing',
-            data: [65, 59, 80, 81, 56, 55, 40, 27, 37, 28, 19, 29],
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        }
-    ]
-}
-
 function Dashboard() {
     const [graphic, setGraphic] = useState(graphics_avable[0])
-    const [selectedGraphic, setSelectedGraphic] = useState(graphics_avable[0].value)
-    const image_url = 'https://th.bing.com/th/id/R.eecf01ce2268ef8843815048bf2b3561?rik=00vIjP0S7WYVeA&pid=ImgRaw&r=0'
-
-    const options_line = {
-        title: {
-            text: 'Total Earing',
-            style: {
-                color: '#000000',
-                fontSize: '28px'
-            }
-        },
-        chart: {
-            type: 'spline'
-        },
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            accessibility: {
-                description: 'Months of the year'
-            }
-        },
-        yAxis: {
-            title: {
-                text: 'Earling'
-            },
-            labels: {
-                format: '$ {value} USD'
-            }
-        },
-        tooltip: {
-            crosshairs: true,
-            shared: true,
-            pointFormat: '$ {point.y} USD in {categories.x}'
-        },
-        plotOptions: {
-            spline: {
-                marker: {
-                    radius: 4,
-                    lineWidth: 1
-                }
-            }
-        },
-        series: [
-            {
-                name: 'Total',
-                marker: {
-                    symbol: 'diamond'
-                },
-                data: [5, 2.99, 13, 8, 8.55, 4.23, 3, 7, 1, 4, 2, 1]
-            }
-        ]
-    }
-
-    const options_pie = {
-        title: {
-            text: 'Top Popularity Dishes',
-            style: {
-                color: '#000000',
-                fontSize: '28px'
-            }
-        },
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie',
-            zoomType: ''
-        },
-        tooltip: {
-            pointFormat: 'Popularity: <b>{point.percentage:.1f}%</b>'
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false
-                },
-                showInLegend: true
-            }
-        },
-        series: [{
-            name: 'Brands',
-            colorByPoint: true,
-            data: [
-                {
-                    name: "Combo Special's Edwin",
-                    y: 100,
-                }, {
-                    name: 'Empanadas',
-                    y: 25
-                }, {
-                    name: 'Donas',
-                    y: 19
-                }, {
-                    name: 'Tortas Frias',
-                    y: 64
-                }, {
-                    name: 'Tacos de Don Toño',
-                    y: 98
-                }, {
-                    name: 'Pizza',
-                    y: 88
-                }, {
-                    name: 'Enchiladas',
-                    y: 88
-                },
-            ]
-        }]
-    }
-
-    const option_bars = {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'All Dishes',
-            style: {
-                color: '#000000',
-                fontSize: '28px'
-            }
-        },
-        xAxis: {
-            type: 'category',
-            labels: {
-                rotation: -45,
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Montserrat, sans-serif'
-                }
-            }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Total Earing'
-            },
-            labels: {
-                format: '$ {value} USD'
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            pointFormat: 'Total Earing: $ {point.y:.1f} USD'
-        },
-        series: [{
-            name: 'All Dishes',
-            colorByPoint: true,
-            groupPadding: 0,
-            data: [
-                ["Combo Special's Edwin", 135,],
-                ['Empanadas Frias', 23],
-                ['Donas', 16],
-                ['Tortas Frias', 85],
-                ['Tacos de Don Toño', 129],
-                ['Pizza', 110],
-                ['Enchiladas', 95],
-                ['Coca Cola', 130],
-                ['Paletas de hielo', 19],
-                ['Dulces Luz', 5],
-                ['Nieve', 122],
-            ]
-        }]
-    }
-
     let total_usd = '5,583.12'
     let total_mex = '96,084.55'
     let total_order = '126'
@@ -302,7 +108,7 @@ function Dashboard() {
                         </div>
                     </div>
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
-                        <span className='text-2xl'>Worst Ramking Dish</span>
+                        <span className='text-2xl'>Worst Ranking Dish</span>
                         <div className='flex flex-col gap-3'>
                             <img src={worst_dish.image} className='w-52 rounded-3xl hover:scale-105 transition-all' />
                             <h1 className='text-lg font-bold'>{worst_dish.name}</h1>
@@ -326,7 +132,7 @@ function Dashboard() {
                             />
                         </div>
                         <div className='flex flex-row shadow-lg p-5 bg-slate-50 gap-5 items-center rounded-lg max-w-[80%]'>
-                            <img src={image_url} className='w-10 h-10 rounded-full' />
+                            <img src={''} className='w-10 h-10 rounded-full' />
                             <div className='flex flex-col'>
                                 <span className='font-bold'>@ DeicideSuici</span>
                                 <StyledRating
@@ -347,14 +153,12 @@ function Dashboard() {
                         {
                             graphic.value === 'chartjs' ? (
                                 <>
-                                    <Line data={chartjs_line_data} />
+                                    <LineChartJS />
                                 </>
                             ) : graphic.value === 'highcharts' ? (
                                 <>
-                                    <HighchartsReact
-                                        highcharts={Highcharts}
-                                        options={options_line}
-                                    />                                </>
+                                    <LineHighcharts />
+                                </>
                             ) : graphic.value === 'amcharts' ? (
                                 <>
                                     <h1>AMCharts</h1>
@@ -365,18 +169,14 @@ function Dashboard() {
                         }
                     </div>
                     <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
-                        {/* <HighchartsReact
-                            highcharts={Highcharts}
-                            options={options_pie}
-                        /> */}
                         {
                             graphic.value === 'chartjs' ? (
                                 <>
-                                    <h1>Chart.Js</h1>
+                                    <PieChartJS />
                                 </>
                             ) : graphic.value === 'highcharts' ? (
                                 <>
-                                    <h1>HighCharts</h1>
+                                    <PieHighcharts />
                                 </>
                             ) : graphic.value === 'amcharts' ? (
                                 <>
@@ -389,10 +189,6 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
-                    {/* <HighchartsReact
-                        highcharts={Highcharts}
-                        options={option_bars}
-                    /> */}
                     {
                         graphic.value === 'chartjs' ? (
                             <>
@@ -400,7 +196,7 @@ function Dashboard() {
                             </>
                         ) : graphic.value === 'highcharts' ? (
                             <>
-                                <h1>HighCharts</h1>
+                                <BarHighcharts />
                             </>
                         ) : graphic.value === 'amcharts' ? (
                             <>
