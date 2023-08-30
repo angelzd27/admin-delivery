@@ -103,22 +103,22 @@ function LoginForm() {
         <form className="mt-4" onSubmit={handleSubmit}>
           <div>
             <TextField
-              id='email'
-              label='Email'
-              type="email"
               required
+              label='Email'
+              name='email'
+              type="email"
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)}
               variant='standard'
               fullWidth
               helperText={errorEmail.message}
               error={errorEmail.error}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div className='mt-5'>
             <TextField
-              id='password'
+             
               label='Password'
               type={showPassword ? 'text' : 'password'}
               required
