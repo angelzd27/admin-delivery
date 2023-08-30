@@ -10,11 +10,16 @@ ChartJS.register(
 
 function PieChartJS() {
     const options = {
+        responsive: true,
         plugins: {
+            title: {
+                display: true,
+                text: 'Top 10 Better Dishes'
+            },
             colors: {
                 enabled: true
             }
-        }
+        },
     }
 
     const data = {
@@ -30,9 +35,9 @@ function PieChartJS() {
     }
 
     return (
-        <>
+        <div className='w-[50%]'>
             <Pie data={data} options={options} />
-        </>
+        </div>
     )
 }
 

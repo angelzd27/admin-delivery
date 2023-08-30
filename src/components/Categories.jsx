@@ -10,7 +10,7 @@ export default function Categories() {
                     {
                         categories_db.map((category, index) => (
                             <div key={index} className='flex flex-col gap-3 bg-white p-10 rounded-2xl shadow-md hover:scale-105 transition-all'>
-                                <span className='bg-yummy-400 w-14 h-14 flex items-center justify-center rounded-2xl text-xl'>{category.emoji}</span>
+                                <span className='bg-yummy-400 w-14 h-14 flex items-center justify-center rounded-2xl text-xl select-none'>{category.emoji}</span>
                                 <h1 className='text-3xl'>{category.name}</h1>
                                 <p className='text-md'>{category.description}</p>
                             </div>

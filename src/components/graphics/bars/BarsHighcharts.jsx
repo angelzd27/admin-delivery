@@ -59,10 +59,12 @@ function BarHighcharts() {
     }
     return (
         <>
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
+            <div className='w-[100%]'>
+                <HighchartsReact
+                    highcharts={Highcharts}
+                    options={options}
+                />
+            </div>
         </>
     )
 }

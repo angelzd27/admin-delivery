@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
@@ -6,16 +8,19 @@ import { MdStar } from 'react-icons/md'
 import { TextField } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import { graphics_avable } from '../services/graphics_avable'
-
-// ! Elimar importacion de imagenes cuando pase a producción
-import Tacos from '../assets/food/TacosDonTono.jpg'
-import DulcesLuz from '../assets/food/DulcesLuz.jpg'
-import { useState } from 'react'
 import LineChartJS from './graphics/line/LineChartJS'
 import LineHighcharts from './graphics/line/LineHighcharts'
 import BarHighcharts from './graphics/bars/BarsHighcharts'
 import PieHighcharts from './graphics/pie/PieHighcharts'
 import PieChartJS from './graphics/pie/PieChartJS'
+import BarsChartJS from './graphics/bars/BarsChartJS'
+import PieAmCharts from './graphics/pie/PieAmCharts'
+import BarsAmCharts from './graphics/bars/BarsAmCharts'
+import LineAmCharts from './graphics/line/LineAmCharts'
+
+// ! Elimar importacion de imagenes cuando pase a producción
+import Tacos from '../assets/food/TacosDonTono.jpg'
+import DulcesLuz from '../assets/food/DulcesLuz.jpg'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -26,8 +31,11 @@ const StyledRating = styled(Rating)({
     },
 })
 
+// const socket = io('localhost:5000')
+
 function Dashboard() {
-    const [graphic, setGraphic] = useState(graphics_avable[0])
+    // const [betterDish, setBetterDish] = useState(null)
+    const [selectedChart, setSelectedChart] = useState(graphics_avable[0])
     let total_usd = '5,583.12'
     let total_mex = '96,084.55'
     let total_order = '126'
@@ -48,6 +56,16 @@ function Dashboard() {
         categories: 'Others'
     }
 
+    // useEffect(() => {
+    //     socket.on('better_product', (better_product) => {
+    //         console.log(better_product)
+    //     })
+    //     return () => {
+    //         socket.disconnect()
+    //     }
+    // }, [])
+
+
     return (
         <>
             <div className='flex flex-col gap-6'>
@@ -57,8 +75,8 @@ function Dashboard() {
                         select
                         label="Graphics Avable"
                         variant='standard'
-                        value={graphic}
-                        onChange={event => setGraphic(event.target.value)}
+                        value={selectedChart}
+                        onChange={event => setSelectedChart(event.target.value)}
                         className='w-[25%]'
                     >
                         {
@@ -123,64 +141,64 @@ function Dashboard() {
                         <span className='text-2xl'>Customer Satisfaction</span>
                         <div className='flex gap-3 items-center mb-6 rounded-lg'>
                             <span className='text-4xl font-montserrat'>{customer_satisfaction}</span>
-                            <StyledRating
+                            {/* <StyledRating
                                 defaultValue={customer_satisfaction}
                                 precision={0.5}
                                 icon={<FavoriteIcon fontSize="inherit" />}
                                 emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                                 readOnly
-                            />
+                            /> */}
                         </div>
                         <div className='flex flex-row shadow-lg p-5 bg-slate-50 gap-5 items-center rounded-lg max-w-[80%]'>
                             <img src={''} className='w-10 h-10 rounded-full' />
                             <div className='flex flex-col'>
                                 <span className='font-bold'>@ DeicideSuici</span>
-                                <StyledRating
+                                {/* <StyledRating
                                     defaultValue="2.5"
                                     precision={0.5}
                                     icon={<FavoriteIcon fontSize="inherit" />}
                                     emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                                     readOnly
                                     size='small'
-                                />
+                                /> */}
                                 <span className='text-sm'>Mi torta estaba bien fria y mi coca caliente, ademas huele a mecanica, a pura gasolina y aceite quemado</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className='grid xl:grid-cols-2 grid-cols-1 gap-4'>
-                    <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
+                    <div className='bg-white flex flex-col items-center justify-center xl:py-5 rounded-md shadow-md'>
                         {
-                            graphic.value === 'chartjs' ? (
+                            selectedChart.value === 'chartjs' ? (
                                 <>
                                     <LineChartJS />
                                 </>
-                            ) : graphic.value === 'highcharts' ? (
+                            ) : selectedChart.value === 'highcharts' ? (
                                 <>
                                     <LineHighcharts />
                                 </>
-                            ) : graphic.value === 'amcharts' ? (
+                            ) : selectedChart.value === 'amcharts' ? (
                                 <>
-                                    <h1>AMCharts</h1>
+                                    <LineAmCharts />
                                 </>
                             ) : (
                                 <></>
                             )
                         }
                     </div>
-                    <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
+                    <div className='bg-white flex flex-col items-center justify-center xl:py-5 rounded-md shadow-md'>
                         {
-                            graphic.value === 'chartjs' ? (
+                            selectedChart.value === 'chartjs' ? (
                                 <>
                                     <PieChartJS />
                                 </>
-                            ) : graphic.value === 'highcharts' ? (
+                            ) : selectedChart.value === 'highcharts' ? (
                                 <>
                                     <PieHighcharts />
                                 </>
-                            ) : graphic.value === 'amcharts' ? (
+                            ) : selectedChart.value === 'amcharts' ? (
                                 <>
-                                    <h1>AMCharts</h1>
+                                    <PieAmCharts />
                                 </>
                             ) : (
                                 <></>
@@ -188,19 +206,19 @@ function Dashboard() {
                         }
                     </div>
                 </div>
-                <div className='bg-white flex flex-col items-center py-5 rounded-md shadow-md'>
+                <div className='bg-white flex flex-col items-center justify-center xl:py-5 rounded-md shadow-md'>
                     {
-                        graphic.value === 'chartjs' ? (
+                        selectedChart.value === 'chartjs' ? (
                             <>
-                                <h1>Chart.Js</h1>
+                                <BarsChartJS />
                             </>
-                        ) : graphic.value === 'highcharts' ? (
+                        ) : selectedChart.value === 'highcharts' ? (
                             <>
                                 <BarHighcharts />
                             </>
-                        ) : graphic.value === 'amcharts' ? (
+                        ) : selectedChart.value === 'amcharts' ? (
                             <>
-                                <h1>AMCharts</h1>
+                                <BarsAmCharts />
                             </>
                         ) : (
                             <></>

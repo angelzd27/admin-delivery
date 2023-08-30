@@ -11,6 +11,16 @@ ChartJS.register(
 )
 
 function LineChartJS() {
+    const options = {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Total Earing'
+            },
+        },
+    }
+
     const data = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
@@ -25,9 +35,9 @@ function LineChartJS() {
     }
 
     return (
-        <>
-            <Line data={data} />
-        </>
+        <div className='w-[90%]'>
+            <Line data={data} options={options} />
+        </div>
     )
 }
 

@@ -24,7 +24,7 @@ function RegisterForm() {
     last_name: '',
     second_last_name: '',
     phone: '',
-    country: {},
+    country: countries.find(country => country.code == 'MX'),
     picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     id_gender: 1
   })
