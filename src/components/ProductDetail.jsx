@@ -30,7 +30,7 @@ function ProductDetail() {
         price: 0,
         description: '',
         rating: 0,
-        picture: 'https://images.designtrends.com/wp-content/uploads/2016/03/29085131/White-Grunge-Texture.jpg',
+        picture: 'https://th.bing.com/th/id/OIG.9AIo_WpxJlCnm.UH.acX?pid=ImgGn',
         approx_time: 0
     })
 

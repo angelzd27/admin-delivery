@@ -1,16 +1,16 @@
 export const graphics_avable = [
     {
-        name: 'Chart.js',
+        name: 'Chart.Js',
         value: 'chartjs',
         emoji: '📊'
     },
     {
-        name: 'Highcharts',
+        name: 'HighCharts',
         value: 'highcharts',
         emoji: '📉'
     },
     {
-        name: 'amCharts',
+        name: 'AMCharts',
         value: 'amcharts',
         emoji: '📈'
     }

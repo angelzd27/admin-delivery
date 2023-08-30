@@ -1,67 +1,26 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { BsChevronCompactDown, BsChevronCompactUp } from 'react-icons/bs'
 
-import FastFood from '../assets/categories/FastFood.jpg';
-import Drinks from '../assets/categories/Drinks.jpg'
-import Snacks from '../assets/categories/Snacks.jpg'
-import Desserts from '../assets/categories/Desserts.jpg'
-import FreshFood from '../assets/categories/FreshFood.jpg'
+import { categories_db } from '../services/categories'
 
-import { BD_ACTION_GET } from '../services/master'
+export default function Categories() {
 
-
-//Funcion para traer las categorias de la BD
-const get_categories = async () => {
-    try {
-        //Hacer la peticion a la BD
-        const data = await BD_ACTION_GET('category', 'get_categories');
-
-
-        //Si la peticion es correcta
-        if (data.error === false && data.msg && Array.isArray(data.msg)) {
-            const categories = data.msg;
-
-
-            console.log(categories);
-            return categories;
-        } else {
-            console.error("Error response from server");
-            return [];
-        }
-
-
-    } catch (error) {
-        console.error("Error fetching categories:", error);
-    }
-};  
- 
-  export default function Categories() {
-    const [categories, setCategories] = useState([]);
-  const [wathcMore, setWatchMore] = useState({})
-
-
-    //Cargar las categorias al cargar el componente
-    useEffect(() => {
-    //Funcion para cargar las categorias
-    const ctg = async () => {
-    //Hacer llamado de la funcion para traer las categorias
-    const categoriesData = await get_categories();
-    //Guardar las categorias en el estado
-    setCategories(categoriesData);
-    };
-        ctg();
-    }, [])
-
-
-    const categoryImages = {
-        'Fast Food': FastFood,
-        'Drinks': Drinks,
-        'Snacks': Snacks,
-        'Dessert': Desserts,
-        'Fresh Food': FreshFood
-    };
-
+    return (
+        <>
+            <div className='flex flex-col items-start gap-8'>
+                <h1 className='text-2xl'>All Categories</h1>
+                <div className='grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-8'>
+                    {
+                        categories_db.map((category, index) => (
+                            <div key={index} className='flex flex-col gap-3 bg-white p-10 rounded-2xl shadow-md hover:scale-105 transition-all'>
+                                <span className='bg-yummy-400 w-14 h-14 flex items-center justify-center rounded-2xl text-xl'>{category.emoji}</span>
+                                <h1 className='text-3xl'>{category.name}</h1>
+                                <p className='text-md'>{category.description}</p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </>
+    )
 
   const viewCategory = (id) => {
     console.log(id)
@@ -110,3 +69,4 @@ const get_categories = async () => {
   </>
   )
 }
+
