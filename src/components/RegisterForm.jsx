@@ -28,7 +28,7 @@ function RegisterForm() {
     last_name: '',
     second_last_name: '',
     phone: '',
-    country: countries.find(country => country.code == 'MX'),
+    country: countries.find(country => country.code === "MX"),
     picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     id_gender: 1
   })
@@ -47,7 +47,7 @@ function RegisterForm() {
   }
 
   const post_new_user = async () => {
-    
+
     const body = {
       username: form.username,
       email: form.email,
@@ -63,13 +63,10 @@ function RegisterForm() {
       id_gender: form.id_gender
     }
 
-    console.log(body)
-
     const data = await BD_ACTION_POST('auth', 'sign_up', body)
 
     if (!data.error) {
       setLoad(true)
-      console.log("Data Enviado")
       setTimeout(() => {
         navigate(`/auth/sign_in`)
       }, 2000)
@@ -88,7 +85,7 @@ function RegisterForm() {
     const regex = /^[A-Za-z\s]+$/; //Only letters and spaces
     return firstName.length >= 3 && regex.test(firstName);
   };
-  
+
   //Validacion LastName
   const [errorLastName, setErrorLastName] = useState({
     error: false,
@@ -206,7 +203,7 @@ function RegisterForm() {
         message: "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character"
       });
     }
-    
+
     // Comprueba si todos los errores están en error: false
     if (
       !errorFirstName.error &&
@@ -227,7 +224,7 @@ function RegisterForm() {
       }
     }
   };
-  
+
 
   return (
     <>
@@ -239,54 +236,54 @@ function RegisterForm() {
           <div className='w-[80%] bg-white p-10 rounded-3xl border border-gray-100'>
             <h2 className='text-gray-500 text-xl font-bold text-center'>Personal Information</h2>
             <form onSubmit={handleSubmit}>
-            <div className='flex flex-col'>
-              <TextField
-                required
-                label='First Name'
-                name='firstName'
-                type="text"
-                value={form.first_name}
-                onChange={event => {
-                  setForm({ ...form, first_name: event.target.value });
-                }}
-                variant='standard'
-                fullWidth
-                margin='normal'
-                placeholder='Enter your First Name'
-                helperText={errorFirstName.message}
-                error={errorFirstName.error}
-              />
-
-              <div className='flex flex-row gap-6'>
+              <div className='flex flex-col'>
                 <TextField
                   required
-                  label='Last Name'
-                  name='lastName'
+                  label='First Name'
+                  name='firstName'
                   type="text"
-                  value={form.last_name}
-                  onChange={event => setForm({ ...form, last_name: event.target.value })}
+                  value={form.first_name}
+                  onChange={event => {
+                    setForm({ ...form, first_name: event.target.value });
+                  }}
                   variant='standard'
                   fullWidth
                   margin='normal'
-                  placeholder='Enter your Last Name'
-                  helperText={errorLastName.message}
-                  error={errorLastName.error}
+                  placeholder='Enter your First Name'
+                  helperText={errorFirstName.message}
+                  error={errorFirstName.error}
                 />
 
-                <TextField
-                  label='Second Last Name'
-                  name='secondLastName'
-                  value={form.second_last_name}
-                  onChange={event => setForm({ ...form, second_last_name: event.target.value })}
-                  variant='standard'
-                  fullWidth
-                  margin='normal'
-                  placeholder='Enter your Second Last Name'
-                />
-              </div>
+                <div className='flex flex-row gap-6'>
+                  <TextField
+                    required
+                    label='Last Name'
+                    name='lastName'
+                    type="text"
+                    value={form.last_name}
+                    onChange={event => setForm({ ...form, last_name: event.target.value })}
+                    variant='standard'
+                    fullWidth
+                    margin='normal'
+                    placeholder='Enter your Last Name'
+                    helperText={errorLastName.message}
+                    error={errorLastName.error}
+                  />
 
-              <div className='flex xl:flex-row flex-col gap-6'>
-                <div className='xl:w-1/2 w-full'>
+                  <TextField
+                    label='Second Last Name'
+                    name='secondLastName'
+                    value={form.second_last_name}
+                    onChange={event => setForm({ ...form, second_last_name: event.target.value })}
+                    variant='standard'
+                    fullWidth
+                    margin='normal'
+                    placeholder='Enter your Second Last Name'
+                  />
+                </div>
+
+                <div className='flex xl:flex-row flex-col gap-6'>
+                  <div className='xl:w-1/2 w-full'>
                     <TextField
                       required
                       label='Phone'
@@ -324,23 +321,66 @@ function RegisterForm() {
                       error={errorPhone.error}
                     />
 
+                  </div>
+                  <div className='xl:w-1/2 w-full'>
+                    <TextField
+                      required
+                      select
+                      label='Country'
+                      name='country'
+                      value={form.country}
+                      onChange={event => setForm({ ...form, country: event.target.value })}
+                      variant='standard'
+                      fullWidth
+                      margin='normal'
+                    >
+                      {
+                        countries.map((country, index) => (
+                          <MenuItem key={index} value={country}>
+                            {country.emoji} | {country.name} {country.code} | {country.dial_code}
+                          </MenuItem>
+                        ))
+                      }
+                    </TextField>
+                  </div>
                 </div>
-                <div className='xl:w-1/2 w-full'>
+
+                <div className='flex gap-6'>
                   <TextField
                     required
                     select
-                    label='Country'
-                    name='country'
-                    value={form.country.iso_code}
-                    onChange={event => setForm({ ...form, country: { iso_code: event.target.value } })}
+                    label='Gender'
+                    name='gender'
+                    value={form.id_gender}
+                    onChange={event => setForm({ ...form, id_gender: event.target.value })}
                     variant='standard'
                     fullWidth
                     margin='normal'
                   >
                     {
-                      countries.map((country, index) => (
-                        <MenuItem key={index} value={country}>
-                          {country.emoji} | {country.name} {country.code} | {country.dial_code}
+                      gender.map((gender, index) => (
+                        <MenuItem key={index} value={gender.id}>
+                          {gender.emoji} | {gender.name}
+                        </MenuItem>
+                      ))
+                    }
+                  </TextField>
+
+                  <TextField
+                    required
+                    select
+                    label='Profile'
+                    name='profile'
+                    value={form.type_user_id}
+                    onChange={event => setForm({ ...form, type_user_id: event.target.value })}
+                    variant='standard'
+                    fullWidth
+                    margin='normal'
+                  >
+                    {
+                      profile.map((profile, index) => (
+                        <MenuItem key={index} value={profile.id}>
+                          {profile.emoji} | {profile.name}
                         </MenuItem>
                       ))
                     }
@@ -348,107 +388,64 @@ function RegisterForm() {
                 </div>
               </div>
 
-              <div className='flex gap-6'>
-                <TextField
-                  required
-                  select
-                  label='Gender'
-                  name='gender'
-                  value={form.id_gender}
-                  onChange={event => setForm({ ...form, id_gender: event.target.value })}
-                  variant='standard'
-                  fullWidth
-                  margin='normal'
-                >
-                  {
-                    gender.map((gender, index) => (
-                      <MenuItem key={index} value={gender.id}>
-                        {gender.emoji} | {gender.name}
-                      </MenuItem>
-                    ))
-                  }
-                </TextField>
 
-                <TextField
-                  required
-                  select
-                  label='Profile'
-                  name='profile'
-                  value={form.type_user_id}
-                  onChange={event => setForm({ ...form, type_user_id: event.target.value })}
-                  variant='standard'
-                  fullWidth
-                  margin='normal'
-                >
-                  {
-                    profile.map((profile, index) => (
-                      <MenuItem key={index} value={profile.id}>
-                        {profile.emoji} | {profile.name}
-                      </MenuItem>
-                    ))
-                  }
-                </TextField>
+              <h2 className='text-gray-500 text-xl font-bold text-center mt-10 mb-5'>Account Information</h2>
+              <div className='flex flex-col items-center justify-center gap-4'>
+                <img src={form.picture} className='rounded-full shadow-lg w-[100px] h-[100px]' />
+                <input type='file' id='actual-btn' hidden onChange={upload_images} />
+                <label htmlFor='actual-btn' className='text-sky-500 flex items-center cursor-pointer justify-center gap-1 hover:bg-gray-100 px-4 py-2 rounded-xl hover:text-sky-400'>Choose File <BiArrowFromBottom /></label>
               </div>
-            </div>
-         
+              <div className='flex flex-row gap-6'>
+                <TextField
+                  label='Username'
+                  name='username'
+                  type='text'
+                  value={form.username}
+                  onChange={event => setForm({ ...form, username: event.target.value })}
+                  variant='standard'
+                  fullWidth
+                  margin='normal'
+                  placeholder='Enter your username'
+                />
 
-            <h2 className='text-gray-500 text-xl font-bold text-center mt-10 mb-5'>Account Information</h2>
-            <div className='flex flex-col items-center justify-center gap-4'>
-              <img src={form.picture} className='rounded-full shadow-lg w-[100px] h-[100px]' />
-              <input type='file' id='actual-btn' hidden onChange={upload_images} />
-              <label htmlFor='actual-btn' className='text-sky-500 flex items-center cursor-pointer justify-center gap-1 hover:bg-gray-100 px-4 py-2 rounded-xl hover:text-sky-400'>Choose File <BiArrowFromBottom /></label>
-            </div>
-            <div className='flex flex-row gap-6'>
-              <TextField
-                label='Username'
-                name='username'
-                type='text'
-                value={form.username}
-                onChange={event => setForm({ ...form, username: event.target.value })}
-                variant='standard'
-                fullWidth
-                margin='normal'
-                placeholder='Enter your username'
-              />
+                <TextField
+                  required
+                  label='Email'
+                  name='email'
+                  type='email'
+                  value={form.email}
+                  onChange={event => setForm({ ...form, email: event.target.value })}
+                  variant='standard'
+                  fullWidth
+                  helperText={errorEmail.message}
+                  error={errorEmail.error}
+                  margin='normal'
+                  placeholder='Enter your email'
+                />
+              </div>
 
-              <TextField
-                required
-                label='Email'
-                name='email'
-                type='email'
-                value={form.email}
-                onChange={event => setForm({ ...form, email: event.target.value })}
-                variant='standard'
-                fullWidth
-                helperText={errorEmail.message}
-                error={errorEmail.error}
-                margin='normal'
-                placeholder='Enter your email'
-              />
-            </div>
-
-            <div className='flex flex-row gap-6'>
-              <TextField
-                required
-                label='Password'
-                name='password'
-                type={showPassword ? "text" : "password"}
-                value={form.password}
-                onChange={event => setForm({ ...form, password: event.target.value })}
-                variant='standard'
-                fullWidth
-                helperText={errorPassword.message}
-                error={errorPassword.error}
-                margin='normal'
-                placeholder='Enter your password'
-                InputProps={{
-                  endAdornment: (
-                    <IconButton onClick={handlePasswordToggle} edge='end'>
-                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                    </IconButton>
-                  ),
-                }}
-              />
+              <div className='flex flex-row gap-6'>
+                <TextField
+                  required
+                  label='Password'
+                  name='password'
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
+                  onChange={event => setForm({ ...form, password: event.target.value })}
+                  variant='standard'
+                  fullWidth
+                  helperText={errorPassword.message}
+                  error={errorPassword.error}
+                  margin='normal'
+                  placeholder='Enter your password'
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton onClick={handlePasswordToggle} edge='end'>
+                        {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      </IconButton>
+                    ),
+                  }}
+                />
 
                 <TextField
                   label='Confirm Password'
@@ -477,17 +474,17 @@ function RegisterForm() {
                   }}
                 />
 
-            </div>
+              </div>
 
-            <div className='flex justify-between mt-8'>
-            <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
-                Return to Sign In
-            </Link>
+              <div className='flex justify-between mt-8'>
+                <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
+                  Return to Sign In
+                </Link>
 
-              <button type='submit' className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
-                Register Now
-              </button>
-            </div>
+                <button type='submit' className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
+                  Register Now
+                </button>
+              </div>
             </form>
           </div>
         </div>

@@ -1,7 +1,22 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
+import { useEffect, useState } from 'react'
+import { BD_ACTION_GET } from '../../../services/master'
 
 function PieHighcharts() {
+    const [dataPie, setDataPie] = useState([])
+
+    useEffect(() => {
+        const get_pie_data = async () => {
+            const data = await BD_ACTION_GET('chart', 'chart_pie')
+            setDataPie(data.msg)
+        }
+
+        get_pie_data()
+
+        return () => { }
+    }, [])
+
     const options = {
         title: {
             text: 'Top Popularity Dishes',
@@ -38,30 +53,7 @@ function PieHighcharts() {
         series: [{
             name: 'Brands',
             colorByPoint: true,
-            data: [
-                {
-                    name: "Combo Special's Edwin",
-                    y: 100,
-                }, {
-                    name: 'Empanadas',
-                    y: 25
-                }, {
-                    name: 'Donas',
-                    y: 19
-                }, {
-                    name: 'Tortas Frias',
-                    y: 64
-                }, {
-                    name: 'Tacos de Don Toño',
-                    y: 98
-                }, {
-                    name: 'Pizza',
-                    y: 88
-                }, {
-                    name: 'Enchiladas',
-                    y: 81
-                },
-            ]
+            data: dataPie
         }]
     }
 

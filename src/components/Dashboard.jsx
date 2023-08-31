@@ -36,7 +36,7 @@ function Dashboard() {
     const [totalMXN, setTotalMXN] = useState(0)
     const [totalOrders, setTotalOrders] = useState(0)
     const [totalVisitors, setTotalVisitors] = useState(0)
-    const [selectedChart, setSelectedChart] = useState(graphics_avable[0])
+    const [selectedChart, setSelectedChart] = useState(graphics_avable[2])
     const [dataIndex, setDataIndex] = useState(0)
     const [comment, setComment] = useState(comments[dataIndex])
     const [betterProduct, setBetterProduct] = useState({
@@ -74,16 +74,9 @@ function Dashboard() {
 
         get_all_information()
 
-        const intervalId = setInterval(() => {
-            const nextIndex = (dataIndex + 1) % comments.length
-            setDataIndex(nextIndex)
-            setComment(comments[nextIndex])
-        }, 5000)
-
         return () => {
-            clearInterval(intervalId)
         }
-    }, [dataIndex])
+    }, [])
 
 
     useLayoutEffect(() => {
@@ -144,7 +137,7 @@ function Dashboard() {
                     <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
                             <span className='text-4xl font-montserrat'>{totalVisitors}</span>
-                            <span>Total Visitor</span>
+                            <span>Total Users</span>
                         </div>
                     </div>
                 </div>
@@ -176,7 +169,7 @@ function Dashboard() {
                         <div className='flex gap-3 items-center mb-6 rounded-lg'>
                             <span className='text-4xl font-montserrat'>{customer_satisfaction}</span>
                             <StyledRating
-                                value={4.9}
+                                value={4.5}
                                 readOnly
                                 precision={0.5}
                                 icon={<FavoriteIcon fontSize="inherit" />}
@@ -187,14 +180,17 @@ function Dashboard() {
                             <img src={comment.image_url} className='w-10 h-10 rounded-full' />
                             <div className='flex flex-col'>
                                 <span className='font-bold'>@ {comment.username}</span>
-                                <StyledRating
-                                    size='small'
-                                    value={comment.ranking}
-                                    readOnly
-                                    precision={0.5}
-                                    icon={<FavoriteIcon fontSize="inherit" />}
-                                    emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                                />
+                                <div className='flex items-center gap-2'>
+                                    <span className='text-sm font-montserrat font-bold'>{comment.ranking}</span>
+                                    <StyledRating
+                                        size='small'
+                                        value={comment.ranking}
+                                        readOnly
+                                        precision={0.5}
+                                        icon={<FavoriteIcon fontSize="inherit" />}
+                                        emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                                    />
+                                </div>
                                 <span className='text-sm'>{comment.comment}</span>
                             </div>
                         </div>
