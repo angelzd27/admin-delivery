@@ -3,6 +3,9 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
 import { BiArrowFromBottom } from 'react-icons/bi'
 import Loader from './Loader'
 import { countries } from '../services/country_codes'
@@ -124,6 +127,20 @@ function RegisterForm() {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
     return regex.test(password);
   }
+
+  //Estados para mostrar u ocultar contraseña
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+
+  const handlePasswordToggle = () => {
+    setShowPassword(!showPassword);
+  };
+
+
+  const handleConfirmPasswordToggle = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   //Validate Confirm Password
   const [errorConfirmPassword, setErrorConfirmPassword] = useState({
@@ -415,7 +432,7 @@ function RegisterForm() {
                 required
                 label='Password'
                 name='password'
-                type='password'
+                type={showPassword ? "text" : "password"}
                 value={form.password}
                 onChange={event => setForm({ ...form, password: event.target.value })}
                 variant='standard'
@@ -424,12 +441,19 @@ function RegisterForm() {
                 error={errorPassword.error}
                 margin='normal'
                 placeholder='Enter your password'
+                InputProps={{
+                  endAdornment: (
+                    <IconButton onClick={handlePasswordToggle} edge='end'>
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  ),
+                }}
               />
 
                 <TextField
                   label='Confirm Password'
                   name='confirmPassword'
-                  type='password'
+                  type={showConfirmPassword ? "text" : "password"}
                   value={form.confirm_password}
                   onChange={event => {
                     const newConfirmPassword = event.target.value;
@@ -444,6 +468,13 @@ function RegisterForm() {
                   margin='normal'
                   helperText={errorConfirmPassword.message}
                   error={errorConfirmPassword.error}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton onClick={handleConfirmPasswordToggle} edge="end">
+                        {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      </IconButton>
+                    ),
+                  }}
                 />
 
             </div>
