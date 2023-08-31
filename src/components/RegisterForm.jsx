@@ -11,6 +11,7 @@ import { profile } from '../services/profile'
 import SignUp from '../assets/animations/SignUp.mp4'
 import { BD_ACTION_POST } from '../services/master'
 
+
 function RegisterForm() {
   const navigate = useNavigate()
   const [load, setLoad] = useState(false)
@@ -24,7 +25,7 @@ function RegisterForm() {
     last_name: '',
     second_last_name: '',
     phone: '',
-    country: {},
+    country: '',
     picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     id_gender: 1
   })
@@ -43,6 +44,7 @@ function RegisterForm() {
   }
 
   const post_new_user = async () => {
+    
     const body = {
       username: form.username,
       email: form.email,
@@ -52,23 +54,163 @@ function RegisterForm() {
       last_name: form.last_name,
       second_last_name: form.second_last_name,
       phone: form.phone,
-      iso_code: form.country.code,
-      dial_code: form.country.dial_code,
+      iso_code: form.country.code || 'MX',
+      dial_code: form.country.dial_code || '+52',
       picture: form.picture,
       id_gender: form.id_gender
     }
+
+    console.log(body)
 
     const data = await BD_ACTION_POST('auth', 'sign_up', body)
 
     if (!data.error) {
       setLoad(true)
+      console.log("Data Enviado")
       setTimeout(() => {
         navigate(`/auth/sign_in`)
       }, 2000)
     } else {
-      setLoad(false)
+      console.log("Error al enviar data")
+      setLoad(false);
     }
   }
+
+  //Validacion FirstName
+  const [errorFirstName, setErrorFirstName] = useState({
+    error: false,
+    message: "",
+  })
+  const validateFirstName = (firstName) => {
+    const regex = /^[A-Za-z\s]+$/; //Only letters and spaces
+    return firstName.length >= 3 && regex.test(firstName);
+  };
+  
+  //Validacion LastName
+  const [errorLastName, setErrorLastName] = useState({
+    error: false,
+    message: "",
+  })
+  const validateLastName = (lastName) => {
+    const regex = /^[A-Za-z\s]+$/; //Only letters and spaces
+    return lastName.length >= 3 && regex.test(lastName);
+  };
+
+  //Validacion Phone Number
+  const [errorPhone, setErrorPhone] = useState({
+    error: false,
+    message: "",
+  });
+
+  //Validacion Email
+  const [errorEmail, setErrorEmail] = useState({
+    error: false,
+    message: "",
+  })
+
+  const validateEmail = (email) => {
+    const regex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/
+    return regex.test(email);
+  }
+
+  //Validacion Password
+  const [errorPassword, setErrorPassword] = useState({
+    error: false,
+    message: "",
+  })
+
+  const validatePassword = (password) => {
+    //Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    return regex.test(password);
+  }
+
+  //Validate Confirm Password
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState({
+    error: false,
+    message: "",
+  });
+
+  const validateConfirmPassword = (confirmPassword) => {
+    return confirmPassword === form.password;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //VALIDACION FIRST NAME
+    if (validateFirstName(form.first_name)) {
+      setErrorFirstName({
+        error: false,
+        message: "",
+      });
+    } else {
+      setErrorFirstName({
+        error: true,
+        message: "First Name must have at least 3 letters and no numbers",
+      });
+    }
+
+    //VALIDACION LAST NAME
+    if (validateLastName(form.last_name)) {
+      setErrorLastName({
+        error: false,
+        message: "",
+      });
+    } else {
+      setErrorLastName({
+        error: true,
+        message: "Last Name must have at least 3 letters and no numbers",
+      });
+    }
+
+    //VALIDACION EMAIL
+    if (validateEmail(form.email)) {
+      setErrorEmail({
+        error: false,
+        message: "",
+      });
+    } else {
+      setErrorEmail({
+        error: true,
+        message: "Wrong email format"
+      });
+    }
+
+    //VALIDACION PASSWORD
+    if (validatePassword(form.password)) {
+      setErrorPassword({
+        error: false,
+        message: "",
+      });
+    } else {
+      setErrorPassword({
+        error: true,
+        message: "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character"
+      });
+    }
+    
+    // Comprueba si todos los errores están en error: false
+    if (
+      !errorFirstName.error &&
+      !errorLastName.error &&
+      !errorPhone.error &&
+      !errorEmail.error &&
+      !errorPassword.error &&
+      !errorConfirmPassword.error
+    ) {
+      // Ejecuta la función post_new_user si no hay errores
+      try {
+        // Realizar la solicitud POST
+        post_new_user();
+
+      } catch (error) {
+        // Manejo de errores si post_new_user falla
+        console.error("Error registering user:", error);
+      }
+    }
+  };
+  
 
   return (
     <>
@@ -79,28 +221,39 @@ function RegisterForm() {
         <div className='xl:w-1/2 w-full flex items-center justify-center'>
           <div className='w-[80%] bg-white p-10 rounded-3xl border border-gray-100'>
             <h2 className='text-gray-500 text-xl font-bold text-center'>Personal Information</h2>
+            <form onSubmit={handleSubmit}>
             <div className='flex flex-col'>
               <TextField
+                required
                 label='First Name'
                 name='firstName'
+                type="text"
                 value={form.first_name}
-                onChange={event => setForm({ ...form, first_name: event.target.value })}
+                onChange={event => {
+                  setForm({ ...form, first_name: event.target.value });
+                }}
                 variant='standard'
                 fullWidth
                 margin='normal'
                 placeholder='Enter your First Name'
+                helperText={errorFirstName.message}
+                error={errorFirstName.error}
               />
 
               <div className='flex flex-row gap-6'>
                 <TextField
+                  required
                   label='Last Name'
                   name='lastName'
+                  type="text"
                   value={form.last_name}
                   onChange={event => setForm({ ...form, last_name: event.target.value })}
                   variant='standard'
                   fullWidth
                   margin='normal'
                   placeholder='Enter your Last Name'
+                  helperText={errorLastName.message}
+                  error={errorLastName.error}
                 />
 
                 <TextField
@@ -117,24 +270,52 @@ function RegisterForm() {
 
               <div className='flex xl:flex-row flex-col gap-6'>
                 <div className='xl:w-1/2 w-full'>
-                  <TextField
-                    label='Phone'
-                    name='phone'
-                    value={form.phone}
-                    onChange={event => setForm({ ...form, phone: event.target.value })}
-                    variant='standard'
-                    fullWidth
-                    margin='normal'
-                    placeholder='Enter your Phone'
-                  />
+                    <TextField
+                      required
+                      label='Phone'
+                      name='phone'
+                      type="tel"
+                      value={form.phone}
+                      onChange={(event) => {
+                        const inputPhoneNumber = event.target.value;
+                        if (/^\d*$/.test(inputPhoneNumber)) { // Verifica si la entrada contiene solo dígitos
+                          setForm({ ...form, phone: inputPhoneNumber });
+                          if (inputPhoneNumber.length === 10) {
+                            setErrorPhone({
+                              error: false,
+                              message: "",
+                            });
+                          } else {
+                            setErrorPhone({
+                              error: true,
+                              message: "Phone Number must have 10 numbers",
+                            });
+                          }
+                        }
+                      }}
+                      onKeyPress={(event) => {
+                        const keyPressed = event.key;
+                        if (!/\d/.test(keyPressed)) { // Cancela la pulsación si la tecla no es un dígito
+                          event.preventDefault();
+                        }
+                      }}
+                      variant='standard'
+                      fullWidth
+                      margin='normal'
+                      placeholder='Enter your Phone'
+                      helperText={errorPhone.message}
+                      error={errorPhone.error}
+                    />
+
                 </div>
                 <div className='xl:w-1/2 w-full'>
                   <TextField
+                    required
                     select
                     label='Country'
                     name='country'
-                    value={form.country}
-                    onChange={event => setForm({ ...form, country: event.target.value })}
+                    value={form.country.iso_code}
+                    onChange={event => setForm({ ...form, country: { iso_code: event.target.value } })}
                     variant='standard'
                     fullWidth
                     margin='normal'
@@ -152,6 +333,7 @@ function RegisterForm() {
 
               <div className='flex gap-6'>
                 <TextField
+                  required
                   select
                   label='Gender'
                   name='gender'
@@ -171,6 +353,7 @@ function RegisterForm() {
                 </TextField>
 
                 <TextField
+                  required
                   select
                   label='Profile'
                   name='profile'
@@ -190,6 +373,7 @@ function RegisterForm() {
                 </TextField>
               </div>
             </div>
+         
 
             <h2 className='text-gray-500 text-xl font-bold text-center mt-10 mb-5'>Account Information</h2>
             <div className='flex flex-col items-center justify-center gap-4'>
@@ -211,13 +395,16 @@ function RegisterForm() {
               />
 
               <TextField
+                required
                 label='Email'
                 name='email'
-                type='text'
+                type='email'
                 value={form.email}
                 onChange={event => setForm({ ...form, email: event.target.value })}
                 variant='standard'
                 fullWidth
+                helperText={errorEmail.message}
+                error={errorEmail.error}
                 margin='normal'
                 placeholder='Enter your email'
               />
@@ -225,6 +412,7 @@ function RegisterForm() {
 
             <div className='flex flex-row gap-6'>
               <TextField
+                required
                 label='Password'
                 name='password'
                 type='password'
@@ -232,31 +420,44 @@ function RegisterForm() {
                 onChange={event => setForm({ ...form, password: event.target.value })}
                 variant='standard'
                 fullWidth
+                helperText={errorPassword.message}
+                error={errorPassword.error}
                 margin='normal'
                 placeholder='Enter your password'
               />
 
+                <TextField
+                  label='Confirm Password'
+                  name='confirmPassword'
+                  type='password'
+                  value={form.confirm_password}
+                  onChange={event => {
+                    const newConfirmPassword = event.target.value;
+                    setForm({ ...form, confirm_password: newConfirmPassword });
+                    setErrorConfirmPassword({
+                      error: !validateConfirmPassword(newConfirmPassword),
+                      message: 'Passwords do not match', // Cambia el mensaje según tus necesidades
+                    });
+                  }}
+                  variant='standard'
+                  fullWidth
+                  margin='normal'
+                  helperText={errorConfirmPassword.message}
+                  error={errorConfirmPassword.error}
+                />
 
-              <TextField
-                label='Confirm Password'
-                name='confirmPassword'
-                type='password'
-                value={form.confirm_password}
-                onChange={event => setForm({ ...form, confirm_password: event.target.value })}
-                variant='standard'
-                fullWidth
-                margin='normal'
-              />
             </div>
 
             <div className='flex justify-between mt-8'>
-              <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
+            <Link to='/auth/sign_in' className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
                 Return to Sign In
-              </Link>
-              <Link onClick={() => post_new_user()} className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
+            </Link>
+
+              <button type='submit' className='text-yummy-800 hover:text-yummy-600 transition-all duration-200'>
                 Register Now
-              </Link>
+              </button>
             </div>
+            </form>
           </div>
         </div>
 
