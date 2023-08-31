@@ -118,7 +118,8 @@ function MyProfile() {
                 </div>
 
                 <div className='flex flex-col items-center justify-center gap-4'>
-                    <img src={form.picture} className='rounded-full shadow-lg w-[150px] h-[150px]' />
+                    <img className={`object-cover rounded-full w-32 h-32`}
+                        src={form.picture} />
                     <input type='file' id='actual-btn' hidden onChange={upload_images} />
                     <label htmlFor='actual-btn' className='text-sky-500 flex items-center cursor-pointer justify-center gap-1 hover:bg-gray-100 px-4 py-2 rounded-xl hover:text-sky-400'>Choose File <BiArrowFromBottom /></label>
                 </div>
