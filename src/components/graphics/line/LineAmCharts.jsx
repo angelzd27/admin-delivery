@@ -5,11 +5,11 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated'
 
 function LineAmCharts() {
     useLayoutEffect(() => {
-        var root = am5.Root.new('chart-line');
+        var root = am5.Root.new('chart-line')
 
         root.setThemes([
             am5themes_Animated.new(root)
-        ]);
+        ])
 
         var chart = root.container.children.push(
             am5xy.XYChart.new(root, {
@@ -18,9 +18,8 @@ function LineAmCharts() {
                 layout: root.verticalLayout,
                 maxTooltipDistance: 0
             })
-        );
+        )
 
-        // Define data
         var data = [{
             date: new Date(2023, 0, 1).getTime(),
             value: 100
@@ -66,29 +65,26 @@ function LineAmCharts() {
         }]
 
         data = data.filter(function (item) {
-            return item.date !== null;
-        });
+            return item.date !== null
+        })
 
-        // Create Y-axis
         var yAxis = chart.yAxes.push(
             am5xy.ValueAxis.new(root, {
                 extraTooltipPrecision: 1,
                 renderer: am5xy.AxisRendererY.new(root, {})
             })
-        );
+        )
 
-        // Create X-Axis
         let xAxis = chart.xAxes.push(
             am5xy.DateAxis.new(root, {
                 baseInterval: { timeUnit: 'day', count: 1 },
                 renderer: am5xy.AxisRendererX.new(root, {})
             })
-        );
+        )
 
-        xAxis.get('dateFormats')['day'] = 'MM/dd';
-        xAxis.get('periodChangeDateFormats')['day'] = 'MMM';
+        xAxis.get('dateFormats')['day'] = 'MM/dd'
+        xAxis.get('periodChangeDateFormats')['day'] = 'MMM'
 
-        // Create series
         function createSeries(name, field) {
             var series = chart.series.push(
                 am5xy.LineSeries.new(root, {
@@ -100,7 +96,7 @@ function LineAmCharts() {
                     tooltip: am5.Tooltip.new(root, {}),
                     connect: false
                 })
-            );
+            )
 
             series.bullets.push(function () {
                 return am5.Bullet.new(root, {
@@ -108,32 +104,31 @@ function LineAmCharts() {
                         radius: 5,
                         fill: series.get('fill')
                     })
-                });
-            });
+                })
+            })
 
-            series.strokes.template.set('strokeWidth', 2);
+            series.strokes.template.set('strokeWidth', 2)
 
             series.get('tooltip').label.set('text', '[bold]{name}[/]\n{valueX.formatDate()}: {valueY}')
-            series.data.setAll(data);
+            series.data.setAll(data)
         }
 
-        createSeries('Series', 'value');
+        createSeries('Series', 'value')
 
-        // Add cursor
         chart.set('cursor', am5xy.XYCursor.new(root, {
             behavior: 'zoomXY',
             xAxis: xAxis
-        }));
+        }))
 
         xAxis.set('tooltip', am5.Tooltip.new(root, {
             themeTags: ['axis']
-        }));
+        }))
 
         yAxis.set('tooltip', am5.Tooltip.new(root, {
             themeTags: ['axis']
-        }));
+        }))
 
-        return () => { };
+        return () => { }
     }, [])
 
     return (

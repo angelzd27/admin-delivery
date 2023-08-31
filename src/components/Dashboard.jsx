@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -8,6 +8,8 @@ import { MdStar } from 'react-icons/md'
 import { TextField } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import { graphics_avable } from '../services/graphics_avable'
+import { comments } from '../services/comments'
+import { BD_ACTION_GET } from '../services/master'
 import LineChartJS from './graphics/line/LineChartJS'
 import LineHighcharts from './graphics/line/LineHighcharts'
 import BarHighcharts from './graphics/bars/BarsHighcharts'
@@ -18,10 +20,6 @@ import PieAmCharts from './graphics/pie/PieAmCharts'
 import BarsAmCharts from './graphics/bars/BarsAmCharts'
 import LineAmCharts from './graphics/line/LineAmCharts'
 
-// ! Elimar importacion de imagenes cuando pase a producción
-import Tacos from '../assets/food/TacosDonTono.jpg'
-import DulcesLuz from '../assets/food/DulcesLuz.jpg'
-
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
         color: '#ff6d75',
@@ -31,40 +29,78 @@ const StyledRating = styled(Rating)({
     },
 })
 
-// const socket = io('localhost:5000')
+const socket = io('http://127.0.0.1:4003')
 
 function Dashboard() {
-    // const [betterDish, setBetterDish] = useState(null)
+    const [totalUSD, setTotalUSD] = useState(0)
+    const [totalMXN, setTotalMXN] = useState(0)
+    const [totalOrders, setTotalOrders] = useState(0)
+    const [totalVisitors, setTotalVisitors] = useState(0)
     const [selectedChart, setSelectedChart] = useState(graphics_avable[0])
-    let total_usd = '5,583.12'
-    let total_mex = '96,084.55'
-    let total_order = '126'
-    let total_visitor = '96'
+    const [dataIndex, setDataIndex] = useState(0)
+    const [comment, setComment] = useState(comments[dataIndex])
+    const [betterProduct, setBetterProduct] = useState({
+        id: '',
+        name: '',
+        picture: '',
+        rating: 0
+    })
+    const [worstProduct, setWorstProduct] = useState({
+        id: '',
+        name: '',
+        picture: '',
+        rating: 0
+    })
     let customer_satisfaction = 4.5
-    let better_dish = {
-        id: 1,
-        name: 'Tacos Don Toño',
-        image: Tacos,
-        ranking: 4.9,
-        categories: 'Fast Food'
-    }
-    let worst_dish = {
-        id: 2,
-        name: 'Dulces Doña Luz',
-        image: DulcesLuz,
-        ranking: 1.2,
-        categories: 'Others'
-    }
 
-    // useEffect(() => {
-    //     socket.on('better_product', (better_product) => {
-    //         console.log(better_product)
-    //     })
-    //     return () => {
-    //         socket.disconnect()
-    //     }
-    // }, [])
+    useEffect(() => {
+        const get_all_information = async () => {
+            const data_earing = await BD_ACTION_GET('dashboard', 'get_earnings')
+            const data_order_visitors = await BD_ACTION_GET('dashboard', 'get_orders_customers')
+            const data_better_product = await BD_ACTION_GET('dashboard', 'get_best_product')
+            const data_worst_product = await BD_ACTION_GET('dashboard', 'get_worst_product')
 
+            if (data_earing.error || data_order_visitors.error || data_better_product.error || data_worst_product.error) {
+                console.log('Error In Database')
+            } else {
+                setTotalUSD(data_earing.msg[0].earnings_usd)
+                setTotalMXN(data_earing.msg[0].earnings_mxn)
+                setTotalOrders(data_order_visitors.msg[0].total_orders)
+                setTotalVisitors(data_order_visitors.msg[0].total_visitors)
+                setBetterProduct(data_better_product.msg[0])
+                setWorstProduct(data_worst_product.msg[0])
+            }
+        }
+
+        get_all_information()
+
+        const intervalId = setInterval(() => {
+            const nextIndex = (dataIndex + 1) % comments.length
+            setDataIndex(nextIndex)
+            setComment(comments[nextIndex])
+        }, 5000)
+
+        return () => {
+            clearInterval(intervalId)
+        }
+    }, [dataIndex])
+
+
+    useLayoutEffect(() => {
+        socket.on('update-dashboard', (data) => {
+            console.log(data)
+            setTotalUSD(data.earnings_usd)
+            setTotalMXN(data.earnings_mxn)
+            setTotalOrders(data.total_orders)
+            setTotalVisitors(data.total_visitors)
+            setBetterProduct(data.best_product)
+            setWorstProduct(data.worst_product)
+        })
+
+        return () => {
+            socket.off('update-dashboard')
+        }
+    }, [])
 
     return (
         <>
@@ -89,25 +125,25 @@ function Dashboard() {
                 <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4'>
                     <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>$ {total_usd} USD</span>
+                            <span className='text-4xl font-montserrat'>$ {totalUSD} USD</span>
                             <span>Total Earning (USD)</span>
                         </div>
                     </div>
                     <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>$ {total_mex} MEX</span>
+                            <span className='text-4xl font-montserrat'>$ {totalMXN} MEX</span>
                             <span>Total Earning (MEX)</span>
                         </div>
                     </div>
                     <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>{total_order}</span>
+                            <span className='text-4xl font-montserrat'>{totalOrders}</span>
                             <span>Total Orders</span>
                         </div>
                     </div>
                     <div className='bg-white shadow-md rounded-lg'>
                         <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>{total_visitor}</span>
+                            <span className='text-4xl font-montserrat'>{totalVisitors}</span>
                             <span>Total Visitor</span>
                         </div>
                     </div>
@@ -116,24 +152,22 @@ function Dashboard() {
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
                         <span className='text-2xl'>Better Ranking Dish</span>
                         <div className='flex flex-col gap-3'>
-                            <img src={better_dish.image} className='w-52 rounded-3xl hover:scale-105 transition-all' />
-                            <h1 className='text-lg font-bold'>{better_dish.name}</h1>
+                            <img src={betterProduct.picture} className='w-52 rounded-3xl hover:scale-105 transition-all' />
+                            <h1 className='text-lg font-bold'>{betterProduct.name}</h1>
                             <div className='flex flex-row items-center gap-1 text-gray-500'>
                                 <span><MdStar /></span>
-                                <span className='font-montserrat'>{better_dish.ranking}</span>
-                                <span className='ml-10'>{better_dish.categories}</span>
+                                <span className='font-montserrat'>{betterProduct.rating}</span>
                             </div>
                         </div>
                     </div>
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
                         <span className='text-2xl'>Worst Ranking Dish</span>
                         <div className='flex flex-col gap-3'>
-                            <img src={worst_dish.image} className='w-52 rounded-3xl hover:scale-105 transition-all' />
-                            <h1 className='text-lg font-bold'>{worst_dish.name}</h1>
+                            <img src={worstProduct.picture} className='w-52 rounded-3xl hover:scale-105 transition-all' />
+                            <h1 className='text-lg font-bold'>{worstProduct.name}</h1>
                             <div className='flex flex-row items-center gap-1 text-gray-500'>
                                 <span><MdStar /></span>
-                                <span className='font-montserrat'>{worst_dish.ranking}</span>
-                                <span className='ml-10'>{worst_dish.categories}</span>
+                                <span className='font-montserrat'>{worstProduct.rating}</span>
                             </div>
                         </div>
                     </div>
@@ -141,27 +175,27 @@ function Dashboard() {
                         <span className='text-2xl'>Customer Satisfaction</span>
                         <div className='flex gap-3 items-center mb-6 rounded-lg'>
                             <span className='text-4xl font-montserrat'>{customer_satisfaction}</span>
-                            {/* <StyledRating
-                                defaultValue={customer_satisfaction}
+                            <StyledRating
+                                value={4.9}
+                                readOnly
                                 precision={0.5}
                                 icon={<FavoriteIcon fontSize="inherit" />}
                                 emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                                readOnly
-                            /> */}
+                            />
                         </div>
                         <div className='flex flex-row shadow-lg p-5 bg-slate-50 gap-5 items-center rounded-lg max-w-[80%]'>
-                            <img src={''} className='w-10 h-10 rounded-full' />
+                            <img src={comment.image_url} className='w-10 h-10 rounded-full' />
                             <div className='flex flex-col'>
-                                <span className='font-bold'>@ DeicideSuici</span>
-                                {/* <StyledRating
-                                    defaultValue="2.5"
+                                <span className='font-bold'>@ {comment.username}</span>
+                                <StyledRating
+                                    size='small'
+                                    value={comment.ranking}
+                                    readOnly
                                     precision={0.5}
                                     icon={<FavoriteIcon fontSize="inherit" />}
                                     emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                                    readOnly
-                                    size='small'
-                                /> */}
-                                <span className='text-sm'>Mi torta estaba bien fria y mi coca caliente, ademas huele a mecanica, a pura gasolina y aceite quemado</span>
+                                />
+                                <span className='text-sm'>{comment.comment}</span>
                             </div>
                         </div>
                     </div>
