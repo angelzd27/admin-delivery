@@ -1,7 +1,13 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
+import { useEffect, useLayoutEffect, useState } from 'react'
+import { data_chart } from '../../../services/charts'
+import { io } from 'socket.io-client'
+
+const socket = io('http://127.0.0.1:4003')
 
 function BarHighcharts() {
+    const [datasets, setDatasets] = useState([])
     const options = {
         chart: {
             type: 'column'
@@ -42,21 +48,31 @@ function BarHighcharts() {
             name: 'All Dishes',
             colorByPoint: true,
             groupPadding: 0,
-            data: [
-                ["Combo Special's Edwin", 135,],
-                ['Empanadas Frias', 23],
-                ['Donas', 16],
-                ['Tortas Frias', 85],
-                ['Tacos de Don Toño', 129],
-                ['Pizza', 110],
-                ['Enchiladas', 95],
-                ['Coca Cola', 130],
-                ['Paletas de hielo', 19],
-                ['Dulces Luz', 5],
-                ['Nieve', 122],
-            ]
+            data: datasets
         }]
     }
+
+    useEffect(() => {
+        const bar_highcharts = async () => {
+            const data = await data_chart('column', 'highcharts')
+            setDatasets(data)
+        }
+
+        bar_highcharts()
+
+        return () => { }
+    }, [])
+
+    useLayoutEffect(() => {
+        socket.on('update-column', (data) => {
+            setDatasets(data.highcharts)
+        })
+
+        return () => {
+            socket.off('update-column')
+        }
+    }, [])
+
     return (
         <>
             <div className='w-[100%]'>

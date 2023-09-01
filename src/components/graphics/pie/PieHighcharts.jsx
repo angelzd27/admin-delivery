@@ -1,22 +1,13 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
-import { useEffect, useState } from 'react'
-import { BD_ACTION_GET } from '../../../services/master'
+import { useEffect, useState, useLayoutEffect } from 'react'
+import { io } from 'socket.io-client'
+import { data_chart } from '../../../services/charts'
+
+const socket = io('http://127.0.0.1:4003')
 
 function PieHighcharts() {
-    const [dataPie, setDataPie] = useState([])
-
-    useEffect(() => {
-        const get_pie_data = async () => {
-            const data = await BD_ACTION_GET('chart', 'chart_pie')
-            setDataPie(data.msg)
-        }
-
-        get_pie_data()
-
-        return () => { }
-    }, [])
-
+    const [datasets, setDatasets] = useState([])
     const options = {
         title: {
             text: 'Top Popularity Dishes',
@@ -53,9 +44,30 @@ function PieHighcharts() {
         series: [{
             name: 'Brands',
             colorByPoint: true,
-            data: dataPie
+            data: datasets
         }]
     }
+
+    useEffect(() => {
+        const get_pie_data = async () => {
+            const data = await data_chart('pie', 'highcharts')
+            setDatasets(data)
+        }
+
+        get_pie_data()
+
+        return () => { }
+    }, [])
+
+    useLayoutEffect(() => {
+        socket.on('update-pie', (data) => {
+            setDatasets(data.highcharts)
+        })
+
+        return () => {
+            socket.off('update-pie')
+        }
+    }, [])
 
     return (
         <>

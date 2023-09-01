@@ -1,5 +1,8 @@
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import { Line } from 'react-chartjs-2'
+import { io } from 'socket.io-client'
+import { data_chart } from '../../../services/charts'
 
 ChartJS.register(
     CategoryScale,
@@ -10,7 +13,11 @@ ChartJS.register(
     Tooltip, Legend
 )
 
+const socket = io('http://127.0.0.1:4003')
+
 function LineChartJS() {
+    const [labels, setLabels] = useState([])
+    const [datasets, setDatasets] = useState([])
     const options = {
         responsive: true,
         plugins: {
@@ -22,17 +29,32 @@ function LineChartJS() {
     }
 
     const data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        datasets: [
-            {
-                id: 1,
-                label: 'Earing',
-                data: [65, 59, 80, 81, 56, 55, 40, 27, 37, 28, 19, 29],
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            }
-        ]
+        labels: labels,
+        datasets: datasets
     }
+
+    useEffect(() => {
+        const get_line_data = async () => {
+            const data = await data_chart('line', 'chartsjs')
+            setLabels(data.labels)
+            setDatasets(data.datasets)
+        }
+
+        get_line_data()
+
+        return () => { }
+    }, [])
+
+    useLayoutEffect(() => {
+        socket.on('update-line', (data) => {
+            setLabels(data.chartsjs.labels)
+            setDatasets(data.chartsjs.datasets)
+        })
+
+        return () => {
+            socket.off('update-line')
+        }
+    }, [])
 
     return (
         <div className='w-[90%]'>

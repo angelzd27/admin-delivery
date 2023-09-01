@@ -1,7 +1,8 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useLayoutEffect } from 'react'
 import { Pie } from 'react-chartjs-2'
-import { BD_ACTION_GET } from '../../../services/master'
+import { io } from 'socket.io-client'
+import { data_chart } from '../../../services/charts'
 
 ChartJS.register(
     ArcElement,
@@ -10,28 +11,33 @@ ChartJS.register(
     Colors
 )
 
+const socket = io('http://127.0.0.1:4003')
+
 function PieChartJS() {
     const [labels, setLabels] = useState([])
-    const [dataPie, setDataPie] = useState([])
+    const [datasets, setDatasets] = useState([])
 
     useEffect(() => {
         const get_pie_data = async () => {
-            const data = await BD_ACTION_GET('chart', 'chart_pie')
-            const labels_db = []
-            const data_db = []
-
-            data.msg.forEach(product => {
-                labels_db.push(product.name)
-                data_db.push(product.y)
-            })
-
-            setLabels(labels_db)
-            setDataPie(data_db)
+            const data = await data_chart('pie', 'chartjs')
+            setLabels(data.labels)
+            setDatasets(data.datasets)
         }
 
         get_pie_data()
 
         return () => { }
+    }, [])
+
+    useLayoutEffect(() => {
+        socket.on('update-pie', (data) => {
+            setLabels(data.chartjs.labels)
+            setDatasets(data.chartjs.datasets)
+        })
+
+        return () => {
+            socket.off('update-pie')
+        }
     }, [])
 
     const options = {
@@ -43,24 +49,25 @@ function PieChartJS() {
             },
             colors: {
                 enabled: true
+            },
+            legend: {
+                display: true,
+                position: "left",
+                labels: {
+                    fontColor: "#333",
+                    fontSize: 16
+                }
             }
         },
     }
 
     const data = {
         labels: labels,
-        datasets: [
-            {
-                id: 1,
-                label: 'Top Dishes',
-                data: dataPie,
-                backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"]
-            }
-        ]
+        datasets: datasets
     }
 
     return (
-        <div className='w-[50%]'>
+        <div className='w-[80%] flex items-center justify-center'>
             <Pie data={data} options={options} />
         </div>
     )

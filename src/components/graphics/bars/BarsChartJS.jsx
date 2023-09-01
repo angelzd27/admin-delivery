@@ -1,5 +1,8 @@
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
+import { io } from 'socket.io-client'
+import { data_chart } from '../../../services/charts'
 
 ChartJS.register(
     CategoryScale,
@@ -10,26 +13,48 @@ ChartJS.register(
     Legend
 )
 
+const socket = io('http://127.0.0.1:4003')
+
 function BarsChartJS() {
+    const [labels, setLabels] = useState([])
+    const [datasets, setDatasets] = useState([])
+
+    useEffect(() => {
+        const get_bar_data = async () => {
+            const data = await data_chart('column', 'chartsjs')
+            setLabels(data.labels)
+            setDatasets(data.datasets)
+        }
+
+        get_bar_data()
+
+        return () => { }
+    }, [])
+
+    useLayoutEffect(() => {
+        socket.on('update-column', (data) => {
+            setLabels(data.chartsjs.labels)
+            setDatasets(data.chartsjs.datasets)
+        })
+
+        return () => {
+            socket.off('update-column')
+        }
+    }, [])
+
     const options = {
         responsive: true,
         plugins: {
             title: {
                 display: true,
-                text: 'All Dishes'
+                text: 'All Order Dishes'
             },
         },
     }
 
     const data = {
-        labels: ["Combo Special's Edwin", 'Empanadas Frias', 'Donas', 'Tortas Frias', 'Tacos de Don Toño', 'Pizza', 'Enchiladas', 'Coca Cola', 'Paletas de hielo', 'Dulces Luz', 'Nieve'],
-        datasets: [
-            {
-                label: 'Dataset 1',
-                data: [135, 23, 16, 85, 129, 110, 95, 130, 19, 5, 122],
-                backgroundColor: 'rgba(53, 162, 235, 0.5)',
-            }
-        ],
+        labels: labels,
+        datasets: datasets
     };
 
     return (

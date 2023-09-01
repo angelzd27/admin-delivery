@@ -34,9 +34,34 @@ const socket = io('http://127.0.0.1:4003')
 function Dashboard() {
     const [totalUSD, setTotalUSD] = useState(0)
     const [totalMXN, setTotalMXN] = useState(0)
-    const [totalOrders, setTotalOrders] = useState(0)
-    const [totalVisitors, setTotalVisitors] = useState(0)
-    const [selectedChart, setSelectedChart] = useState(graphics_avable[2])
+    const [orders, setOrders] = useState([
+        {
+            id_status: 0,
+            status: '',
+            total_orders: 0
+        },
+        {
+            id_status: 0,
+            status: '',
+            total_orders: 0
+        },
+        {
+            id_status: 0,
+            status: '',
+            total_orders: 0
+        },
+        {
+            id_status: 0,
+            status: '',
+            total_orders: 0
+        },
+        {
+            id_status: 0,
+            status: '',
+            total_orders: 0
+        },
+    ])
+    const [selectedChart, setSelectedChart] = useState(graphics_avable[0])
     const [dataIndex, setDataIndex] = useState(0)
     const [comment, setComment] = useState(comments[dataIndex])
     const [betterProduct, setBetterProduct] = useState({
@@ -56,17 +81,16 @@ function Dashboard() {
     useEffect(() => {
         const get_all_information = async () => {
             const data_earing = await BD_ACTION_GET('dashboard', 'get_earnings')
-            const data_order_visitors = await BD_ACTION_GET('dashboard', 'get_orders_customers')
+            const data_orders = await BD_ACTION_GET('dashboard', 'get_orders_dashboard')
             const data_better_product = await BD_ACTION_GET('dashboard', 'get_best_product')
             const data_worst_product = await BD_ACTION_GET('dashboard', 'get_worst_product')
 
-            if (data_earing.error || data_order_visitors.error || data_better_product.error || data_worst_product.error) {
+            if (data_earing.error || data_orders.error || data_better_product.error || data_worst_product.error) {
                 console.log('Error In Database')
             } else {
                 setTotalUSD(data_earing.msg[0].earnings_usd)
                 setTotalMXN(data_earing.msg[0].earnings_mxn)
-                setTotalOrders(data_order_visitors.msg[0].total_orders)
-                setTotalVisitors(data_order_visitors.msg[0].total_visitors)
+                setOrders(data_orders.msg)
                 setBetterProduct(data_better_product.msg[0])
                 setWorstProduct(data_worst_product.msg[0])
             }
@@ -84,8 +108,7 @@ function Dashboard() {
             console.log(data)
             setTotalUSD(data.earnings_usd)
             setTotalMXN(data.earnings_mxn)
-            setTotalOrders(data.total_orders)
-            setTotalVisitors(data.total_visitors)
+            setOrders(data.orders)
             setBetterProduct(data.best_product)
             setWorstProduct(data.worst_product)
         })
@@ -116,34 +139,42 @@ function Dashboard() {
                     </TextField>
                 </div>
                 <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4'>
-                    <div className='bg-white shadow-md rounded-lg'>
-                        <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>$ {totalUSD} USD</span>
+                    <div className='bg-white shadow-md rounded-lg col-span-2 flex xl:flex-row md:flex-row flex-col items-center justify-center py-5 gap-16 text-center'>
+                        <div className='flex flex-col items-center justify-center gap-1'>
+                            <span className='xl:text-4xl text-2xl font-montserrat underline underline-offset-4'>$ {totalUSD} USD</span>
                             <span>Total Earning (USD)</span>
                         </div>
-                    </div>
-                    <div className='bg-white shadow-md rounded-lg'>
-                        <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>$ {totalMXN} MEX</span>
+                        <div className='flex flex-col items-center justify-center gap-1'>
+                            <span className='xl:text-4xl text-2xl font-montserrat underline underline-offset-4'>$ {totalMXN} MEX</span>
                             <span>Total Earning (MEX)</span>
                         </div>
                     </div>
-                    <div className='bg-white shadow-md rounded-lg'>
-                        <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>{totalOrders}</span>
-                            <span>Total Orders</span>
+                    <div className='bg-white shadow-md rounded-lg flex justify-center gap-8 col-span-2 text-center xl:flex-row md:flex-row flex-col py-5'>
+                        <div className='flex flex-col items-center justify-center text-sky-500'>
+                            <span className='text-3xl font-montserrat'>{orders[0].total_orders}</span>
+                            <span className='text-[12px]'>Orders Pending</span>
                         </div>
-                    </div>
-                    <div className='bg-white shadow-md rounded-lg'>
-                        <div className='flex flex-col items-center justify-center gap-5 py-5'>
-                            <span className='text-4xl font-montserrat'>{totalVisitors}</span>
-                            <span>Total Users</span>
+                        <div className='flex flex-col items-center justify-center text-amber-500'>
+                            <span className='text-3xl font-montserrat'>{orders[1].total_orders}</span>
+                            <span className='text-[12px]'>Orders On-Process</span>
+                        </div>
+                        <div className='flex flex-col items-center justify-center text-green-500'>
+                            <span className='text-3xl font-montserrat'>{orders[2].total_orders}</span>
+                            <span className='text-[12px]'>Orders Completed</span>
+                        </div>
+                        <div className='flex flex-col items-center justify-center text-orange-500'>
+                            <span className='text-3xl font-montserrat'>{orders[3].total_orders}</span>
+                            <span className='text-[12px]'>Orders Rejected</span>
+                        </div>
+                        <div className='flex flex-col items-center justify-center text-red-500'>
+                            <span className='text-3xl font-montserrat'>{orders[4].total_orders}</span>
+                            <span className='text-[12px]'>Orders Cancelled</span>
                         </div>
                     </div>
                 </div>
                 <div className='grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4'>
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
-                        <span className='text-2xl'>Better Ranking Dish</span>
+                        <span className='text-2xl'>Best Selling Product</span>
                         <div className='flex flex-col gap-3'>
                             <img src={betterProduct.picture} className='w-52 rounded-3xl hover:scale-105 transition-all' />
                             <h1 className='text-lg font-bold'>{betterProduct.name}</h1>
@@ -154,7 +185,7 @@ function Dashboard() {
                         </div>
                     </div>
                     <div className='flex flex-col items-center bg-white shadow-md rounded-lg gap-4 py-5'>
-                        <span className='text-2xl'>Worst Ranking Dish</span>
+                        <span className='text-2xl'>Least Sold Product</span>
                         <div className='flex flex-col gap-3'>
                             <img src={worstProduct.picture} className='w-52 rounded-3xl hover:scale-105 transition-all' />
                             <h1 className='text-lg font-bold'>{worstProduct.name}</h1>
