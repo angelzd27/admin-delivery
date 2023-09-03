@@ -61,7 +61,7 @@ function Dashboard() {
             total_orders: 0
         },
     ])
-    const [selectedChart, setSelectedChart] = useState(graphics_avable[0])
+    const [selectedChart, setSelectedChart] = useState(graphics_avable[2])
     const [dataIndex, setDataIndex] = useState(0)
     const [comment, setComment] = useState(comments[dataIndex])
     const [betterProduct, setBetterProduct] = useState({
