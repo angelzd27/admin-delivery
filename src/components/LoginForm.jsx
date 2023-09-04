@@ -41,7 +41,7 @@ function LoginForm() {
   }
   const validatePassword = (password) => {
     //Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&]{8,}$/
     return regex.test(password);
   }
 
