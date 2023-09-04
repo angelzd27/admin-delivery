@@ -25,13 +25,13 @@ export const comments = [
     },
     {
         username: 'Anya Forger',
-        comment: 'Pensé que el agua era de cebolla y cilantro y era de sandia jaja seas ma###',
+        comment: 'Pensé que el agua era de cebolla y cilantro y era de sandia jaja a la bestia',
         image_url: 'https://i.pinimg.com/originals/8c/1a/67/8c1a672d33c6d0d0ad0e487ea2633274.jpg',
         ranking: 3.5
     },
     {
         username: 'Reina Aharen',
-        comment: 'La comida sabe dlv y los asientos tienen cancer en el cancer',
+        comment: 'La comida sabe dlv y todo el restaurante huele a cancer',
         image_url: 'https://i.pinimg.com/originals/56/6b/dd/566bdd5bdbaa090b39074baa53dd40e8.jpg',
         ranking: 1
     },

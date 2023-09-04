@@ -8,7 +8,6 @@ import { MdStar } from 'react-icons/md'
 import { TextField } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import { graphics_avable } from '../services/graphics_avable'
-import { comments } from '../services/comments'
 import { BD_ACTION_GET } from '../services/master'
 import LineChartJS from './graphics/line/LineChartJS'
 import LineHighcharts from './graphics/line/LineHighcharts'
@@ -19,6 +18,7 @@ import BarsChartJS from './graphics/bars/BarsChartJS'
 import PieAmCharts from './graphics/pie/PieAmCharts'
 import BarsAmCharts from './graphics/bars/BarsAmCharts'
 import LineAmCharts from './graphics/line/LineAmCharts'
+import Comment from './Comment'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -61,9 +61,7 @@ function Dashboard() {
             total_orders: 0
         },
     ])
-    const [selectedChart, setSelectedChart] = useState(graphics_avable[2])
-    const [dataIndex, setDataIndex] = useState(0)
-    const [comment, setComment] = useState(comments[dataIndex])
+    const [selectedChart, setSelectedChart] = useState(graphics_avable[0])
     const [betterProduct, setBetterProduct] = useState({
         id: '',
         name: '',
@@ -207,24 +205,7 @@ function Dashboard() {
                                 emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                             />
                         </div>
-                        <div className='flex flex-row shadow-lg p-5 bg-slate-50 gap-5 items-center rounded-lg max-w-[80%]'>
-                            <img src={comment.image_url} className='w-10 h-10 rounded-full' />
-                            <div className='flex flex-col'>
-                                <span className='font-bold'>@ {comment.username}</span>
-                                <div className='flex items-center gap-2'>
-                                    <span className='text-sm font-montserrat font-bold'>{comment.ranking}</span>
-                                    <StyledRating
-                                        size='small'
-                                        value={comment.ranking}
-                                        readOnly
-                                        precision={0.5}
-                                        icon={<FavoriteIcon fontSize="inherit" />}
-                                        emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                                    />
-                                </div>
-                                <span className='text-sm'>{comment.comment}</span>
-                            </div>
-                        </div>
+                        <Comment />
                     </div>
                 </div>
                 <div className='grid xl:grid-cols-2 grid-cols-1 gap-4'>
