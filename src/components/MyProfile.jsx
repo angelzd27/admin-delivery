@@ -83,6 +83,14 @@ function MyProfile() {
         }
     }
 
+    const valid_form = () => {
+        if (form.first_name == '' || form.last_name == '' || form.phone == 0)
+            return true
+
+        return false
+    }
+
+
     const change_password = async () => {
         setLoad(true)
         const data = await BD_ACTION_POST('auth', 'create_new_password', resetPassword)
@@ -108,13 +116,23 @@ function MyProfile() {
         setEmailDialog(!emailDialog)
     }
 
+    const handlePhoneChange = (event) => {
+        const newValue = event.target.value;
+      
+        // Permitir números y cadena vacía (borrar el campo) con una longitud máxima de 10
+        if (/^[0-9]*$/.test(newValue) && newValue.length <= 10) {
+          // Actualizar el estado con el nuevo valor
+          setForm({ ...form, phone: newValue });
+        }
+      };
+
     return (
         <>
             <Loader load={load} />
             <div className='flex flex-col gap-6'>
                 <div className='flex justify-between'>
                     <h1 className='text-2xl'>My Profile</h1>
-                    <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-xl hover:bg-yummy-600 transition-all shadow-lg' onClick={put_user}>Update <MdSave /></button>
+                    <button className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-xl hover:bg-yummy-600 transition-all shadow-lg disabled:bg-yummy-600' onClick={put_user} disabled={valid_form()}>Update <MdSave /></button>
                 </div>
 
                 <div className='flex flex-col items-center justify-center gap-4'>
@@ -129,21 +147,50 @@ function MyProfile() {
                         label='First Name'
                         value={form.first_name}
                         onChange={event => setForm({ ...form, first_name: event.target.value })}
-                        variant='standard' />
+                        variant='standard'
+                        placeholder='Write your name here...'
+                        helperText={
+                            !(form.first_name)
+                            ?"First Name is required"
+                            :""
+                        }
+                        error={!(form.first_name)}
+                        />
                     <TextField
                         label='Last Name'
                         value={form.last_name}
                         onChange={event => setForm({ ...form, last_name: event.target.value })}
-                        variant='standard' />
+                        variant='standard'
+                        placeholder='Write your last name here...'
+                        helperText={
+                            !(form.last_name)
+                            ?"Last Name is required"
+                            :""
+                        }
+                        error={!(form.last_name)}
+                        />
                     <TextField
                         label='Second Last Name (Optional)'
                         value={form.second_last_name}
                         onChange={event => setForm({ ...form, second_last_name: event.target.value })}
-                        variant='standard' />
+                        variant='standard' 
+                        />
                     <TextField
                         label='Phone'
                         value={form.phone}
-                        variant='standard' />
+                        onChange={handlePhoneChange}
+                        variant='standard' 
+                        placeholder='Write your phone here...'
+                        helperText={
+                            !(form.phone)
+                            ?"Phone is required"
+                            :""
+                        }
+                        inputProps={{
+                            pattern: '[0-9]*', // Patrón para permitir solo números
+                        }}
+                        error={!(form.phone)}
+                        />
                     <TextField
                         disabled
                         label='Gender'
