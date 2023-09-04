@@ -1,8 +1,8 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { useEffect, useState, useLayoutEffect } from 'react'
 import { Pie } from 'react-chartjs-2'
-import { io } from 'socket.io-client'
-import { data_chart } from '../../../services/charts'
+import { data_chart } from '../../../services/master'
+import { socket } from '../../../services/master'
 
 ChartJS.register(
     ArcElement,
@@ -10,8 +10,6 @@ ChartJS.register(
     Legend,
     Colors
 )
-
-const socket = io('http://127.0.0.1:4003')
 
 function PieChartJS() {
     const [labels, setLabels] = useState([])

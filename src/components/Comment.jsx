@@ -23,7 +23,7 @@ function Comment() {
             const nextIndex = (dataIndex + 1) % comments.length;
             setDataIndex(nextIndex);
             setData(comments[nextIndex]);
-        }, 5000)
+        }, 8000)
 
         return () => clearInterval(intervalId);
     }, [dataIndex]);
