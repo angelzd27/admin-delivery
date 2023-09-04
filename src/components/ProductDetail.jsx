@@ -33,7 +33,7 @@ function ProductDetail() {
         picture: 'https://th.bing.com/th/id/OIG.9AIo_WpxJlCnm.UH.acX?pid=ImgGn',
         approx_time: 0
     })
-
+   
     useEffect(() => {
         async function get_product() {
             const id = params.id
@@ -114,6 +114,36 @@ function ProductDetail() {
         return false
     }
 
+    const handlePriceChange = (event) => {
+        const newValue = event.target.value;
+      
+        // Permitir números y cadena vacía (borrar el campo)
+        if (/^[0-9]*$/.test(newValue) || newValue === "") {
+          // Actualizar el estado con el nuevo valor
+          setForm({ ...form, price: newValue });
+        }
+      };
+    
+    const handleAmountChange = (event) => {
+        const newValue = event.target.value;
+        
+        // Validar que el valor ingresado son solo números (usando el patrón)
+        if (/^[0-9]*$/.test(newValue)) {
+          // Si es válido, actualiza el estado
+          setProduct({ ...product, amount: newValue });
+        }
+      };
+
+    const handleTimeChange = (event) => {
+        const newValue = event.target.value;
+        
+        // Validar que el valor ingresado son solo números (usando el patrón)
+        if (/^[0-9]*$/.test(newValue)) {
+          // Si es válido, actualiza el estado
+          setProduct({ ...product, approx_time: newValue });
+        }
+      };
+
     return (
         <>
             <Loader load={load} />
@@ -155,22 +185,39 @@ function ProductDetail() {
                     <div className='col-span-3 flex flex-col gap-6'>
                         <h1 className='text-xl'>Product Information</h1>
                         <FormControl variant="standard">
-                            <InputLabel htmlFor="input-with-icon-adornment">
-                                Name
-                            </InputLabel>
-                            <Input
-                                id="input-with-icon-adornment"
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <BiText />
-                                    </InputAdornment>
-                                }
-                                value={product.name}
-                                onChange={event => setProduct({ ...product, name: event.target.value })}
-                                placeholder='Write Name Here...'
+                        <InputLabel htmlFor="input-with-icon-adornment">
+                            Name
+                        </InputLabel>
+                        <Input
+                            id="input-with-icon-adornment"
+                               
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <BiText />
+                                </InputAdornment>
+                            }
+                            value={product.name}
+                            onChange={event => setProduct({ ...product, name: event.target.value })}
+                            placeholder={"Write Name of Product here"}
+                            error={!(product.name)}
                             />
                         </FormControl>
-                        <TextField variant="standard" value={product.description} rows={5} multiline label='Description' onChange={event => setProduct({ ...product, description: event.target.value })} placeholder='Write Description Here...' />
+                        <TextField 
+                        variant="standard"
+                        value={product.description} 
+                        rows={5} 
+                        multiline
+                        label='Description' 
+                        onChange={event => setProduct({ ...product, description: event.target.value })} 
+                        placeholder='Write Description Here...'
+                        helperText={
+                            !(product.description)
+                            ?"Description is required"
+                            :""
+                        }
+                        error={!(product.description)}
+                        />
+                        
                         <div className='grid grid-cols-4 gap-6'>
                             <FormControl variant="standard">
                                 <InputLabel htmlFor="input-with-icon-adornment">
@@ -183,12 +230,18 @@ function ProductDetail() {
                                             <BiDollar />
                                         </InputAdornment>
                                     }
-                                    type='number'
+                                    type='text' // Usar type 'text' en lugar de 'number'
                                     value={product.price}
-                                    onChange={event => setProduct({ ...product, price: event.target.value })}
+                                    onChange={handlePriceChange}
                                     placeholder='USD'
+                                    inputProps={{
+                                        pattern: '[0-9]*', // Patrón para permitir solo números
+                                    }}
+                                    
+                                    error={!(product.price) || (product.price) < 1}
                                 />
                             </FormControl>
+
                             <FormControl variant="standard">
                                 <InputLabel htmlFor="input-with-icon-adornment">
                                     Total Amount
@@ -200,12 +253,19 @@ function ProductDetail() {
                                             <BiBox />
                                         </InputAdornment>
                                     }
-                                    type='number'
+                                    type='text' // Usar type 'text' en lugar de 'number'
                                     value={product.amount}
-                                    onChange={event => setProduct({ ...product, amount: event.target.value })}
+                                    onChange={handleAmountChange}
                                     placeholder='Total'
+                                    inputProps={{
+                                        pattern: '[0-9]*', // Patrón para permitir solo números
+                                    }}
+
+                                    error={!(product.amount) || (product.amount) < 1}
+
                                 />
                             </FormControl>
+
                             <FormControl variant="standard">
                                 <InputLabel htmlFor="input-with-icon-adornment">
                                     Aprox. Time (Minutes)
@@ -217,10 +277,15 @@ function ProductDetail() {
                                             <BiTimer />
                                         </InputAdornment>
                                     }
-                                    type='number'
+                                   type='text' // Usar type 'text' en lugar de 'number'
                                     value={product.approx_time}
-                                    onChange={event => setProduct({ ...product, approx_time: event.target.value })}
+                                    onChange={handleTimeChange}
                                     placeholder='Time'
+                                    inputProps={{
+                                        pattern: '[0-9]*', // Patrón para permitir solo números
+                                    }}
+
+                                    error={!(product.approx_time) || (product.approx_time) < 1}
                                 />
                             </FormControl>
                             <TextField
