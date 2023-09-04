@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { io } from 'socket.io-client'
+import { socket } from '../services/master'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
@@ -28,8 +28,6 @@ const StyledRating = styled(Rating)({
         color: '#ff3d47',
     },
 })
-
-const socket = io('http://127.0.0.1:4003')
 
 function Dashboard() {
     const [totalUSD, setTotalUSD] = useState(0)

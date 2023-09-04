@@ -2,10 +2,8 @@ import { useEffect, useLayoutEffect, useState } from 'react'
 import * as am5 from '@amcharts/amcharts5'
 import * as am5percent from '@amcharts/amcharts5/percent'
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated'
-import { io } from 'socket.io-client'
-import { data_chart } from '../../../services/charts'
-
-const socket = io('http://127.0.0.1:4003')
+import { data_chart } from '../../../services/master'
+import { socket } from '../../../services/master'
 
 function PieAmCharts() {
     const [datasets, setDatasets] = useState([])

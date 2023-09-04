@@ -1,10 +1,8 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { data_chart } from '../../../services/charts'
-import { io } from 'socket.io-client'
-
-const socket = io('http://127.0.0.1:4003')
+import { data_chart } from '../../../services/master'
+import { socket } from '../../../services/master'
 
 function BarHighcharts() {
     const [datasets, setDatasets] = useState([])

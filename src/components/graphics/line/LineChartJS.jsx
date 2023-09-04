@@ -1,8 +1,8 @@
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
 import { useEffect, useState, useLayoutEffect } from 'react'
 import { Line } from 'react-chartjs-2'
-import { io } from 'socket.io-client'
-import { data_chart } from '../../../services/charts'
+import { socket } from '../../../services/master'
+import { data_chart } from '../../../services/master'
 
 ChartJS.register(
     CategoryScale,
@@ -13,7 +13,6 @@ ChartJS.register(
     Tooltip, Legend
 )
 
-const socket = io('http://127.0.0.1:4003')
 
 function LineChartJS() {
     const [labels, setLabels] = useState([])

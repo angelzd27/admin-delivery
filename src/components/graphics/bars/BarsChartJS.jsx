@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
-import { io } from 'socket.io-client'
-import { data_chart } from '../../../services/charts'
+import { socket } from '../../../services/master'
+import { data_chart } from '../../../services/master'
 
 ChartJS.register(
     CategoryScale,
@@ -13,7 +13,6 @@ ChartJS.register(
     Legend
 )
 
-const socket = io('http://127.0.0.1:4003')
 
 function BarsChartJS() {
     const [labels, setLabels] = useState([])

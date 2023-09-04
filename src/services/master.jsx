@@ -1,7 +1,14 @@
 import axios from 'axios'
+import { io } from 'socket.io-client'
 import { getJWT } from './jwt'
 
-const url_services = 'http://localhost/api-delivery/controllers'
+// Localhost
+// const server = '127.0.0.1'
+
+// Rober's Server
+const server = '172.16.1.79'
+
+const url_services = `http://${server}/api-delivery/controllers`
 const headers = {
     'Content-Type': 'application/json',
     simpleauthpts: 'f9008bbc21129902e16e229994658240',
@@ -35,3 +42,12 @@ export const BD_ACTION_DELETE = async (model, action, body) => {
 
     return data.data
 }
+
+export const data_chart = async (chart_type, chart_library) => {
+    const url = `http://${server}:4003/charts/${chart_type}`
+    const data = await axios.get(url)
+
+    return data.data[chart_library]
+}
+
+export const socket = io(`http://${server}:4003`)

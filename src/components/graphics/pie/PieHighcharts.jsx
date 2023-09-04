@@ -1,10 +1,8 @@
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useState, useLayoutEffect } from 'react'
-import { io } from 'socket.io-client'
-import { data_chart } from '../../../services/charts'
-
-const socket = io('http://127.0.0.1:4003')
+import { socket } from '../../../services/master'
+import { data_chart } from '../../../services/master'
 
 function PieHighcharts() {
     const [datasets, setDatasets] = useState([])
