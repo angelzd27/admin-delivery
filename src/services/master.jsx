@@ -3,10 +3,10 @@ import { io } from 'socket.io-client'
 import { getJWT } from './jwt'
 
 // Localhost
-// const server = '127.0.0.1'
+const server = '127.0.0.1'
 
 // Rober's Server
-const server = '172.16.1.79'
+// const server = '172.16.1.79'
 
 const url_services = `http://${server}/api-delivery/controllers`
 const headers = {
