@@ -141,11 +141,9 @@ function LoginForm() {
 
           {/* Options Buttons */}
           <div className='mt-8 flex justify-between items-center'>
-            <div>
-              <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/sign_up'>Sign Up</Link>
-            </div>
-            <Link className='font-medium text-base text-yummy-800 hover:text-red-700' to='/auth/forgot_password'>Forgot password</Link>
-          </div>
+  <Link className='ml-auto font-normal text-sm text-yummy-800 hover:text-red-700' to='/auth/forgot_password'>Forgot password</Link>
+  
+</div>
 
           {/* Sign In Buttons */}
           <div className='mt-8 flex flex-col gap-y-4'>

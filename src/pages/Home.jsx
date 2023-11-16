@@ -5,6 +5,7 @@ import MyProfile from '../components/MyProfile'
 import Dishes from '../components/Dishes'
 import Categories from '../components/Categories'
 import ProductDetail from '../components/ProductDetail'
+import SignUp from '../components/SignUp'
 import { expiredJWT } from '../services/jwt'
 
 function Home() {
@@ -23,6 +24,7 @@ function Home() {
                                 <Route path='/product-add' element={<ProductDetail />} />
                                 <Route path='/categories' element={<Categories />} />
                                 <Route path='/my_profile' element={<MyProfile />} />
+                                <Route path='/sign_up' element={<SignUp />} />
                                 <Route path='/*' element={<Navigate to='/not-found' />} />
                             </Routes>
                         </div>
