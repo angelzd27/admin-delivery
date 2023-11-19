@@ -11,8 +11,6 @@ const server = '127.0.0.1'
 //Api key fastforex(api de divisas) tiene prueba gratuita 
 //de 6 dias actualizar para que vuelva a funcionar
 const api_key = '7b4c034263-23647d854d-s4968t';
-const url_currency = `https://api.fastforex.io/fetch-multi?from=USD&to=MXN&api_key=${api_key}`
-
 
 const url_services = `http://${server}/api-delivery/controllers`
 const headers = {
