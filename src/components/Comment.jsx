@@ -33,7 +33,7 @@ function Comment() {
             <div className='flex flex-row shadow-lg p-5 bg-slate-50 gap-5 items-center rounded-lg max-w-[80%] select-none'>
                 <img src={data.image_url} className='w-10 h-10 rounded-full' />
                 <div className='flex flex-col'>
-                    <span className='font-bold'>@ {data.username}</span>
+                    <span className='font-bold'>@{data.username}</span>
                     <div className='flex items-center gap-2'>
                         <span className='text-sm font-montserrat font-bold'>{data.ranking}</span>
                         <StyledRating
