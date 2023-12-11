@@ -79,6 +79,7 @@ function LoginForm() {
       password: password
     }
     const data = await BD_ACTION_POST('auth', 'sign_in', body)
+    console.log(data)
     if (!data.error) {
       setJWT(data.msg.token)
       setTimeout(() => {
@@ -141,9 +142,9 @@ function LoginForm() {
 
           {/* Options Buttons */}
           <div className='mt-8 flex justify-between items-center'>
-  <Link className='ml-auto font-normal text-sm text-yummy-800 hover:text-red-700' to='/auth/forgot_password'>Forgot password</Link>
-  
-</div>
+            <Link className='ml-auto font-normal text-sm text-yummy-800 hover:text-red-700' to='/auth/forgot_password'>Forgot password</Link>
+
+          </div>
 
           {/* Sign In Buttons */}
           <div className='mt-8 flex flex-col gap-y-4'>

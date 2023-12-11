@@ -3,10 +3,13 @@ import { io } from 'socket.io-client'
 import { getJWT } from './jwt'
 
 // Localhost
-const server = '127.0.0.1'
+// const server = '127.0.0.1'
 
 // Rober's Server
 // const server = '172.16.1.79'
+
+// Saul's Server
+const server = '31.220.57.167'
 
 //Api key fastforex(api de divisas) tiene prueba gratuita 
 //de 6 dias actualizar para que vuelva a funcionar
@@ -48,25 +51,25 @@ export const BD_ACTION_DELETE = async (model, action, body) => {
 }
 
 export const data_chart = async (chart_type, chart_library) => {
-    const url = `http://${server}:4003/charts/${chart_type}`
+    const url = `http://${server}:4004/charts/${chart_type}`
     const data = await axios.get(url)
 
     return data.data[chart_library]
 }
 
-export const divisa = async () =>{
-    try{
-    const url = `https://api.fastforex.io/fetch-multi?from=USD&to=MXN&api_key=${api_key}`
-    const data = await axios.get(url)
-    console.log('The request to the API has been made successfully', '\nUpdated: ', data.data.updated, ' \ndollar value: ', data.data.results.MXN )
+export const divisa = async () => {
+    try {
+        const url = `https://api.fastforex.io/fetch-multi?from=USD&to=MXN&api_key=${api_key}`
+        const data = await axios.get(url)
+        console.log('The request to the API has been made successfully', '\nUpdated: ', data.data.updated, ' \ndollar value: ', data.data.results.MXN)
 
-    return data.data
+        return data.data
 
-    }catch(error){
+    } catch (error) {
         console.error('Error fetching exchange rate:', error);
     }
 }
-  
-  
 
-export const socket = io(`http://${server}:4003`)
+
+
+export const socket = io(`http://${server}:4004`)
