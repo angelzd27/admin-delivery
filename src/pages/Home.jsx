@@ -5,6 +5,7 @@ import MyProfile from '../components/MyProfile'
 import Dishes from '../components/Dishes'
 import Categories from '../components/Categories'
 import ProductDetail from '../components/ProductDetail'
+import SignUp from '../components/SignUp'
 import { expiredJWT } from '../services/jwt'
 import Tickets from '../components/Tickets'
 

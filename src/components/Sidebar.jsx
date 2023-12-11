@@ -2,7 +2,7 @@ import Dialog from '@mui/material/Dialog'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MdDashboard, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdCategory } from 'react-icons/md'
-import { BiSolidDish } from 'react-icons/bi'
+import { BiSolidDish, BiSolidUserPlus } from 'react-icons/bi'
 import { RiSettings3Fill } from 'react-icons/ri'
 import { FaList } from 'react-icons/fa'
 import { removeJWT, decodedDataJWT } from '../services/jwt'
@@ -85,6 +85,12 @@ function Sidebar() {
                             My Profile
                         </Link>
                         <Link
+                            to='/home/sign_up'
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
+                            <BiSolidUserPlus />
+                            Sign Up
+                        </Link>
+                        <Link
                             onClick={() => { removeJWT() }}
                             to='/auth'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
@@ -92,15 +98,17 @@ function Sidebar() {
                             Logout
                         </Link>
                     </nav>
-                    <div className='bg-yummy-600 text-black p-4 rounded-xl flex flex-row gap-4 items-center'>
-                        <div>
-                            <MdHelp className='w-5 h-5' />
-                        </div>
-                        <div>
-                            <p className='text-sm mb-2'>Having troubles?</p>
-                            <button className='font-bold text-md flex flex-row gap-2 items-center underline underline-offset-3' onClick={handleClickOpen}>
-                                Contact Us !
+                    <div className='bg-yummy-600 text-black pt-2 pb-2 rounded-xl flex flex-row gap-4 items-center'>
+                    
+                        <div className='flex items-center gap-2 group'>
+                            
+                            <div className='group-hover:text-white group-hover:scale-105'>
+                                <MdHelp className='ml-2 w-5 h-5 transition-all duration-300 ease-in-out transform' />
+                            </div>
+                            <button className='font-bold text-md flex flex-row gap-2 items-center transition-all duration-300 ease-in-out transform hover:text-white' onClick={handleClickOpen}>
+                                Contact Us!
                             </button>
+
                             <Dialog
                                 open={open}
                                 onClose={handleClose}

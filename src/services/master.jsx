@@ -8,6 +8,10 @@ const server = '127.0.0.1'
 // Rober's Server
 // const server = '172.16.1.79'
 
+//Api key fastforex(api de divisas) tiene prueba gratuita 
+//de 6 dias actualizar para que vuelva a funcionar
+const api_key = '7b4c034263-23647d854d-s4968t';
+
 const url_services = `http://${server}/api-delivery/controllers`
 const headers = {
     'Content-Type': 'application/json',
@@ -49,5 +53,20 @@ export const data_chart = async (chart_type, chart_library) => {
 
     return data.data[chart_library]
 }
+
+export const divisa = async () =>{
+    try{
+    const url = `https://api.fastforex.io/fetch-multi?from=USD&to=MXN&api_key=${api_key}`
+    const data = await axios.get(url)
+    console.log('The request to the API has been made successfully', '\nUpdated: ', data.data.updated, ' \ndollar value: ', data.data.results.MXN )
+
+    return data.data
+
+    }catch(error){
+        console.error('Error fetching exchange rate:', error);
+    }
+}
+  
+  
 
 export const socket = io(`http://${server}:4003`)

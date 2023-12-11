@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { socket } from '../services/master'
+import { divisa, socket } from '../services/master'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
@@ -75,8 +75,15 @@ function Dashboard() {
     let customer_satisfaction = 4.5
 
     useEffect(() => {
+
         const get_all_information = async () => {
+
+        try{
+
+            let data_divisa = await divisa();
             const data_earing = await BD_ACTION_GET('dashboard', 'get_earnings')
+            const data_earing_mxn = parseFloat(data_divisa.results.MXN) * parseFloat(data_earing.msg[0].earnings_usd);
+
             const data_orders = await BD_ACTION_GET('dashboard', 'get_orders_dashboard')
             const data_better_product = await BD_ACTION_GET('dashboard', 'get_best_product')
             const data_worst_product = await BD_ACTION_GET('dashboard', 'get_worst_product')
@@ -84,18 +91,27 @@ function Dashboard() {
             if (data_earing.error || data_orders.error || data_better_product.error || data_worst_product.error) {
                 console.log('Error In Database')
             } else {
+              
                 setTotalUSD(data_earing.msg[0].earnings_usd)
-                setTotalMXN(data_earing.msg[0].earnings_mxn)
+                setTotalMXN(data_earing_mxn.toFixed(2))
                 setOrders(data_orders.msg)
                 setBetterProduct(data_better_product.msg[0])
                 setWorstProduct(data_worst_product.msg[0])
             }
-        }
 
-        get_all_information()
+            } catch(error){
+                console.error('Error fetching information:', error);
+            }
+        };
 
-        return () => {
-        }
+        get_all_information();
+
+        const intervalId = setInterval(()=> {
+            get_all_information();
+        },  12 * 60 * 60 * 1000);
+
+        return () => clearInterval(intervalId);
+         
     }, [])
 
 
@@ -103,7 +119,7 @@ function Dashboard() {
         socket.on('update-dashboard', (data) => {
             console.log(data)
             setTotalUSD(data.earnings_usd)
-            setTotalMXN(data.earnings_mxn)
+            setTotalMXN(data_earing_mxn)
             setOrders(data.orders)
             setBetterProduct(data.best_product)
             setWorstProduct(data.worst_product)
