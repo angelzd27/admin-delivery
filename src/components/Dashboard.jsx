@@ -191,9 +191,9 @@ function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    <div className='flex flex-col items-center justify-center bg-white shadow-md rounded-lg xl:col-span-1 md:col-span-2 py-5'>
-                        <span className='text-2xl'>Customer Satisfaction</span>
-                        <div className='flex gap-3 items-center mb-6 rounded-lg'>
+                    <div className='flex flex-col gap-4 items-center justify-start bg-white shadow-md rounded-lg xl:col-span-1 md:col-span-2 py-5'>
+                        <span className='text-2xl'>Customer Comments</span>
+                        {/* <div className='flex gap-3 items-center mb-6 rounded-lg'>
                             <span className='text-4xl font-montserrat'>{customer_satisfaction}</span>
                             <StyledRating
                                 value={4.5}
@@ -202,7 +202,7 @@ function Dashboard() {
                                 icon={<FavoriteIcon fontSize="inherit" />}
                                 emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                             />
-                        </div>
+                        </div> */}
                         <Comment />
                     </div>
                 </div>
