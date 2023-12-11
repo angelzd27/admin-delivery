@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { MdDashboard, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdCategory } from 'react-icons/md'
 import { BiSolidDish, BiSolidUser } from 'react-icons/bi'
 import { RiSettings3Fill } from 'react-icons/ri'
+import { FaList } from 'react-icons/fa'
 import { removeJWT, decodedDataJWT } from '../services/jwt'
 
 function Sidebar() {
@@ -51,8 +52,8 @@ function Sidebar() {
                 </div>
 
                 {/* Navigation */}
-                <div className='bg-yummy-800 p-8 rounded-tr-[100px] h-[70vh] flex flex-col justify-between gap-5'>
-                    <nav className='flex flex-col gap-6'>
+                <div className='bg-yummy-800 p-8 rounded-tr-[100px] h-[70vh] flex flex-col justify-between gap-8'>
+                    <nav className='flex flex-col gap-4'>
                         <Link
                             to='/home/dashboard'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
@@ -70,6 +71,12 @@ function Sidebar() {
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <MdCategory />
                             Categories
+                        </Link>
+                        <Link
+                            to='/home/tickets'
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
+                            <FaList />
+                            Tickets
                         </Link>
                         <Link
                             to='/home/my_profile'

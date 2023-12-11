@@ -162,25 +162,25 @@ function Dashboard() {
                         </div>
                     </div>
                     <div className='bg-white shadow-md rounded-lg flex justify-center gap-8 col-span-2 text-center xl:flex-row md:flex-row flex-col py-5'>
-                        <div className='flex flex-col items-center justify-center text-sky-500'>
+                        <div className='flex flex-col items-center justify-center text-status-pending-light'>
                             <span className='text-3xl font-montserrat'>{orders[0].total_orders}</span>
-                            <span className='text-[12px]'>Orders Pending</span>
+                            <span className='text-[12px]'>Pending</span>
                         </div>
-                        <div className='flex flex-col items-center justify-center text-amber-500'>
+                        <div className='flex flex-col items-center justify-center text-status-onProcess-light'>
                             <span className='text-3xl font-montserrat'>{orders[1].total_orders}</span>
-                            <span className='text-[12px]'>Orders On-Process</span>
+                            <span className='text-[12px]'>On-Process</span>
                         </div>
-                        <div className='flex flex-col items-center justify-center text-green-500'>
+                        <div className='flex flex-col items-center justify-center text-status-completed-light'>
                             <span className='text-3xl font-montserrat'>{orders[2].total_orders}</span>
-                            <span className='text-[12px]'>Orders Completed</span>
+                            <span className='text-[12px]'>Completed</span>
                         </div>
-                        <div className='flex flex-col items-center justify-center text-orange-500'>
+                        <div className='flex flex-col items-center justify-center text-status-rejected-light'>
                             <span className='text-3xl font-montserrat'>{orders[3].total_orders}</span>
-                            <span className='text-[12px]'>Orders Rejected</span>
+                            <span className='text-[12px]'>Rejected</span>
                         </div>
-                        <div className='flex flex-col items-center justify-center text-red-500'>
+                        <div className='flex flex-col items-center justify-center text-status-cancelled-light'>
                             <span className='text-3xl font-montserrat'>{orders[4].total_orders}</span>
-                            <span className='text-[12px]'>Orders Cancelled</span>
+                            <span className='text-[12px]'>Cancelled</span>
                         </div>
                     </div>
                 </div>
@@ -207,9 +207,9 @@ function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    <div className='flex flex-col items-center justify-center bg-white shadow-md rounded-lg xl:col-span-1 md:col-span-2 py-5'>
-                        <span className='text-2xl'>Customer Satisfaction</span>
-                        <div className='flex gap-3 items-center mb-6 rounded-lg'>
+                    <div className='flex flex-col gap-4 items-center justify-start bg-white shadow-md rounded-lg xl:col-span-1 md:col-span-2 py-5'>
+                        <span className='text-2xl'>Customer Comments</span>
+                        {/* <div className='flex gap-3 items-center mb-6 rounded-lg'>
                             <span className='text-4xl font-montserrat'>{customer_satisfaction}</span>
                             <StyledRating
                                 value={4.5}
@@ -218,7 +218,7 @@ function Dashboard() {
                                 icon={<FavoriteIcon fontSize="inherit" />}
                                 emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                             />
-                        </div>
+                        </div> */}
                         <Comment />
                     </div>
                 </div>
