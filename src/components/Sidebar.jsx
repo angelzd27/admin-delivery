@@ -2,7 +2,7 @@ import Dialog from '@mui/material/Dialog'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MdDashboard, MdPerson, MdHelp, MdMenu, MdMenuOpen, MdMail, MdPhone, MdLogout, MdCategory } from 'react-icons/md'
-import { BiSolidDish, BiSolidUserPlus } from 'react-icons/bi'
+import { BiSolidDish, BiSolidUser } from 'react-icons/bi'
 import { RiSettings3Fill } from 'react-icons/ri'
 import { removeJWT, decodedDataJWT } from '../services/jwt'
 
@@ -78,10 +78,10 @@ function Sidebar() {
                             My Profile
                         </Link>
                         <Link
-                            to='/home/sign_up'
+                            to='/home/users'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
-                            <BiSolidUserPlus />
-                            Sign Up
+                            <BiSolidUser />
+                            Users
                         </Link>
                         <Link
                             onClick={() => { removeJWT() }}

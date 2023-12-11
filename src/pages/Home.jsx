@@ -6,6 +6,7 @@ import Dishes from '../components/Dishes'
 import Categories from '../components/Categories'
 import ProductDetail from '../components/ProductDetail'
 import SignUp from '../components/SignUp'
+import Users from '../components/Users'
 import { expiredJWT } from '../services/jwt'
 
 function Home() {
@@ -22,9 +23,10 @@ function Home() {
                                 <Route path='/dishes' element={<Dishes />} />
                                 <Route path='/product-detail/:id' element={<ProductDetail />} />
                                 <Route path='/product-add' element={<ProductDetail />} />
+                                <Route path='/sign_up' element={<SignUp />} />
                                 <Route path='/categories' element={<Categories />} />
                                 <Route path='/my_profile' element={<MyProfile />} />
-                                <Route path='/sign_up' element={<SignUp />} />
+                                <Route path='/users' element={<Users />} />
                                 <Route path='/*' element={<Navigate to='/not-found' />} />
                             </Routes>
                         </div>
