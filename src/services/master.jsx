@@ -10,7 +10,7 @@ const server = '127.0.0.1'
 
 //Api key fastforex(api de divisas) tiene prueba gratuita 
 //de 6 dias actualizar para que vuelva a funcionar
-const api_key = '7b4c034263-23647d854d-s4968t';
+const api_key = '4478a047b6-26e6d929f6-s5gois';
 
 const url_services = `http://${server}/api-delivery/controllers`
 const headers = {

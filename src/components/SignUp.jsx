@@ -11,10 +11,11 @@ import { gender } from '../services/gender'
 import { profile } from '../services/profile'
 import { BD_ACTION_POST } from '../services/master'
 import AlertSignIn from './AlertSignIn'
+import { useNavigate } from 'react-router-dom'
 
 function SignUp() {
   const [confirmAlert, setConfirmAlert] = useState(false);
-
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -81,7 +82,10 @@ function SignUp() {
           id_gender: 1
         })
 
+        
+
         setTimeout(() => {
+          navigate('/home/users')
           setConfirmAlert(false);
         }, 5000)
       } else {
@@ -242,14 +246,17 @@ function SignUp() {
 
   return (
     <>
-
       <form onSubmit={handleSubmit}>
         <div className='flex flex-col gap-6'>
           <div className='flex justify-between'>
             <h1 className='text-2xl'>Sign Up</h1>
+            <div className='flex gap-3'>
+            
             <button type='submit' className='flex items-center justify-center gap-1 text-sm bg-yummy-800 text-white px-3 py-2 rounded-xl hover:bg-yummy-600 transition-all shadow-lg disabled:bg-yummy-600'>
               Create User <BiSolidUserPlus />
             </button>
+            </div>
+           
           </div>
 
           <div className='flex gap-4'>
