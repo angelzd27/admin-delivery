@@ -51,18 +51,19 @@ const MenuComponent = () => {
   }, [])
 
   const dataToDisplay = () => {
-    if (selectedButton === null) return users;
+    if (selectedButton === null || selectedButton === 0) return users;
 
-    const idTipoSeleccionado = profileSearch[selectedButton].id_tipo;
+    const idTipoSeleccionado = profileSearch[selectedButton]['id_tipo'];
     const dataFilteredByIdTipo = users.filter(user => user.id_tipo === idTipoSeleccionado);
-  
+
     return dataFilteredByIdTipo;
   }
 
   const profileSearch = [
+    { id: 0, emoji: '👥', nombre: 'All', id_tipo: 0 },
     { id: 1, emoji: '🔑', nombre: 'Admin', id_tipo: 1 },
-    { id: 2, emoji: '👤', nombre: 'Cliente', id_tipo: 2 },
-    { id: 3, emoji: '💼', nombre: 'Empleado', id_tipo: 3 },
+    { id: 2, emoji: '👤', nombre: 'Client', id_tipo: 2 },
+    { id: 3, emoji: '💼', nombre: 'Employee', id_tipo: 3 },
   ];
 
   const handleClick = (index) => {
@@ -74,17 +75,6 @@ const MenuComponent = () => {
       // De lo contrario, filtra por el id_tipo correspondiente al emoji seleccionado
       setCategorySelected(profileSearch[index].id_tipo);
     }
-  }
-
-  const viewproduct = (id) => {
-    navigate(`/home/product-detail/${id}`)
-  }
-
-  const toggleDescription = (product_id) => {
-    setWatchMore((prevState) => ({
-      ...prevState,
-      [product_id]: !prevState[product_id]
-    }))
   }
 
   return (
@@ -102,9 +92,7 @@ const MenuComponent = () => {
           {
             profileSearch.map((profile, index) => (
               <div key={index} className='flex flex-col items-center w-20 gap-1'>
-               <span className={`w-12 h-12 flex items-center justify-center rounded-full transition-all duration-200 ${selectedButton === index ? 'bg-black scale-110 text-lg' : 'bg-yummy-600 hover:bg-black hover:scale-110 hover:text-lg hover:cursor-pointer'}`} onClick={() => { setCategorySelected(profile.id_tipo); handleClick(index) }}>{profile.emoji}</span>
-
-
+                <span className={`w-12 h-12 flex items-center justify-center rounded-full transition-all duration-200 ${selectedButton === index ? 'bg-black scale-110 text-lg' : 'bg-yummy-600 hover:bg-black hover:scale-110 hover:text-lg hover:cursor-pointer'}`} onClick={() => { setCategorySelected(profile.id_tipo); handleClick(index) }}>{profile.emoji}</span>
                 <span className='text-sm'>{profile.nombre}</span>
               </div>
             ))
@@ -118,26 +106,22 @@ const MenuComponent = () => {
               }
             }).map((user) => (
 
-                <div key={user.id} className="w-full max-w-sm bg-white border border-gray-200 rounded-lg dark:bg-white dark:border-gray-700 shadow-md hover:scale-105 transition-all">
-                   
-                   
-                    <div className=' mb-2 '>
+              <div key={user.id} className="w-full max-w-sm bg-white border border-gray-200 rounded-lg dark:bg-white dark:border-gray-700 shadow-md hover:scale-105 transition-all">
 
-                        <div className="flex relative"> {/*Hacer circulo verde de en linea */}
-                            <h5 className="ml-3 mt-5 mb-1 text-xl font-medium text-gray-900 dark:text-black">{user.nombre}</h5>
-                            <img className="ml-auto mr-3 mt-2 w-14 h-14 mb-3 rounded-full shadow-lg" src={user.foto} alt="Sin Imagen" />
-                        </div>
 
-                        <div className='flex flex-col'>
-                        <span className="ml-3 text-sm text-gray-500 dark:text-gray-400">Usuario: {user.usuario} </span>
-                        <span className="ml-3 text-sm text-gray-500 dark:text-gray-400">Perfil: {user.tipo}</span>
-                        </div>
-                    </div>
+                <div className=' mb-2 '>
 
-                    
-                
+                  <div className="flex relative">
+                    <h5 className="ml-3 mt-5 mb-1 text-xl font-medium text-gray-900 dark:text-black">{user.nombre}</h5>
+                    <img className="ml-auto mr-3 mt-2 w-14 h-14 mb-3 rounded-full shadow-lg" src={user.foto} alt="Sin Imagen" />
+                  </div>
+
+                  <div className='flex flex-col'>
+                    <span className="ml-3 text-sm text-gray-500 dark:text-gray-400">Usuario: {user.usuario} </span>
+                    <span className="ml-3 text-sm text-gray-500 dark:text-gray-400">Perfil: {user.tipo}</span>
+                  </div>
                 </div>
-
+              </div>
             ))
           }
         </div>

@@ -6,7 +6,6 @@ import { FaHourglassStart, FaHourglassEnd, FaUserCircle, FaMoneyBill, FaInfoCirc
 
 export default function Tickets() {
     const [orders, setOrders] = useState([])
-    const [headers, setHeaders] = useState(['Order ID', 'Username', 'Order Date', 'Aprox. Time', 'Start Order', 'End Order', 'Status', 'Total'])
 
     useEffect(() => {
         async function getOrders() {
@@ -40,10 +39,10 @@ export default function Tickets() {
                     <tbody className=''>
                         {
                             orders.map((order, index) => (
-                                <tr key={index} className='hover:bg-gray-200 transition-all'>
+                                <tr key={index} className='hover:bg-gray-200 transition-all hover:cursor-pointer'>
                                     <td className='py-4 px-6 text-sky-600'>{order.user}</td>
-                                    <td className='py-4 px-6 font-montserrat'>{moment(order.order_date).format('MMMM D YYYY, [at] h:mm A z')}</td>
-                                    <td className='py-4 px-6 font-montserrat'>{order.approx_time == null ? '' : `${order.approx_time} min`}</td>
+                                    <td className='py-4 px-6 font-montserrat'>{moment(order.order_date).format('MMMM DD, YYYY; [at] h:mm A z')}</td>
+                                    <td className={`py-4 px-6 font-montserrat ${order.approx_time == '' || order.approx_time == null ? 'text-gray-400' : 'text-black'}`}>{order.approx_time == '' || order.approx_time == null ? 'Not avable...' : order.approx_time}</td>
                                     <td className={`py-4 px-6 font-montserrat ${order.start_order == null ? 'text-gray-400' : 'text-black'}`}>{order.start_order == null ? 'Not Taked...' : moment(order.start_order).format('h:mm A z')}</td>
                                     <td className={`py-4 px-6 font-montserrat ${order.end_order == null ? 'text-gray-400' : 'text-black'}`}>{order.end_order == null ? 'Not Taked...' : moment(order.end_order).format('h:mm A z')}</td>
                                     <td className='py-4 px-6'><span className={`px-4 py-1 rounded-xl text-white ${order.id_status == 1 ? 'bg-status-pending-light' : order.id_status == 2 ? 'bg-status-onProcess-light' : order.id_status == 3 ? 'bg-status-completed-light' : order.id_status == 4 ? 'bg-status-rejected-light' : order.id_status == 5 ? 'bg-status-cancelled-light' : ''}`}>{order.status}</span></td>

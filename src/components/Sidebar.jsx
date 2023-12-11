@@ -79,16 +79,16 @@ function Sidebar() {
                             Tickets
                         </Link>
                         <Link
-                            to='/home/my_profile'
-                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
-                            <RiSettings3Fill />
-                            My Profile
-                        </Link>
-                        <Link
                             to='/home/users'
                             className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
                             <BiSolidUser />
                             Users
+                        </Link>
+                        <Link
+                            to='/home/my_profile'
+                            className='flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-yummy-600 transition-colors lg:text-sm'>
+                            <RiSettings3Fill />
+                            My Profile
                         </Link>
                         <Link
                             onClick={() => { removeJWT() }}
@@ -99,9 +99,9 @@ function Sidebar() {
                         </Link>
                     </nav>
                     <div className='bg-yummy-600 text-black pt-2 pb-2 rounded-xl flex flex-row gap-4 items-center'>
-                    
+
                         <div className='flex items-center gap-2 group'>
-                            
+
                             <div className='group-hover:text-white group-hover:scale-105'>
                                 <MdHelp className='ml-2 w-5 h-5 transition-all duration-300 ease-in-out transform' />
                             </div>

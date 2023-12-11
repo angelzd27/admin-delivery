@@ -1,21 +1,21 @@
-import { comments } from '../services/comments'
 import { useEffect, useLayoutEffect, useState } from 'react'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import { Rating } from '@mui/material'
-import styled from '@emotion/styled'
 import { socket } from '../services/master'
 import { BD_ACTION_GET } from '../services/master'
 import moment from 'moment'
+// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+// import FavoriteIcon from '@mui/icons-material/Favorite'
+// import { Rating } from '@mui/material'
+// import styled from '@emotion/styled'
+// import { comments } from '../services/comments'
 
-const StyledRating = styled(Rating)({
-    '& .MuiRating-iconFilled': {
-        color: '#ff6d75',
-    },
-    '& .MuiRating-iconHover': {
-        color: '#ff3d47',
-    },
-})
+// const StyledRating = styled(Rating)({
+//     '& .MuiRating-iconFilled': {
+//         color: '#ff6d75',
+//     },
+//     '& .MuiRating-iconHover': {
+//         color: '#ff3d47',
+//     },
+// })
 
 function Comment() {
     const [comment, setComment] = useState({})

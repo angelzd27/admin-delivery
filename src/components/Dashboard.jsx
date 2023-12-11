@@ -1,9 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { divisa, socket } from '../services/master'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import { Rating } from '@mui/material'
-import styled from '@emotion/styled'
 import { MdStar } from 'react-icons/md'
 import { TextField } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
@@ -19,19 +15,25 @@ import PieAmCharts from './graphics/pie/PieAmCharts'
 import BarsAmCharts from './graphics/bars/BarsAmCharts'
 import LineAmCharts from './graphics/line/LineAmCharts'
 import Comment from './Comment'
+import moment from 'moment'
+// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+// import FavoriteIcon from '@mui/icons-material/Favorite'
+// import { Rating } from '@mui/material'
+// import styled from '@emotion/styled'
 
-const StyledRating = styled(Rating)({
-    '& .MuiRating-iconFilled': {
-        color: '#ff6d75',
-    },
-    '& .MuiRating-iconHover': {
-        color: '#ff3d47',
-    },
-})
+// const StyledRating = styled(Rating)({
+//     '& .MuiRating-iconFilled': {
+//         color: '#ff6d75',
+//     },
+//     '& .MuiRating-iconHover': {
+//         color: '#ff3d47',
+//     },
+// })
 
 function Dashboard() {
     const [totalUSD, setTotalUSD] = useState(0)
     const [totalMXN, setTotalMXN] = useState(0)
+    const [date, setDate] = useState('')
     const [orders, setOrders] = useState([
         {
             id_status: 0,
@@ -72,46 +74,44 @@ function Dashboard() {
         picture: '',
         rating: 0
     })
-    let customer_satisfaction = 4.5
+    // let customer_satisfaction = 4.5
 
     useEffect(() => {
-
         const get_all_information = async () => {
 
-        try{
+            try {
 
-            let data_divisa = await divisa();
-            const data_earing = await BD_ACTION_GET('dashboard', 'get_earnings')
-            const data_earing_mxn = parseFloat(data_divisa.results.MXN) * parseFloat(data_earing.msg[0].earnings_usd);
+                let data_divisa = await divisa();
+                const data_earing = await BD_ACTION_GET('dashboard', 'get_earnings')
+                const data_earing_mxn = parseFloat(data_divisa.results.MXN) * parseFloat(data_earing.msg[0].earnings_usd);
+                const data_orders = await BD_ACTION_GET('dashboard', 'get_orders_dashboard')
+                const data_better_product = await BD_ACTION_GET('dashboard', 'get_best_product')
+                const data_worst_product = await BD_ACTION_GET('dashboard', 'get_worst_product')
 
-            const data_orders = await BD_ACTION_GET('dashboard', 'get_orders_dashboard')
-            const data_better_product = await BD_ACTION_GET('dashboard', 'get_best_product')
-            const data_worst_product = await BD_ACTION_GET('dashboard', 'get_worst_product')
+                if (data_earing.error || data_orders.error || data_better_product.error || data_worst_product.error) {
+                    console.log('Error In Database')
+                } else {
+                    setDate(data_divisa.updated)
+                    setTotalUSD(data_earing.msg[0].earnings_usd)
+                    setTotalMXN(data_earing_mxn.toFixed(2))
+                    setOrders(data_orders.msg)
+                    setBetterProduct(data_better_product.msg[0])
+                    setWorstProduct(data_worst_product.msg[0])
+                }
 
-            if (data_earing.error || data_orders.error || data_better_product.error || data_worst_product.error) {
-                console.log('Error In Database')
-            } else {
-              
-                setTotalUSD(data_earing.msg[0].earnings_usd)
-                setTotalMXN(data_earing_mxn.toFixed(2))
-                setOrders(data_orders.msg)
-                setBetterProduct(data_better_product.msg[0])
-                setWorstProduct(data_worst_product.msg[0])
-            }
-
-            } catch(error){
+            } catch (error) {
                 console.error('Error fetching information:', error);
             }
         };
 
         get_all_information();
 
-        const intervalId = setInterval(()=> {
+        const intervalId = setInterval(() => {
             get_all_information();
-        },  12 * 60 * 60 * 1000);
+        }, 12 * 60 * 60 * 1000);
 
         return () => clearInterval(intervalId);
-         
+
     }, [])
 
 
@@ -119,7 +119,7 @@ function Dashboard() {
         socket.on('update-dashboard', (data) => {
             console.log(data)
             setTotalUSD(data.earnings_usd)
-            setTotalMXN(data_earing_mxn)
+            setTotalMXN(data.data_earing_mxn)
             setOrders(data.orders)
             setBetterProduct(data.best_product)
             setWorstProduct(data.worst_product)
@@ -151,14 +151,17 @@ function Dashboard() {
                     </TextField>
                 </div>
                 <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4'>
-                    <div className='bg-white shadow-md rounded-lg col-span-2 flex xl:flex-row md:flex-row flex-col items-center justify-center py-5 gap-16 text-center'>
+                    <div className='bg-white shadow-md rounded-lg col-span-2 flex xl:flex-row md:flex-row flex-col lg:items-start md:items-center justify-center py-5 gap-16 text-center'>
                         <div className='flex flex-col items-center justify-center gap-1'>
                             <span className='xl:text-4xl text-2xl font-montserrat underline underline-offset-4'>$ {totalUSD} USD</span>
                             <span>Total Earning (USD)</span>
                         </div>
                         <div className='flex flex-col items-center justify-center gap-1'>
                             <span className='xl:text-4xl text-2xl font-montserrat underline underline-offset-4'>$ {totalMXN} MEX</span>
-                            <span>Total Earning (MEX)</span>
+                            <div className='flex flex-col'>
+                                <span>Total Earning (MEX)</span>
+                                <span className='text-[13px] font-montserrat'>Updated to: {moment(date).format('MMMM DD, h:mm A')}</span>
+                            </div>
                         </div>
                     </div>
                     <div className='bg-white shadow-md rounded-lg flex justify-center gap-8 col-span-2 text-center xl:flex-row md:flex-row flex-col py-5'>
