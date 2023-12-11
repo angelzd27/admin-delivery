@@ -1,9 +1,12 @@
 import { comments } from '../services/comments'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Rating } from '@mui/material'
 import styled from '@emotion/styled'
+import { socket } from '../services/master'
+import { BD_ACTION_GET } from '../services/master'
+import moment from 'moment'
 
 const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
@@ -15,37 +18,45 @@ const StyledRating = styled(Rating)({
 })
 
 function Comment() {
-    const [dataIndex, setDataIndex] = useState(0);
-    const [data, setData] = useState(comments[dataIndex]);
+    const [comment, setComment] = useState({})
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            const nextIndex = (dataIndex + 1) % comments.length;
-            setDataIndex(nextIndex);
-            setData(comments[nextIndex]);
-        }, 8000)
+        async function getComment() {
+            const data = await BD_ACTION_GET('comments', 'last_comment')
+            setComment(data.msg[0])
+        }
 
-        return () => clearInterval(intervalId);
-    }, [dataIndex]);
+        getComment()
+    }, [])
+
+    useLayoutEffect(() => {
+        socket.on('comment', (data) => {
+            setComment(data)
+        })
+        return () => {
+            socket.off('comment')
+        }
+    }, [])
 
     return (
         <>
             <div className='flex flex-row shadow-lg p-5 bg-slate-50 gap-5 items-center rounded-lg max-w-[80%] select-none'>
-                <img src={data.image_url} className='w-10 h-10 rounded-full' />
+                <img src={comment.picture} className='w-10 h-10 rounded-full' />
                 <div className='flex flex-col'>
-                    <span className='font-bold'>@ {data.username}</span>
-                    <div className='flex items-center gap-2'>
-                        <span className='text-sm font-montserrat font-bold'>{data.ranking}</span>
+                    <span className='font-bold'>@{comment.first_name} {comment.last_name} {comment.second_last_name}</span>
+                    {/* <div className='flex items-center gap-2'>
+                        <span className='text-sm font-montserrat font-bold'>{comment.ranking}</span>
                         <StyledRating
                             size='small'
-                            value={data.ranking}
+                            value={comment.ranking}
                             readOnly
                             precision={0.5}
                             icon={<FavoriteIcon fontSize="inherit" />}
                             emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                         />
-                    </div>
-                    <span className='text-sm'>{data.comment}</span>
+                    </div> */}
+                    <span className='text-gray-500 text-sm font-montserrat'>{moment(comment.create_date).format('MMMM DD, YYYY')}</span>
+                    <span className='text-sm'>{comment.content}</span>
                 </div>
             </div>
         </>
